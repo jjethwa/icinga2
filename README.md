@@ -8,6 +8,7 @@ This repository contains the source for [icinga2](https://www.icinga.org/icinga2
 1. Based on debian:latest
 1. Supervisor, Apache2, MySQL, icinga2, and icinga-web 
 1. No SSH.  Use [nsenter](https://github.com/jpetazzo/nsenter)
+1. You should change the database passwords and corresponding configuration files
 
 # Automated build
 

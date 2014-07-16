@@ -1,4 +1,4 @@
-docker-icinga2
+icinga2
 ==============
 
 This repository contains the source for [icinga2](https://www.icinga.org/icinga2/) [docker](https://docker.io) image.

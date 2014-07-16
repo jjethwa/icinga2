@@ -9,6 +9,10 @@ This repository contains the source for [icinga2](https://www.icinga.org/icinga2
 1. Supervisor, Apache2, MySQL, icinga2, and icinga-web 
 1. No SSH.  Use [nsenter](https://github.com/jpetazzo/nsenter)
 
+# Automated build
+
+```docker pull jordan/icinga2```
+
 # Usage
 Start a new container and bind to host's port 80
 

@@ -1,4 +1,8 @@
+# Dockerfile for icinga2 with icinga-web
+# https://github.com/jjethwa/icinga2
+
 FROM debian:latest
+
 MAINTAINER Jordan Jethwa
 
 # Environment variables

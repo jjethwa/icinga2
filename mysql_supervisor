@@ -1,0 +1,16 @@
+#!/bin/bash
+
+function shutdown()
+{
+    echo "`date +"%d.%m.%Y %T.%3N"` - Shutting down mysql"
+    /etc/init.d/mysql stop
+}
+
+echo "`date +"%d.%m.%Y %T.%3N"` - Starting mysql"
+
+/etc/init.d/mysql start
+
+# Allow any signal which would kill a process to stop server
+trap shutdown HUP INT QUIT ABRT KILL ALRM TERM TSTP
+
+while pgrep -u mysql mysql > /dev/null; do sleep 5; done

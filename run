@@ -1,0 +1,86 @@
+#!/bin/bash
+
+set -e
+
+initfile=/etc/icinga2.init
+
+if [ ! -f "${initfile}" ]; then
+
+# Passwords...
+DEBIAN_SYS_MAINT_PASSWORD=$(pwgen -s 15 1)
+ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
+IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
+ICINGA_WEB_PASSWORD=${ICINGA_WEB_PASSWORD:-$(pwgen -s 15 1)}
+
+#icinga2 options
+icinga2-enable-feature ido-mysql >> /dev/null
+icinga2-enable-feature livestatus >> /dev/null
+icinga2-enable-feature compatlog >> /dev/null
+icinga2-enable-feature command >> /dev/null
+
+usermod -a -G nagios www-data >> /dev/null
+
+update_user_password () {
+   (
+   echo "UPDATE mysql.user SET password=PASSWORD('${2}') WHERE user='${1}';"
+   echo "FLUSH PRIVILEGES;"
+   echo "quit"
+   ) |
+   mysql
+}
+
+echo "=>Initializing databases and icinga2 configurations."
+echo "=>This may take a few minutes"
+/etc/init.d/mysql start
+
+# Set debian-sys-maint password
+update_user_password debian-sys-maint ${DEBIAN_SYS_MAINT_PASSWORD}
+sed -i 's,password\ \=\ .*,password\ \=\ '${DEBIAN_SYS_MAINT_PASSWORD}',g' /etc/mysql/debian.cnf
+
+# icinga
+(
+    echo "CREATE DATABASE icinga;"
+    echo "GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY '${ICINGA_PASSWORD}';"
+    echo "quit"
+) |
+mysql
+mysql icinga < /usr/share/icinga2-ido-mysql/schema/mysql.sql
+sed -i 's,<resource name="icinga_pipe">.*</resource>,<resource name="icinga_pipe">/run/icinga2/cmd/icinga2.cmd</resource>,g' /etc/icinga-web/conf.d/access.xml
+sed -i 's/password \= \".*\"/password \= \"'${IDO_PASSWORD}'\"/g' /etc/icinga2/features-enabled/ido-mysql.conf
+
+(
+    echo "CREATE DATABASE icinga2idomysql;"
+    echo "GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga2idomysql.* TO 'icinga2-ido-mysq'@'localhost' IDENTIFIED BY '${IDO_PASSWORD}';"
+    echo "quit"
+) |
+mysql
+mysql icinga2idomysql < /usr/share/dbconfig-common/data/icinga2-ido-mysql/install/mysql
+
+(
+    echo "CREATE DATABASE icinga_web;"
+    echo "GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga_web.* TO 'icinga_web'@'localhost' IDENTIFIED BY '${ICINGA_WEB_PASSWORD}';"
+    echo "quit"
+) |
+mysql
+mysql icinga_web < /usr/share/dbconfig-common/data/icinga-web/install/mysql
+sed -i 's/mysql\:\/\/icinga_web\:.*\@localhost/mysql\:\/\/icinga_web\:'${ICINGA_WEB_PASSWORD}'\@localhost/g' /etc/icinga-web/conf.d/database-web.xml
+sed -i 's/mysql\:\/\/.*\@localhost\/icinga/mysql\:\/\/icinga2-ido-mysq:'${IDO_PASSWORD}'\@localhost\/icinga2idomysql/g' /etc/icinga-web/conf.d/database-ido.xml
+sed -i 's,mysql://icinga_web:.*@localhost,mysql://icinga_web:'${ICINGA_WEB_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
+sed -i 's,mysql://icinga:.*@localhost,mysql://icinga:'{ICINGA_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
+
+/etc/init.d/mysql stop
+
+echo -e "\n\n\n"
+echo "==================================================================="
+echo "MySQL user 'root' has no password but only allows local connections"
+echo "MySQL user 'debian-sys-maint' password set to ${DEBIAN_SYS_MAINT_PASSWORD}"
+echo "MySQL user 'icinga' password set to ${ICINGA_PASSWORD}"
+echo "MySQL user 'icinga2-ido-mysq' password set to ${IDO_PASSWORD}"
+echo "MySQL user 'icinga-web' password set to ${ICINGA_WEB_PASSWORD}"
+echo "==================================================================="
+
+touch ${initfile}
+fi
+
+echo "Starting Supervisor.  You can safely CTRL-C and the container will continue to run with or without the -d (daemon) option"
+/usr/bin/supervisord >> /dev/null

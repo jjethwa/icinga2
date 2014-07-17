@@ -24,4 +24,18 @@ Start a new container and supply the icinga and icinga_web password
 ```sudo docker run -e ICINGA_PASSWORD="icinga" -e ICINGA_WEB_PASSWORD="icinga_web" -t jordan/icinga2:latest```
 
 Start a new container and mount MySQL data directory for backups
+
 ```sudo docker run -v /path/in/host:/var/lib/mysql -t jordan/icinga2:latest```
+
+# Environment variables
+
+```ICINGA_PASSWORD```
+```ICINGA_WEB_PASSWORD```
+```IDO_PASSWORD```
+```DEBIAN_SYS_MAINT_PASSWORD```
+
+# Volumes
+
+```/etc/icinga2```
+```/etc/icinga-web```
+```/var/lib/mysql```

@@ -1,14 +1,14 @@
 # Dockerfile for icinga2 with icinga-web
 # https://github.com/jjethwa/icinga2
 
-FROM debian:latest
+FROM debian:wheezy
 
 MAINTAINER Jordan Jethwa
 
 # Environment variables
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get -qq update && apt-get -qqy upgrade && apt-get -qqy install --no-install-recommends sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2
+RUN apt-get -qq update && apt-get -qqy upgrade && apt-get -qqy install --no-install-recommends sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen
 RUN mkdir -p /opt/supervisor
 ADD mysql_supervisor /opt/supervisor/mysql_supervisor
 ADD icinga2_supervisor /opt/supervisor/icinga2_supervisor
@@ -18,10 +18,12 @@ ADD icinga2.conf /etc/supervisor/conf.d/icinga2.conf
 RUN wget --quiet -O - http://packages.icinga.org/icinga.key | apt-key add -
 RUN echo "deb http://packages.icinga.org/debian icinga-wheezy main" >> /etc/apt/sources.list
 RUN apt-get -qq update && apt-get -qqy install icinga2 icinga2-ido-mysql icinga-web && apt-get clean
-ADD icinga2_init /tmp/icinga2_init
-RUN chmod u+x /tmp/icinga2_init && /tmp/icinga2_init && rm /tmp/icinga2_init
+ADD run /opt/run
+RUN chmod u+x /opt/run
 
-EXPORT 80
+EXPOSE 80
 
-# Start Supervisor
-CMD ["/usr/bin/supervisord"]
+VOLUME  ["/etc/icinga2", "/etc/icinga-web", "/var/lib/mysql"]
+
+# Initialize and run Supervisor
+ENTRYPOINT ["/opt/run"]

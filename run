@@ -4,6 +4,8 @@ set -e
 
 initfile=/etc/icinga2.init
 
+chmod 1777 /tmp
+
 if [ ! -f "${initfile}" ]; then
 
 # Passwords...

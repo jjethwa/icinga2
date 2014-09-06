@@ -25,11 +25,15 @@ Start a new container and supply the icinga and icinga_web password
 
 # Environment variables & Volumes
 
-```ICINGA_PASSWORD```
-```ICINGA_WEB_PASSWORD```
-```IDO_PASSWORD```
-```DEBIAN_SYS_MAINT_PASSWORD```
+```
+ICINGA_PASSWORD
+ICINGA_WEB_PASSWORD
+IDO_PASSWORD
+DEBIAN_SYS_MAINT_PASSWORD
+```
 
-```/etc/icinga2```
-```/etc/icinga-web```
-```/var/lib/mysql```
+```
+/etc/icinga2
+/etc/icinga-web
+/var/lib/mysql
+```

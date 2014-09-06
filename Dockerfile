@@ -1,5 +1,6 @@
 # Dockerfile for icinga2 with icinga-web
 # https://github.com/jjethwa/icinga2
+# Icinga 2.1.0
 
 FROM debian:wheezy
 
@@ -21,7 +22,7 @@ RUN apt-get -qq update && apt-get -qqy install icinga2 icinga2-ido-mysql icinga-
 ADD run /opt/run
 RUN chmod u+x /opt/run
 
-EXPOSE 80
+EXPOSE 80 443
 
 VOLUME  ["/etc/icinga2", "/etc/icinga-web", "/var/lib/mysql"]
 

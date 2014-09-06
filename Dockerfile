@@ -17,7 +17,7 @@ ADD apache2_supervisor /opt/supervisor/apache2_supervisor
 RUN chmod u+x /opt/supervisor/mysql_supervisor /opt/supervisor/icinga2_supervisor /opt/supervisor/apache2_supervisor
 ADD icinga2.conf /etc/supervisor/conf.d/icinga2.conf
 RUN wget --quiet -O - http://packages.icinga.org/icinga.key | apt-key add -
-RUN echo "deb http://packages.icinga.org/debian icinga-wheezy main" >> /etc/apt/sources.list
+RUN echo "deb http://packages.icinga.org/debian icinga-wheezy-snapshots main" >> /etc/apt/sources.list
 RUN apt-get -qq update && apt-get -qqy install icinga2 icinga2-ido-mysql icinga-web && apt-get clean
 ADD run /opt/run
 RUN chmod u+x /opt/run

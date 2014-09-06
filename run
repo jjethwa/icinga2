@@ -48,7 +48,9 @@ sed -i 's,password\ \=\ .*,password\ \=\ '${DEBIAN_SYS_MAINT_PASSWORD}',g' /etc/
 mysql
 mysql icinga < /usr/share/icinga2-ido-mysql/schema/mysql.sql
 sed -i 's,<resource name="icinga_pipe">.*</resource>,<resource name="icinga_pipe">/run/icinga2/cmd/icinga2.cmd</resource>,g' /etc/icinga-web/conf.d/access.xml
-sed -i 's/password \= \".*\"/password \= \"'${IDO_PASSWORD}'\"/g' /etc/icinga2/features-enabled/ido-mysql.conf
+sed -i 's/password \= \".*\"/password \= \"'${IDO_PASSWORD}'\"/g' /etc/icinga2/features-available/ido-mysql.conf
+sed -i 's/user =\ \".*\"/user =\ \"icinga2-ido-mysq\"/g' /etc/icinga2/features-available/ido-mysql.conf
+sed -i 's/database =\ \".*\"/database =\ \"icinga2idomysql\"/g' /etc/icinga2/features-available/ido-mysql.conf
 
 (
     echo "CREATE DATABASE icinga2idomysql;"

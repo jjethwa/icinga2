@@ -1,5 +1,6 @@
 # Dockerfile for icinga2 with icinga-web
 # https://github.com/jjethwa/icinga2
+# Icinga 2.1.1
 
 FROM debian:wheezy
 

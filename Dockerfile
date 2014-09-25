@@ -9,7 +9,7 @@ MAINTAINER Jordan Jethwa
 # Environment variables
 ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get -qq update && apt-get -qqy upgrade && apt-get -qqy install --no-install-recommends sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen
+RUN apt-get -qq update && apt-get -qqy upgrade && apt-get -qqy install --no-install-recommends bash sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen
 RUN mkdir -p /opt/supervisor
 ADD mysql_supervisor /opt/supervisor/mysql_supervisor
 ADD icinga2_supervisor /opt/supervisor/icinga2_supervisor

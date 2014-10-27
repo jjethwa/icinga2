@@ -15,10 +15,14 @@ IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
 ICINGA_WEB_PASSWORD=${ICINGA_WEB_PASSWORD:-$(pwgen -s 15 1)}
 
 #icinga2 options
-icinga2-enable-feature ido-mysql >> /dev/null
-icinga2-enable-feature livestatus >> /dev/null
-icinga2-enable-feature compatlog >> /dev/null
-icinga2-enable-feature command >> /dev/null
+#icinga2-enable-feature ido-mysql >> /dev/null
+ln -s /etc/icinga2/features-available/ido-mysql.conf /etc/icinga2/features-enabled/ido-mysql.conf
+#icinga2-enable-feature livestatus >> /dev/null
+ln -s /etc/icinga2/features-available/livestatus.conf /etc/icinga2/features-enabled/livestatus.conf
+#icinga2-enable-feature compatlog >> /dev/null
+ln -s /etc/icinga2/features-available/compatlog.conf /etc/icinga2/features-enabled/compatlog.conf
+#icinga2-enable-feature command >> /dev/null
+ln -s /etc/icinga2/features-available/command.conf /etc/icinga2/features-enabled/command.conf
 
 usermod -a -G nagios www-data >> /dev/null
 

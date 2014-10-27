@@ -41,7 +41,7 @@ sed -i 's,password\ \=\ .*,password\ \=\ '${DEBIAN_SYS_MAINT_PASSWORD}',g' /etc/
 
 # icinga
 (
-    echo "CREATE DATABASE icinga;"
+    echo "CREATE DATABASE IF NOT EXISTS icinga;"
     echo "GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY '${ICINGA_PASSWORD}';"
     echo "quit"
 ) |
@@ -53,7 +53,7 @@ sed -i 's/user =\ \".*\"/user =\ \"icinga2-ido-mysq\"/g' /etc/icinga2/features-a
 sed -i 's/database =\ \".*\"/database =\ \"icinga2idomysql\"/g' /etc/icinga2/features-available/ido-mysql.conf
 
 (
-    echo "CREATE DATABASE icinga2idomysql;"
+    echo "CREATE DATABASE IF NOT EXISTS icinga2idomysql;"
     echo "GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga2idomysql.* TO 'icinga2-ido-mysq'@'localhost' IDENTIFIED BY '${IDO_PASSWORD}';"
     echo "quit"
 ) |
@@ -61,7 +61,7 @@ mysql
 mysql icinga2idomysql < /usr/share/dbconfig-common/data/icinga2-ido-mysql/install/mysql
 
 (
-    echo "CREATE DATABASE icinga_web;"
+    echo "CREATE DATABASE IF NOT EXISTS icinga_web;"
     echo "GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga_web.* TO 'icinga_web'@'localhost' IDENTIFIED BY '${ICINGA_WEB_PASSWORD}';"
     echo "quit"
 ) |

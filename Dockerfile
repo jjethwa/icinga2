@@ -28,4 +28,4 @@ EXPOSE 80 443
 VOLUME  ["/etc/icinga2", "/etc/icinga-web", "/var/lib/mysql"]
 
 # Initialize and run Supervisor
-ENTRYPOINT ["/opt/run"]
+CMD ["/opt/run"]

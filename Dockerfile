@@ -6,6 +6,8 @@ FROM ubuntu
 
 MAINTAINER bram <bram-dockerfiles@grmbl.net>
 
+ENV VERSION 20141221
+
 # Environment variables
 ENV DEBIAN_FRONTEND noninteractive
 

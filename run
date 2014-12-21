@@ -29,7 +29,16 @@ ln -s /etc/icinga2/features-available/command.conf /etc/icinga2/features-enabled
 
 usermod -a -G nagios www-data >> /dev/null
 
+cat /etc/mysql/debian.cnf
+echo "=>Initializing databases and icinga2 configurations."
+echo "=>This may take a few minutes"
+/usr/bin/mysqld_safe &
+sleep 5
+#/etc/init.d/mysql start
+
 update_user_password () {
+   Q="UPDATE mysql.user SET password=PASSWORD('${2}') WHERE user='${1}';"
+   echo "Q: $Q"
    (
    echo "UPDATE mysql.user SET password=PASSWORD('${2}') WHERE user='${1}';"
    echo "FLUSH PRIVILEGES;"
@@ -38,9 +47,6 @@ update_user_password () {
    mysql
 }
 
-echo "=>Initializing databases and icinga2 configurations."
-echo "=>This may take a few minutes"
-/etc/init.d/mysql start
 
 # Set debian-sys-maint password
 update_user_password debian-sys-maint ${DEBIAN_SYS_MAINT_PASSWORD}

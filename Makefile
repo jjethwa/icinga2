@@ -1,4 +1,4 @@
-build: apache2_supervisor CONTRIB.md database-ido.xml Dockerfile fs-aio.conf icinga2.conf icinga2_supervisor innodb_override_aio.cnf LICENSE mysql_supervisor README.md run .last_built
+build: apache2_supervisor CONTRIB.md database-ido.xml Dockerfile fs-aio.conf icinga2.conf icinga2_supervisor innodb_override_aio.cnf LICENSE mysql_supervisor README.md run
 	docker build -t dumolibr/icinga2 .|tee .last_build
 	@grep "Successfully built" .last_build|awk '{print $$3}' >  .last_built && rm .last_build
 last: .last_built

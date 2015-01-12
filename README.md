@@ -37,3 +37,10 @@ DEBIAN_SYS_MAINT_PASSWORD
 /etc/icinga-web
 /var/lib/mysql
 ```
+
+# Issues
+
+mysql errors:
+ The number of files is too low (65k) and should be increased.
+ We might have to run in privileged mode for this and/or add a flag for more (fs.aio-max-nr = 1048576)
+ docker run --privileged -t -i dumolibr/icinga2

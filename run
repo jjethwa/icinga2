@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 set -e
 
@@ -6,6 +6,9 @@ initfile=/etc/icinga2.init
 
 chmod 1777 /tmp
 
+
+# rerun sysctl stuff
+/etc/init.d/procps restart
 if [ ! -f "${initfile}" ]; then
 
 # Passwords...
@@ -26,7 +29,16 @@ ln -s /etc/icinga2/features-available/command.conf /etc/icinga2/features-enabled
 
 usermod -a -G nagios www-data >> /dev/null
 
+cat /etc/mysql/debian.cnf
+echo "=>Initializing databases and icinga2 configurations."
+echo "=>This may take a few minutes"
+/usr/bin/mysqld_safe &
+sleep 5
+#/etc/init.d/mysql start
+
 update_user_password () {
+   Q="UPDATE mysql.user SET password=PASSWORD('${2}') WHERE user='${1}';"
+   echo "Q: $Q"
    (
    echo "UPDATE mysql.user SET password=PASSWORD('${2}') WHERE user='${1}';"
    echo "FLUSH PRIVILEGES;"
@@ -35,9 +47,6 @@ update_user_password () {
    mysql
 }
 
-echo "=>Initializing databases and icinga2 configurations."
-echo "=>This may take a few minutes"
-/etc/init.d/mysql start
 
 # Set debian-sys-maint password
 update_user_password debian-sys-maint ${DEBIAN_SYS_MAINT_PASSWORD}
@@ -74,7 +83,7 @@ mysql icinga_web < /usr/share/dbconfig-common/data/icinga-web/install/mysql
 sed -i 's/mysql\:\/\/icinga_web\:.*\@localhost/mysql\:\/\/icinga_web\:'${ICINGA_WEB_PASSWORD}'\@localhost/g' /etc/icinga-web/conf.d/database-web.xml
 sed -i 's/mysql\:\/\/.*\@localhost\/icinga/mysql\:\/\/icinga2-ido-mysq:'${IDO_PASSWORD}'\@localhost\/icinga2idomysql/g' /etc/icinga-web/conf.d/database-ido.xml
 sed -i 's,mysql://icinga_web:.*@localhost,mysql://icinga_web:'${ICINGA_WEB_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
-sed -i 's,mysql://icinga:.*@localhost,mysql://icinga:'{ICINGA_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
+sed -i 's,mysql://icinga:.*@localhost,mysql://icinga:'${ICINGA_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
 
 /etc/init.d/mysql stop
 

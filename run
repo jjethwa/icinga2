@@ -74,7 +74,7 @@ mysql icinga_web < /usr/share/dbconfig-common/data/icinga-web/install/mysql
 sed -i 's/mysql\:\/\/icinga_web\:.*\@localhost/mysql\:\/\/icinga_web\:'${ICINGA_WEB_PASSWORD}'\@localhost/g' /etc/icinga-web/conf.d/database-web.xml
 sed -i 's/mysql\:\/\/.*\@localhost\/icinga/mysql\:\/\/icinga2-ido-mysq:'${IDO_PASSWORD}'\@localhost\/icinga2idomysql/g' /etc/icinga-web/conf.d/database-ido.xml
 sed -i 's,mysql://icinga_web:.*@localhost,mysql://icinga_web:'${ICINGA_WEB_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
-sed -i 's,mysql://icinga:.*@localhost,mysql://icinga:'{ICINGA_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
+sed -i 's,mysql://icinga:.*@localhost,mysql://icinga:'${ICINGA_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
 
 /etc/init.d/mysql stop
 

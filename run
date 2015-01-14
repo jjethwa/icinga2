@@ -16,13 +16,13 @@ ICINGA_WEB_PASSWORD=${ICINGA_WEB_PASSWORD:-$(pwgen -s 15 1)}
 
 #icinga2 options
 #icinga2-enable-feature ido-mysql >> /dev/null
-ln -s /etc/icinga2/features-available/ido-mysql.conf /etc/icinga2/features-enabled/ido-mysql.conf
+if [[ -L /etc/icinga2/features-enabled/ido-mysql.conf ]]; then echo "Symlink for /etc/icinga2/features-enabled/ido-mysql.conf exists already...skipping"; else ln -s /etc/icinga2/features-available/ido-mysql.conf /etc/icinga2/features-enabled/ido-mysql.conf; fi
 #icinga2-enable-feature livestatus >> /dev/null
-ln -s /etc/icinga2/features-available/livestatus.conf /etc/icinga2/features-enabled/livestatus.conf
+if [[ -L /etc/icinga2/features-enabled/livestatus.conf ]]; then echo "Symlink for /etc/icinga2/features-enabled/livestatus.conf exists already... skipping"; else ln -s /etc/icinga2/features-available/livestatus.conf /etc/icinga2/features-enabled/livestatus.conf; fi
 #icinga2-enable-feature compatlog >> /dev/null
-ln -s /etc/icinga2/features-available/compatlog.conf /etc/icinga2/features-enabled/compatlog.conf
+if [[ -L /etc/icinga2/features-enabled/compatlog.conf ]]; then echo "Symlink for /etc/icinga2/features-enabled/compatlog.conf exists already... skipping"; else ln -s /etc/icinga2/features-available/compatlog.conf /etc/icinga2/features-enabled/compatlog.conf; fi
 #icinga2-enable-feature command >> /dev/null
-ln -s /etc/icinga2/features-available/command.conf /etc/icinga2/features-enabled/command.conf
+if [[ -L /etc/icinga2/features-enabled/command.conf ]]; then echo "Symlink for /etc/icinga2/features-enabled/command.conf exists already...skipping"; else ln -s /etc/icinga2/features-available/command.conf /etc/icinga2/features-enabled/command.conf; fi
 
 usermod -a -G nagios www-data >> /dev/null
 

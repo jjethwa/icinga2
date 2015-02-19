@@ -25,7 +25,7 @@ RUN chmod u+x /opt/run
 
 EXPOSE 80 443
 
-VOLUME  ["/etc/icinga2", "/etc/icinga-web", "/var/lib/mysql"]
+VOLUME  ["/etc/icinga2", "/etc/icinga-web", "/var/lib/mysql", "/var/lib/icinga2"]
 
 # Initialize and run Supervisor
 ENTRYPOINT ["/opt/run"]

@@ -17,7 +17,7 @@ chown root:www-data /etc/icinga-web/conf.d/module_reporting.xml /etc/icinga-web/
 if [ ! -f "${initfile}" ]; then
 
 # Passwords...
-DEBIAN_SYS_MAINT_PASSWORD=$(pwgen -s 15 1)
+DEBIAN_SYS_MAINT_PASSWORD=${DEBIAN_SYS_MAINT_PASSWORD:-$(pwgen -s 15 1)}
 ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
 IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
 ICINGA_WEB_PASSWORD=${ICINGA_WEB_PASSWORD:-$(pwgen -s 15 1)}

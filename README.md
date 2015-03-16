@@ -1,29 +1,34 @@
-icinga2
-==============
+# icinga2
 
-This repository contains the source for the [icinga2](https://www.icinga.org/icinga2/) [docker](https://docker.io) image.
+This repository contains the source for the
+[icinga2](https://www.icinga.org/icinga2/) [docker](https://www.docker.com)
+image.
 
-# Image details
+## Image details
 
 1. Based on debian:latest
 1. Supervisor, Apache2, MySQL, icinga2, and icinga-web 
 1. No SSH.  Use [nsenter](https://github.com/jpetazzo/nsenter)
 1. If no passwords are not supplied, they will be randomly generated and shown via stdout.
 
-# Automated build
+## Automated build
 
-```docker pull jordan/icinga2```
+    docker pull jordan/icinga2
 
-# Usage
+## Usage
+
 Start a new container and bind to host's port 80
 
-```sudo docker run -p 80:80 -t jordan/icinga2:latest```
+    sudo docker run -p 80:80 -t jordan/icinga2:latest
 
 Start a new container and supply the icinga and icinga_web password
 
-```sudo docker run -e ICINGA_PASSWORD="icinga" -e ICINGA_WEB_PASSWORD="icinga_web" -t jordan/icinga2:latest```
+    sudo docker run -e ICINGA_PASSWORD="icinga" -e ICINGA_WEB_PASSWORD="icinga_web" -t jordan/icinga2:latest
 
-# Environment variables & Volumes
+The web interface is accessible here at http://localhost/icinga-web with the
+credentials root:password
+
+## Environment variables & Volumes
 
 ```
 ICINGA_PASSWORD

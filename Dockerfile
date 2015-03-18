@@ -8,30 +8,23 @@ MAINTAINER Jordan Jethwa
 
 ENV DEBIAN_FRONTEND noninteractive
 
+ADD content/ /
+
 RUN apt-get -qq update \
     && apt-get -qqy upgrade \
-    && apt-get -qqy install --no-install-recommends bash sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen unzip
+    && apt-get -qqy install --no-install-recommends bash sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen
+RUN mkdir -p /opt/supervisor
+RUN chmod u+x /opt/supervisor/mysql_supervisor /opt/supervisor/icinga2_supervisor /opt/supervisor/apache2_supervisor
 RUN wget --quiet -O - http://packages.icinga.org/icinga.key | apt-key add -
 RUN echo "deb http://packages.icinga.org/debian icinga-wheezy-snapshots main" >> /etc/apt/sources.list
 RUN apt-get -qq update \
-    && apt-get -qqy install --no-install-recommends icinga2 icinga2-ido-mysql icinga-web nagios-plugins icingaweb2 \
+    && apt-get -qqy install --no-install-recommends icinga2 icinga2-ido-mysql icinga-web nagios-plugins \
     && apt-get clean
-
-ADD content/ /
-
-RUN chmod u+x /opt/supervisor/mysql_supervisor /opt/supervisor/icinga2_supervisor /opt/supervisor/apache2_supervisor
 RUN chmod u+x /opt/run
-
-# Temporary hack to get icingaweb2 modules via git
-RUN wget --no-cookies --no-check-certificate "https://github.com/Icinga/icingaweb2/archive/master.zip" -O /tmp/master.zip
-RUN unzip /tmp/master.zip "icingaweb2-master/modules/doc/*" "icingaweb2-master/modules/monitoring/*" -d "/tmp/master"
-RUN mv /tmp/master/icingaweb2-master/modules/monitoring/* /etc/icingaweb2/modules/monitoring/
-RUN mv /tmp/master/icingaweb2-master/modules/doc /etc/icingaweb2/modules/doc
-RUN rm -rf /tmp/master.zip /tmp/master
 
 EXPOSE 80 443
 
-VOLUME  ["/etc/icinga2", "/etc/icinga-web", "/etc/icingaweb2", "/var/lib/mysql", "/var/lib/icinga2"]
+VOLUME  ["/etc/icinga2", "/etc/icinga-web", "/var/lib/mysql", "/var/lib/icinga2"]
 
 # Initialize and run Supervisor
 ENTRYPOINT ["/opt/run"]

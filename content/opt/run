@@ -13,12 +13,6 @@ chown nagios:nagios /etc/icinga2/features-available/ido-mysql.conf
 chown -R nagios:nagios /var/lib/icinga2
 chown -R root:root /etc/icinga-web
 chown root:www-data /etc/icinga-web/conf.d/module_reporting.xml /etc/icinga-web/conf.d/auth.xml /etc/icinga-web/conf.d/access.xml /etc/icinga-web/conf.d/database-web.xml /etc/icinga-web/conf.d/databases.xml
-chown root:icingaweb2 /etc/icingaweb2
-chmod 2770 /etc/icingaweb2
-chown -R www-data:icingaweb2 /etc/icingaweb2/*
-find /etc/icingaweb2 -type f -name "*.ini" -exec chmod 660 {} \;
-find /etc/icingaweb2 -type d -exec chmod 2770 {} \;
-
 
 if [ ! -f "${initfile}" ]; then
 
@@ -27,7 +21,6 @@ DEBIAN_SYS_MAINT_PASSWORD=${DEBIAN_SYS_MAINT_PASSWORD:-$(pwgen -s 15 1)}
 ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
 IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
 ICINGA_WEB_PASSWORD=${ICINGA_WEB_PASSWORD:-$(pwgen -s 15 1)}
-ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
 
 #icinga2 options
 #icinga2-enable-feature ido-mysql >> /dev/null
@@ -91,28 +84,6 @@ sed -i 's/mysql\:\/\/.*\@localhost\/icinga.*</mysql\:\/\/icinga2-ido-mysq:'${IDO
 sed -i 's,mysql://icinga_web:.*@localhost,mysql://icinga_web:'${ICINGA_WEB_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
 sed -i 's,mysql://icinga:.*@localhost,mysql://icinga:'${ICINGA_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
 
-#icingaweb2
-(
-    echo "CREATE DATABASE IF NOT EXISTS icingaweb2;"
-    echo "GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icingaweb2.* TO 'icingaweb2'@'localhost' IDENTIFIED BY '${ICINGAWEB2_PASSWORD}';"
-    echo "quit"
-) |
-mysql
-mysql -f icingaweb2 < /usr/share/icingaweb2/etc/schema/mysql.schema.sql >> /opt/icingaweb2-schema.log 2>&1
-ICINGAADMIN_PASSWORD=`openssl passwd -1 "icinga"`
-(
-    echo "USE icingaweb2;"
-    echo "INSERT IGNORE INTO icingaweb_user (name, active, password_hash) VALUES ('icingaadmin', 1, '${ICINGAADMIN_PASSWORD}');"
-    echo "quit"
-) |
-mysql
-if [[ -L /etc/icingaweb2/enabledModules/monitoring ]]; then echo "Symlink for /etc/icingaweb2/enabledModules/monitoring exists already...skipping"; else ln -s /etc/icingaweb2/modules/monitoring /etc/icingaweb2/enabledModules/monitoring; fi
-if [[ -L /etc/icingaweb2/enabledModules/doc ]]; then echo "Symlink for /etc/icingaweb2/enabledModules/doc exists already...skipping"; else ln -s /etc/icingaweb2/modules/doc /etc/icingaweb2/enabledModules/doc; fi
-sed -i 's,icingaweb2_changeme,'${ICINGAWEB2_PASSWORD}',g' /etc/icingaweb2/resources.ini
-sed -i 's,icinga2-ido-mysq_changeme,'${IDO_PASSWORD}',g' /etc/icingaweb2/resources.ini
-mkdir -p /var/log/icingaweb2
-chown www-data:adm /var/log/icingaweb2
-
 /etc/init.d/mysql stop
 
 echo -e "\n\n\n"
@@ -122,7 +93,6 @@ echo "MySQL user 'debian-sys-maint' password set to ${DEBIAN_SYS_MAINT_PASSWORD}
 echo "MySQL user 'icinga' password set to ${ICINGA_PASSWORD}"
 echo "MySQL user 'icinga2-ido-mysq' password set to ${IDO_PASSWORD}"
 echo "MySQL user 'icinga-web' password set to ${ICINGA_WEB_PASSWORD}"
-echo "MySQL user 'icingaweb2' password set to ${ICINGAWEB2_PASSWORD}"
 echo "==================================================================="
 
 touch ${initfile}

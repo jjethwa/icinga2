@@ -30,7 +30,7 @@ RUN mv /tmp/master/icingaweb2-master/modules/monitoring/* /etc/icingaweb2/module
 RUN mv /tmp/master/icingaweb2-master/modules/doc /etc/icingaweb2/modules/doc
 RUN rm -rf /tmp/master.zip /tmp/master
 
-EXPOSE 80 443
+EXPOSE 80 443 5665
 
 VOLUME  ["/etc/icinga2", "/etc/icinga-web", "/etc/icingaweb2", "/var/lib/mysql", "/var/lib/icinga2"]
 

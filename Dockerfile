@@ -26,8 +26,8 @@ RUN chmod u+x /opt/run
 RUN mkdir -p /etc/icingaweb2/enabledModules
 RUN wget --no-cookies --no-check-certificate "https://github.com/Icinga/icingaweb2/archive/master.zip" -O /tmp/master.zip
 RUN unzip /tmp/master.zip "icingaweb2-master/modules/doc/*" "icingaweb2-master/modules/monitoring/*" -d "/tmp/master"
-RUN mv /tmp/master/icingaweb2-master/modules/monitoring/* /etc/icingaweb2/modules/monitoring/
-RUN mv /tmp/master/icingaweb2-master/modules/doc /etc/icingaweb2/modules/doc
+RUN cp -R /tmp/master/icingaweb2-master/modules/monitoring /etc/icingaweb2/modules/
+RUN cp -R  /tmp/master/icingaweb2-master/modules/doc /etc/icingaweb2/modules/
 RUN rm -rf /tmp/master.zip /tmp/master
 
 EXPOSE 80 443 5665

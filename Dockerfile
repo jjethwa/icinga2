@@ -24,10 +24,10 @@ RUN chmod u+x /opt/run
 
 # Temporary hack to get icingaweb2 modules via git
 RUN mkdir -p /etc/icingaweb2/enabledModules
-RUN wget --no-cookies --no-check-certificate "https://github.com/Icinga/icingaweb2/archive/v2.0.0-beta3.zip" -O /tmp/icingaweb2.zip
-RUN unzip /tmp/icingaweb2.zip "icingaweb2-2.0.0-beta3/modules/doc/*" "icingaweb2-2.0.0-beta3/modules/monitoring/*" -d "/tmp/icingaweb2"
-RUN cp -R /tmp/icingaweb2/icingaweb2-2.0.0-beta3/modules/monitoring /etc/icingaweb2/modules/
-RUN cp -R  /tmp/icingaweb2/icingaweb2-2.0.0-beta3/modules/doc /etc/icingaweb2/modules/
+RUN wget --no-cookies --no-check-certificate "https://github.com/Icinga/icingaweb2/archive/master.zip" -O /tmp/icingaweb2.zip
+RUN unzip /tmp/icingaweb2.zip "icingaweb2-master/modules/doc/*" "icingaweb2-master/modules/monitoring/*" -d "/tmp/icingaweb2"
+RUN cp -R /tmp/icingaweb2/icingaweb2-master/modules/monitoring /etc/icingaweb2/modules/
+RUN cp -R  /tmp/icingaweb2/icingaweb2-master/modules/doc /etc/icingaweb2/modules/
 RUN rm -rf /tmp/icingaweb2.zip /tmp/icingaweb2
 
 EXPOSE 80 443 5665

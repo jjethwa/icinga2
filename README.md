@@ -29,7 +29,7 @@ The Icinga Web interface is accessible at http://localhost/icinga-web with the c
 
 ## Icinga Web 2
 
-Icinga Web 2 can be accessed at http://localhost/icingaweb2 with the credentials icingaadmin:icinga  Please remember that Icinga Web 2 is still in beta so configurations, etc might change
+Icinga Web 2 can be accessed at http://localhost/icingaweb2 with the credentials icingaadmin:icinga  Please remember that Icinga Web 2 is still a release candidate so configurations, etc might change
 
 ## Environment variables & Volumes
 

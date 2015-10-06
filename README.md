@@ -6,9 +6,9 @@ image.
 
 ## Image details
 
-1. Based on debian:latest
+1. Based on debian:jessie
 1. Supervisor, Apache2, MySQL, icinga2, icinga-web, and icingaweb2
-1. No SSH.  Use [nsenter](https://github.com/jpetazzo/nsenter)
+1. No SSH.  Use sudo docker exec -it <CONTAINER_NAME> bash or [nsenter](https://github.com/jpetazzo/nsenter)
 1. If no passwords are not supplied, they will be randomly generated and shown via stdout.
 
 ## Automated build

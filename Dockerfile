@@ -1,8 +1,8 @@
-# Dockerfile for icinga2 with icinga-web
+# Dockerfile for icinga2 with icingaweb2
 # https://github.com/jjethwa/icinga2
 # Icinga 2.3.10
 
-FROM debian:wheezy
+FROM debian:jessie
 
 MAINTAINER Jordan Jethwa
 
@@ -12,7 +12,7 @@ RUN apt-get -qq update \
     && apt-get -qqy upgrade \
     && apt-get -qqy install --no-install-recommends bash sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen unzip php5-ldap
 RUN wget --quiet -O - https://packages.icinga.org/icinga.key | apt-key add -
-RUN echo "deb http://packages.icinga.org/debian icinga-wheezy-snapshots main" >> /etc/apt/sources.list
+RUN echo "deb http://packages.icinga.org/debian icinga-jessie-snapshots main" >> /etc/apt/sources.list
 RUN apt-get -qq update \
     && apt-get -qqy install --no-install-recommends icinga2 icinga2-ido-mysql icinga-web nagios-plugins icingaweb2 \
     && apt-get clean

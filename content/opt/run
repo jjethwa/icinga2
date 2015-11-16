@@ -40,7 +40,13 @@ if [[ -L /etc/icinga2/features-enabled/compatlog.conf ]]; then echo "Symlink for
 if [[ -L /etc/icinga2/features-enabled/command.conf ]]; then echo "Symlink for /etc/icinga2/features-enabled/command.conf exists already...skipping"; else ln -s /etc/icinga2/features-available/command.conf /etc/icinga2/features-enabled/command.conf; fi
 
 #icinga2 API cert - regenerate new private key and certificate when running in a new container
-if [ ! -f /etc/icinga2/pki/$(hostname).key ]; then echo -n "Generating new private key and certificate for this container..."; icinga2 feature disable api >> /dev/null; icinga2 api setup >> /dev/null; echo "done"; fi
+if [ ! -f /etc/icinga2/pki/$(hostname).key ]; then echo "=>Generating new private key and certificate for this container..."; \
+   icinga2 api setup; \
+   sed -i "s,^.*\ NodeName\ \=\ .*,const\ NodeName\ \=\ \"$(hostname)\",g" /etc/icinga2/constants.conf; \
+   icinga2 pki new-cert --cn $(hostname) --key /etc/icinga2/pki/$(hostname).key --csr /etc/icinga2/pki/$(hostname).csr; \
+   icinga2 pki sign-csr --csr /etc/icinga2/pki/$(hostname).csr --cert /etc/icinga2/pki/$(hostname).crt; \
+   echo "=>Finished cert generation";
+fi
 
 usermod -a -G nagios www-data >> /dev/null
 chfn -f "nagios at $(hostname)" nagios

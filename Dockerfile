@@ -1,10 +1,11 @@
 # Dockerfile for icinga2 with icingaweb2
 # https://github.com/jjethwa/icinga2
-# Icinga 2.3.11
 
 FROM debian:jessie
 
 MAINTAINER Jordan Jethwa
+
+LABEL version="2.4"
 
 ENV DEBIAN_FRONTEND noninteractive
 

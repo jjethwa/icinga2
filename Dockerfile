@@ -5,7 +5,7 @@ FROM debian:jessie
 
 MAINTAINER Jordan Jethwa
 
-LABEL version="2.4"
+LABEL version="2.4.1"
 
 ENV DEBIAN_FRONTEND noninteractive
 

@@ -1,0 +1,7 @@
+icinga:
+  image: jordan/icinga2 
+  environment:
+   - ICINGA_PASSWORD=your_password
+   - ICINGA_WEB_PASSWORD=your_password
+   - ICINGAWEB2_PASSWORD=your_password
+   - IDO_PASSWORD=your_password

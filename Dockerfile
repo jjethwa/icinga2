@@ -5,7 +5,7 @@ FROM debian:jessie
 
 MAINTAINER Jordan Jethwa
 
-LABEL version="2.4.1"
+LABEL version="2.4.2"
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -13,9 +13,9 @@ RUN apt-get -qq update \
     && apt-get -qqy upgrade \
     && apt-get -qqy install --no-install-recommends bash sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen unzip php5-ldap ssmtp mailutils vim
 RUN wget --quiet -O - https://packages.icinga.org/icinga.key | apt-key add -
-RUN echo "deb http://packages.icinga.org/debian icinga-jessie-snapshots main" >> /etc/apt/sources.list
+RUN echo "deb http://packages.icinga.org/debian icinga-jessie main" >> /etc/apt/sources.list
 RUN apt-get -qq update \
-    && apt-get -qqy install --no-install-recommends icinga2 icinga2-ido-mysql icinga-web nagios-plugins icingaweb2 \
+    && apt-get -qqy install --no-install-recommends icinga2 icinga2-ido-mysql icinga-web nagios-plugins icingaweb2 icingacli \
     && apt-get clean
 
 ADD content/ /

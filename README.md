@@ -7,8 +7,8 @@ image.
 ## Image details
 
 1. Based on debian:jessie
-1. Supervisor, Apache2, MySQL, icinga2, icinga-web, and icingaweb2
-1. No SSH.  Use sudo docker exec -it <CONTAINER_NAME> bash or [nsenter](https://github.com/jpetazzo/nsenter)
+1. Supervisor, Apache2, MySQL, icinga2, icinga-web, icingacli, and icingaweb2
+1. No SSH.  Use docker [exec](https://docs.docker.com/engine/reference/commandline/exec/) or [nsenter](https://github.com/jpetazzo/nsenter)
 1. If no passwords are not supplied, they will be randomly generated and shown via stdout.
 
 ## Automated build
@@ -29,7 +29,7 @@ The Icinga Web interface is accessible at http://localhost/icinga-web with the c
 
 ## Icinga Web 2
 
-Icinga Web 2 can be accessed at http://localhost/icingaweb2 with the credentials icingaadmin:icinga  Please remember that Icinga Web 2 is still a release candidate so configurations, etc might change
+Icinga Web 2 can be accessed at http://localhost/icingaweb2 with the credentials icingaadmin:icinga
 
 ## Environment variables & Volumes
 

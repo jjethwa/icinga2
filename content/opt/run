@@ -28,6 +28,9 @@ ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
 IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
 ICINGA_WEB_PASSWORD=${ICINGA_WEB_PASSWORD:-$(pwgen -s 15 1)}
 ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
+ICINGA2_FEATURE_GRAPHITE=${ICINGA2_FEATURE_GRAPHITE:-"false"}
+ICINGA2_FEATURE_GRAPHITE_HOST=${ICINGA2_FEATURE_GRAPHITE_HOST:-"graphite"}
+ICINGA2_FEATURE_GRAPHITE_PORT=${ICINGA2_FEATURE_GRAPHITE_PORT:-"2003"}
 
 #icinga2 options
 #icinga2-enable-feature ido-mysql >> /dev/null
@@ -38,6 +41,24 @@ if [[ -L /etc/icinga2/features-enabled/livestatus.conf ]]; then echo "Symlink fo
 if [[ -L /etc/icinga2/features-enabled/compatlog.conf ]]; then echo "Symlink for /etc/icinga2/features-enabled/compatlog.conf exists already... skipping"; else ln -s /etc/icinga2/features-available/compatlog.conf /etc/icinga2/features-enabled/compatlog.conf; fi
 #icinga2-enable-feature command >> /dev/null
 if [[ -L /etc/icinga2/features-enabled/command.conf ]]; then echo "Symlink for /etc/icinga2/features-enabled/command.conf exists already...skipping"; else ln -s /etc/icinga2/features-available/command.conf /etc/icinga2/features-enabled/command.conf; fi
+
+# Graphite writer
+if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
+   echo "=> Enabling Icinga2 graphite writer"
+   if [[ -L /etc/icinga2/features-enabled/graphite.conf ]]; then echo "Symlink for /etc/icinga2/features-enabled/graphite.conf exists already...skipping"; else ln -s /etc/icinga2/features-available/graphite.conf /etc/icinga2/features-enabled/graphite.conf; fi
+cat <<EOF >/etc/icinga2/features-available/graphite.conf
+/**
+ * The GraphiteWriter type writes check result metrics and
+ * performance data to a graphite tcp socket.
+ */
+library "perfdata"
+object GraphiteWriter "graphite" {
+  host = "$ICINGA2_FEATURE_GRAPHITE_HOST"
+  port = "$ICINGA2_FEATURE_GRAPHITE_PORT"
+}
+EOF
+
+fi
 
 #icinga2 API cert - regenerate new private key and certificate when running in a new container
 if [ ! -f /etc/icinga2/pki/$(hostname).key ]; then echo "=>Generating new private key and certificate for this container..."; \
@@ -148,6 +169,10 @@ echo "MySQL user 'icinga' password set to ${ICINGA_PASSWORD}"
 echo "MySQL user 'icinga2-ido-mysq' password set to ${IDO_PASSWORD}"
 echo "MySQL user 'icinga-web' password set to ${ICINGA_WEB_PASSWORD}"
 echo "MySQL user 'icingaweb2' password set to ${ICINGAWEB2_PASSWORD}"
+if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
+   echo "Graphite writer enabled and sending data to carbon agent at: ${ICINGA2_FEATURE_GRAPHITE_HOST}:${ICINGA2_FEATURE_GRAPHITE_PORT}"
+fi
+echo "Icinga Web 2 (/icingaweb2) default credentials: icingaadmin:icinga"
 echo "==================================================================="
 
 touch ${initfile}

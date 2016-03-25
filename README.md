@@ -7,7 +7,7 @@ image.
 ## Image details
 
 1. Based on debian:jessie
-1. Supervisor, Apache2, MySQL, icinga2, icinga-web, icingacli, and icingaweb2
+1. Supervisor, Apache2, MySQL, icinga2, icinga-web, icingacli, icingaweb2, and icingaweb2 director module
 1. No SSH.  Use docker [exec](https://docs.docker.com/engine/reference/commandline/exec/) or [nsenter](https://github.com/jpetazzo/nsenter)
 1. If no passwords are not supplied, they will be randomly generated and shown via stdout.
 
@@ -41,17 +41,23 @@ Example:
 sudo docker run -e --link graphite:graphite -e ICINGA2_FEATURE_GRAPHITE=true -e ICINGA2_FEATURE_GRAPHITE_HOST=graphite -e ICINGA2_FEATURE_GRAPHITE_PORT=2003 -t jordan/icinga2:latest
 ```
 
+## Icinga Director
+
+The [Icinga Director](https://github.com/Icinga/icingaweb2-module-director) Icinga Web 2 module is installed and enabled by default.  You can disable the automatic kickstart when the container starts by setting the DIRECTOR_KICKSTART variable to false.  To customize the kickstart settings, modify the /etc/icingaweb2/modules/director/kickstart.ini 
+
 ## Environment variables & Volumes
 
 ```
 ICINGA_PASSWORD - MySQL password for icinga
 ICINGA_WEB_PASSWORD - MySQL password for icinga_web
 ICINGAWEB2_PASSWORD - MySQL password for icingaweb2
+DIRECTOR_PASSWORD - MySQL password for icinga director
 IDO_PASSWORD - MySQL password for ido
 DEBIAN_SYS_MAINT_PASSWORD
 ICINGA2_FEATURE_GRAPHITE - false (default).  Set to true or 1 to enable graphite writer
 ICINGA2_FEATURE_GRAPHITE_HOST - graphite (default).  Set to link name, hostname, or IP address where Carbon daemon is running
 ICINGA2_FEATURE_GRAPHITE_PORT - 2003 (default).  Carbon port
+DIRECTOR_KICKSTART - true (default).  Set to false to disable director auto kickstart at container startup
 
 ```
 

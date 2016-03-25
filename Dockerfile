@@ -14,7 +14,7 @@ ENV ICINGA2_FEATURE_GRAPHITE_PORT 2003
 
 RUN apt-get -qq update \
     && apt-get -qqy upgrade \
-    && apt-get -qqy install --no-install-recommends bash sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen unzip php5-ldap ssmtp mailutils vim
+    && apt-get -qqy install --no-install-recommends bash sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen unzip php5-ldap ssmtp mailutils vim php5-curl
 RUN wget --quiet -O - https://packages.icinga.org/icinga.key | apt-key add -
 RUN echo "deb http://packages.icinga.org/debian icinga-jessie main" >> /etc/apt/sources.list
 RUN apt-get -qq update \
@@ -33,6 +33,12 @@ RUN unzip /tmp/icingaweb2.zip "icingaweb2-master/modules/doc/*" "icingaweb2-mast
 RUN cp -R /tmp/icingaweb2/icingaweb2-master/modules/monitoring /etc/icingaweb2/modules/
 RUN cp -R  /tmp/icingaweb2/icingaweb2-master/modules/doc /etc/icingaweb2/modules/
 RUN rm -rf /tmp/icingaweb2.zip /tmp/icingaweb2
+
+# Icinga Director
+RUN wget --no-cookies "https://github.com/Icinga/icingaweb2-module-director/archive/master.zip" -O /tmp/director.zip
+RUN unzip /tmp/director.zip -d "/tmp/director"
+RUN cp -R /tmp/director/icingaweb2-module-director-master/* /etc/icingaweb2/modules/director/
+RUN rm -rf /tmp/director
 
 EXPOSE 80 443 5665
 

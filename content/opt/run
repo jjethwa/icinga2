@@ -28,6 +28,8 @@ ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
 IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
 ICINGA_WEB_PASSWORD=${ICINGA_WEB_PASSWORD:-$(pwgen -s 15 1)}
 ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
+DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:-$(pwgen -s 15 1)}
+DIRECTOR_API_PASSWORD=${DIRECTOR_API_PASSWORD:-$(pwgen -s 15 1)}
 ICINGA2_FEATURE_GRAPHITE=${ICINGA2_FEATURE_GRAPHITE:-"false"}
 ICINGA2_FEATURE_GRAPHITE_HOST=${ICINGA2_FEATURE_GRAPHITE_HOST:-"graphite"}
 ICINGA2_FEATURE_GRAPHITE_PORT=${ICINGA2_FEATURE_GRAPHITE_PORT:-"2003"}
@@ -159,6 +161,21 @@ sed -i 's,icinga2-ido-mysq_changeme,'${IDO_PASSWORD}',g' /etc/icingaweb2/resourc
 mkdir -p /var/log/icingaweb2
 chown www-data:adm /var/log/icingaweb2
 
+# director
+(
+    echo "CREATE DATABASE director CHARACTER SET 'utf8';"
+    echo "GRANT ALL ON director.* TO director@localhost IDENTIFIED BY '${DIRECTOR_PASSWORD}';"
+    echo "quit"
+) |
+mysql
+mysql -f director < /etc/icingaweb2/modules/director/schema/mysql.sql >> /opt/director-schema.log 2>&1
+sed -i 's,director_changeme,'${DIRECTOR_PASSWORD}',g' /etc/icingaweb2/resources.ini
+if [[ $(grep director /etc/icinga2/conf.d/api-users.conf) ]]; then echo "=> Director Icinga2 API user exists /etc/icinga2/conf.d/api-users.conf"; else cat /etc/icingaweb2/modules/director/director.api >> /etc/icinga2/conf.d/api-users.conf; fi
+sed -i 's,directorapi,'${DIRECTOR_API_PASSWORD}',g' /etc/icinga2/conf.d/api-users.conf
+sed -i 's,changeme,'$(hostname)',g' /etc/icingaweb2/modules/director/kickstart.ini
+sed -i 's,directorapi,'${DIRECTOR_API_PASSWORD}',g' /etc/icingaweb2/modules/director/kickstart.ini
+if [[ -L /etc/icingaweb2/enabledModules/director ]]; then echo "Symlink for /etc/icingaweb2/enabledModules/director exists already...skipping"; else ln -s /etc/icingaweb2/modules/director /etc/icingaweb2/enabledModules/director; fi
+
 /etc/init.d/mysql stop
 
 echo -e "\n\n\n"
@@ -169,6 +186,8 @@ echo "MySQL user 'icinga' password set to ${ICINGA_PASSWORD}"
 echo "MySQL user 'icinga2-ido-mysq' password set to ${IDO_PASSWORD}"
 echo "MySQL user 'icinga-web' password set to ${ICINGA_WEB_PASSWORD}"
 echo "MySQL user 'icingaweb2' password set to ${ICINGAWEB2_PASSWORD}"
+echo "MySQL user 'director' password set to ${DIRECTOR_PASSWORD}"
+echo "Director API password set to ${DIRECTOR_API_PASSWORD}"
 if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
    echo "Graphite writer enabled and sending data to carbon agent at: ${ICINGA2_FEATURE_GRAPHITE_HOST}:${ICINGA2_FEATURE_GRAPHITE_PORT}"
 fi

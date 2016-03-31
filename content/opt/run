@@ -163,7 +163,7 @@ chown www-data:adm /var/log/icingaweb2
 
 # director
 (
-    echo "CREATE DATABASE director CHARACTER SET 'utf8';"
+    echo "CREATE DATABASE IF NOT EXISTS director CHARACTER SET 'utf8';"
     echo "GRANT ALL ON director.* TO director@localhost IDENTIFIED BY '${DIRECTOR_PASSWORD}';"
     echo "quit"
 ) |

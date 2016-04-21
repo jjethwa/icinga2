@@ -5,7 +5,7 @@ FROM debian:jessie
 
 MAINTAINER Jordan Jethwa
 
-LABEL version="2.4.6"
+LABEL version="2.4.7"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV ICINGA2_FEATURE_GRAPHITE false

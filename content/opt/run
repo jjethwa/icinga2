@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ -f /opt/custom_run ]; then
-    echo "=>executing /opt/custom_run"
     chmod u+x /opt/custom_run
+    echo "=>executing /opt/custom_run"
     /opt/custom_run
 fi
 

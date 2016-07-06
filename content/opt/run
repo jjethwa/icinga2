@@ -1,5 +1,11 @@
 #!/bin/bash
 
+if [ -f /opt/custom_run ]; then
+    chmod u+x /opt/custom_run
+    echo "=>executing /opt/custom_run"
+    /opt/custom_run
+fi
+
 set -e
 
 initfile=/etc/icinga2/run.init
@@ -140,6 +146,7 @@ sed -i 's,mysql://icinga_web:.*@localhost,mysql://icinga_web:'${ICINGA_WEB_PASSW
 sed -i 's,mysql://icinga:.*@localhost,mysql://icinga:'${ICINGA_PASSWORD}'@localhost,g' /etc/icinga-web/conf.d/databases.xml
 
 #icingaweb2
+usermod -a -G icingaweb2 www-data >> /dev/null
 (
     echo "CREATE DATABASE IF NOT EXISTS icingaweb2;"
     echo "GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icingaweb2.* TO 'icingaweb2'@'localhost' IDENTIFIED BY '${ICINGAWEB2_PASSWORD}';"

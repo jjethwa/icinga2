@@ -38,7 +38,7 @@ RUN rm -rf /tmp/icingaweb2.zip /tmp/icingaweb2
 RUN wget --no-cookies "https://github.com/Icinga/icingaweb2-module-director/archive/master.zip" -O /tmp/director.zip
 RUN unzip /tmp/director.zip -d "/tmp/director"
 RUN cp -R /tmp/director/icingaweb2-module-director-master/* /etc/icingaweb2/modules/director/
-RUN rm -rf /tmp/director
+RUN rm -rf /tmp/director.zip /tmp/director
 
 EXPOSE 80 443 5665
 

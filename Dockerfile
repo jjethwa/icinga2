@@ -39,9 +39,12 @@ RUN mkdir -p /etc/icingaweb2.dist/enabledModules && \
 RUN wget --no-cookies "https://github.com/Icinga/icingaweb2-module-director/archive/master.zip" -O /tmp/director.zip && \
   unzip /tmp/director.zip -d "/tmp/director" && \
   cp -R /tmp/director/icingaweb2-module-director-master/* /etc/icingaweb2.dist/modules/director/ && \
-  rm -rf /tmp/director.zip /tmp/director
+  rm -rf /tmp/director.zip /tmp/director && \
+  cp -R /etc/icingaweb2/* /etc/icingaweb2.dist/ && \
+  cp -R /etc/icinga2 /etc/icinga2.dist
 
 EXPOSE 80 443 5665
 
+VOLUME ["/var/lib/mysql", "/var/lib/icinga2", "/etc/icinga2", "/var/log/icinga2"]
 # Initialize and run Supervisor
 ENTRYPOINT ["/opt/run"]

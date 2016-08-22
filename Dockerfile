@@ -5,8 +5,6 @@ FROM debian:jessie
 
 MAINTAINER Jordan Jethwa
 
-LABEL version="2.4.10"
-
 ENV DEBIAN_FRONTEND noninteractive
 ENV ICINGA2_FEATURE_GRAPHITE false
 ENV ICINGA2_FEATURE_GRAPHITE_HOST graphite
@@ -24,8 +22,7 @@ RUN wget --quiet -O - https://packages.icinga.org/icinga.key | apt-key add - && 
 
 ADD content/ /
 
-RUN chmod u+x /opt/supervisor/mysql_supervisor /opt/supervisor/icinga2_supervisor /opt/supervisor/apache2_supervisor && \
-  chmod u+x /opt/run
+RUN chmod u+x /opt/supervisor/mysql_supervisor /opt/supervisor/icinga2_supervisor /opt/supervisor/apache2_supervisor /opt/run 
 
 # Temporary hack to get icingaweb2 modules via git
 RUN mkdir -p /etc/icingaweb2.dist/enabledModules && \
@@ -46,6 +43,5 @@ RUN wget --no-cookies "https://github.com/Icinga/icingaweb2-module-director/arch
 
 EXPOSE 80 443 5665
 
-VOLUME ["/var/lib/mysql", "/var/lib/icinga2", "/etc/icinga2", "/var/log/icinga2"]
 # Initialize and run Supervisor
 ENTRYPOINT ["/opt/run"]

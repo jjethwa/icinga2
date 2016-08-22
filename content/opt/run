@@ -37,17 +37,19 @@ if [ ! -f "/etc/icingaweb2/CONFIGURED" ]; then
   chmod 2770 /etc/icingaweb2
   find /etc/icingaweb2 -type f -name "*.ini" -exec chmod 660 {} \;
   chown -R www-data:icingaweb2 /etc/icingaweb2/*
+  touch /etc/icingaweb2/CONFIGURED
 fi
 
 if [ ! -f "/etc/icinga-web/CONFIGURED" ]; then
   cp -R /etc/icinga-web.dist/* /etc/icinga-web/
   chown -R root:root /etc/icinga-web
+  touch /etc/icinga-web/CONFIGURED
 fi
 
 if [ ! -f "/etc/icinga2/CONFIGURED" ]; then
   cp -R /etc/icinga2.dist/* /etc/icinga2/
-  touch /etc/icinga2/CONFIGURED
   chown -R nagios:root /etc/icinga2
+  touch /etc/icinga2/CONFIGURED
 fi
 
 mkdir -p /var/log/icinga2/compat/archives

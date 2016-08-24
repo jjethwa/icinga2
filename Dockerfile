@@ -17,7 +17,7 @@ RUN apt-get -qq update && \
 RUN wget --quiet -O - https://packages.icinga.org/icinga.key | apt-key add - && \
   echo "deb http://packages.icinga.org/debian icinga-jessie main" >> /etc/apt/sources.list && \
   apt-get -qq update && \
-  apt-get -qqy install --no-install-recommends icinga2 icinga2-ido-mysql icinga-web nagios-plugins icingaweb2 icingacli && \
+  apt-get -qqy install --no-install-recommends icinga2 icinga2-ido-mysql icinga-web nagios-plugins icingaweb2 icingacli curl && \
   apt-get clean
 
 ADD content/ /

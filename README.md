@@ -25,8 +25,6 @@ Start a new container and supply the icinga and icinga_web password
 
     sudo docker run -e ICINGA_PASSWORD="icinga" -e ICINGA_WEB_PASSWORD="icinga_web" -t jordan/icinga2:latest
 
-The Icinga Web interface is accessible at http://localhost/icinga-web with the credentials root:password
-
 ## Icinga Web 2
 
 Icinga Web 2 can be accessed at http://localhost/icingaweb2 with the credentials icingaadmin:icinga
@@ -49,7 +47,6 @@ The [Icinga Director](https://github.com/Icinga/icingaweb2-module-director) Icin
 
 ```
 ICINGA_PASSWORD - MySQL password for icinga
-ICINGA_WEB_PASSWORD - MySQL password for icinga_web
 ICINGAWEB2_PASSWORD - MySQL password for icingaweb2
 DIRECTOR_PASSWORD - MySQL password for icinga director
 IDO_PASSWORD - MySQL password for ido
@@ -63,7 +60,6 @@ DIRECTOR_KICKSTART - true (default).  Set to false to disable director auto kick
 
 ```
 /etc/icinga2
-/etc/icinga-web
 /etc/icingaweb2
 /var/lib/mysql
 /var/lib/icinga2

@@ -7,7 +7,7 @@ image.
 ## Image details
 
 1. Based on debian:jessie
-1. Supervisor, Apache2, MySQL, icinga2, icinga-web, icingacli, icingaweb2, and icingaweb2 director module
+1. Supervisor, Apache2, MySQL, icinga2, icingacli, icingaweb2, and icingaweb2 director module
 1. No SSH.  Use docker [exec](https://docs.docker.com/engine/reference/commandline/exec/) or [nsenter](https://github.com/jpetazzo/nsenter)
 1. If passwords are not supplied, they will be randomly generated and shown via stdout.
 

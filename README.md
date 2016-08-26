@@ -7,7 +7,7 @@ image.
 ## Image details
 
 1. Based on debian:jessie
-1. Supervisor, Apache2, MySQL, icinga2, icinga-web, icingacli, icingaweb2, and icingaweb2 director module
+1. Supervisor, Apache2, MySQL, icinga2, icingacli, icingaweb2, and icingaweb2 director module
 1. No SSH.  Use docker [exec](https://docs.docker.com/engine/reference/commandline/exec/) or [nsenter](https://github.com/jpetazzo/nsenter)
 1. If passwords are not supplied, they will be randomly generated and shown via stdout.
 
@@ -29,9 +29,13 @@ Start a new container and supply the icinga and icinga_web password
 
 Icinga Web 2 can be accessed at http://localhost/icingaweb2 with the credentials icingaadmin:icinga
 
+## Icinga Web
+
+Icinga Web (/icinga-web) is no longer included.  All the fun stuff is in Icinga web anyway ;)
+
 ## Graphite
 
-The graphite writer can be enabled by setting the ICINGA2_FEATURE_GRAPHITE variable to true or 1 and also supplying values for ICINGA2_FEATURE_GRAPHITE_HOST and ICINGA2_FEATURE_GRAPHITE_PORT.  This container does not have graphite  and the carbon daemons installed so ICINGA2_FEATURE_GRAPHITE_HOST should not be set to localhost.
+The graphite writer can be enabled by setting thez ICINGA2_FEATURE_GRAPHITE variable to true or 1 and also supplying values for ICINGA2_FEATURE_GRAPHITE_HOST and ICINGA2_FEATURE_GRAPHITE_PORT.  This container does not have graphite  and the carbon daemons installed so ICINGA2_FEATURE_GRAPHITE_HOST should not be set to localhost.
 
 Example:
 

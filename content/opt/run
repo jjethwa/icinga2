@@ -25,6 +25,10 @@ chmod 2770 /etc/icingaweb2
 find /etc/icingaweb2 -type f -name "*.ini" -exec chmod 660 {} \;
 find /etc/icingaweb2 -type d -exec chmod 2770 {} \;
 
+# chmod plugins that might be used by icinga2 (nagios user)
+chmod u+s /usr/lib/nagios/plugins/check_icmp
+chmod g+s /usr/lib/nagios/plugins/check_icmp
+
 
 if [ ! -f "${initfile}" ]; then
 

@@ -8,7 +8,7 @@ fi
 
 #set -e
 
-initfile=/etc/icinga2/run.init
+initfile=/etc/icinga2.init
 
 chmod 1777 /tmp
 

@@ -39,7 +39,7 @@ RUN wget --no-cookies "https://github.com/Icinga/icingaweb2-module-director/arch
   rm -rf /tmp/director.zip /tmp/director && \
   cp -R /etc/icingaweb2/* /etc/icingaweb2.dist/ && \
   cp -R /etc/icinga2 /etc/icinga2.dist && \
-  rm -rf /etc/icingaweb2/modules/translation
+  rm -rf /etc/icingaweb2/modules
 
 EXPOSE 80 443 5665
 

@@ -33,16 +33,19 @@ chmod g+s /usr/lib/nagios/plugins/check_icmp
 if [ ! -f "${initfile}" ]; then
 
 
-if [ ! -f "/etc/icingaweb2/CONFIGURED" ]; then
+if [ "$(ls -A /etc/icingaweb2)" ]; then
+  echo "=>/etc/icingaweb2 check OK"
+else
   cp -R /etc/icingaweb2.dist/* /etc/icingaweb2/
   chown www-data:icingaweb2 /etc/icingaweb2
   chmod 2770 /etc/icingaweb2
   find /etc/icingaweb2 -type f -name "*.ini" -exec chmod 660 {} \;
   chown -R www-data:icingaweb2 /etc/icingaweb2/*
-  touch /etc/icingaweb2/CONFIGURED
 fi
 
-if [ ! -f "/etc/icinga2/CONFIGURED" ]; then
+if [ "$(ls -A /etc/icinga2)" ]; then
+  echo "=>/etc/icinga2 check OK"
+else
   cp -R /etc/icinga2.dist/* /etc/icinga2/
   chown -R nagios:root /etc/icinga2
   touch /etc/icinga2/CONFIGURED

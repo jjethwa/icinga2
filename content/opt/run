@@ -48,7 +48,6 @@ if [ "$(ls -A /etc/icinga2)" ]; then
 else
   cp -R /etc/icinga2.dist/* /etc/icinga2/
   chown -R nagios:root /etc/icinga2
-  touch /etc/icinga2/CONFIGURED
 fi
 
 mkdir -p /var/log/icinga2/compat/archives

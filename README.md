@@ -47,6 +47,14 @@ sudo docker run --link graphite:graphite -e ICINGA2_FEATURE_GRAPHITE=true -e ICI
 
 The [Icinga Director](https://github.com/Icinga/icingaweb2-module-director) Icinga Web 2 module is installed and enabled by default.  You can disable the automatic kickstart when the container starts by setting the DIRECTOR_KICKSTART variable to false.  To customize the kickstart settings, modify the /etc/icingaweb2/modules/director/kickstart.ini 
 
+## SSL Support
+
+For enabling of SSL support, just add a volume to `/etc/apache2/ssl`, which contains these files:
+
+- `icinga2.crt`: The certificate file for apache
+- `icinga2.key`: The corresponding private key
+- `icinga2.chain` (optional): If a certificate chain is needed, add this file. Consult your CA-vendor for additional info.
+
 ## Environment variables & Volumes
 
 ```
@@ -63,6 +71,7 @@ DIRECTOR_KICKSTART - true (default).  Set to false to disable director auto kick
 ```
 
 ```
+/etc/apache2/ssl
 /etc/icinga2
 /etc/icingaweb2
 /var/lib/mysql

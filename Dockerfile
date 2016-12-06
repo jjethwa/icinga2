@@ -10,15 +10,40 @@ ENV ICINGA2_FEATURE_GRAPHITE false
 ENV ICINGA2_FEATURE_GRAPHITE_HOST graphite
 ENV ICINGA2_FEATURE_GRAPHITE_PORT 2003
 
-RUN apt-get -qq update && \
-  apt-get -qqy upgrade && \
-  apt-get -qqy install --no-install-recommends bash sudo procps ca-certificates wget supervisor mysql-server mysql-client apache2 pwgen unzip php5-mysql php5-ldap ssmtp mailutils vim php5-curl
+RUN apt-get -qq update \
+     && apt-get -qqy upgrade \
+     && apt-get -qqy install --no-install-recommends \
+          apache2 \
+          ca-certificates \
+          curl \
+          mailutils \
+          mysql-client \
+          mysql-server \
+          php5-curl \
+          php5-ldap \
+          php5-mysql \
+          procps \
+          pwgen \
+          ssmtp \
+          sudo \
+          supervisor \
+          unzip \
+          wget \
+     && apt-get clean \
+     && rm -rf /var/lib/apt/lists/*
 
-RUN wget --quiet -O - https://packages.icinga.org/icinga.key | apt-key add - && \
-  echo "deb http://packages.icinga.org/debian icinga-jessie main" >> /etc/apt/sources.list && \
-  apt-get -qq update && \
-  apt-get -qqy install --no-install-recommends icinga2 icinga2-ido-mysql nagios-plugins icingaweb2 icingacli curl && \
-  apt-get clean
+RUN wget --quiet -O - https://packages.icinga.org/icinga.key \
+     | apt-key add - \
+     && echo "deb http://packages.icinga.org/debian icinga-jessie main" > /etc/apt/sources.list.d/icinga2.list \
+     && apt-get -qq update \
+     && apt-get -qqy install --no-install-recommends \
+          icinga2 \
+          icinga2-ido-mysql \
+          icingacli \
+          icingaweb2 \
+          nagios-plugins \
+     && apt-get clean \
+     && rm -rf /var/lib/apt/lists/*
 
 ADD content/ /
 

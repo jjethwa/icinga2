@@ -12,6 +12,10 @@ initfile=/etc/icinga2.init
 
 chmod 1777 /tmp
 
+# https://github.com/jjethwa/icinga2/issues/52
+chmod u+s /bin/ping
+chmod u+s /bin/ping6
+
 # chown directories and files that might be coming from volumes
 chown -R mysql:mysql /var/lib/mysql
 chown -R nagios:root /etc/icinga2

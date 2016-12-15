@@ -102,13 +102,7 @@ fi
 
 #icinga2 API cert - regenerate new private key and certificate when running in a new container
 if [ ! -f /etc/icinga2/pki/$(hostname).key ]; then
-   echo "=>Generating new private key and certificate for this container..."
-   icinga2 api setup
-   sed -i "s,^.*\ NodeName\ \=\ .*,const\ NodeName\ \=\ \"$(hostname)\",g" /etc/icinga2/constants.conf
-   icinga2 pki new-cert --cn $(hostname) --key /etc/icinga2/pki/$(hostname).key --csr /etc/icinga2/pki/$(hostname).csr
-   icinga2 pki sign-csr --csr /etc/icinga2/pki/$(hostname).csr --cert /etc/icinga2/pki/$(hostname).crt
-   chown -R nagios:root /etc/icinga2/conf.d/api-users.conf
-   echo "=>Finished cert generation"
+   icinga2 node setup --master
 fi
 
 usermod -a -G nagios www-data >> /dev/null

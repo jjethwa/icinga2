@@ -40,6 +40,7 @@ if [ ! -f "${initfile}" ]; then
 if [ "$(ls -A /etc/icingaweb2)" ]; then
   echo "=>/etc/icingaweb2 check OK"
 else
+  mkdir /etc/icingaweb2.dist/enabledModules
   cp -R /etc/icingaweb2.dist/* /etc/icingaweb2/
   chown www-data:icingaweb2 /etc/icingaweb2
   chmod 2770 /etc/icingaweb2

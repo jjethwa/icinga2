@@ -48,6 +48,8 @@ RUN wget --quiet -O - https://packages.icinga.org/icinga.key \
 ADD content/ /
 
 RUN chmod u+x /opt/supervisor/mysql_supervisor /opt/supervisor/icinga2_supervisor /opt/supervisor/apache2_supervisor /opt/run 
+RUN chmod u+s /usr/lib/nagios/plugins/check_icmp
+RUN chmod g+s /usr/lib/nagios/plugins/check_icmp
 
 # Temporary hack to get icingaweb2 modules via git
 RUN mkdir -p /etc/icingaweb2.dist/enabledModules && \

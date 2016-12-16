@@ -69,4 +69,4 @@ RUN wget --no-cookies "https://github.com/Icinga/icingaweb2-module-director/arch
 EXPOSE 80 443 5665
 
 # Initialize and run Supervisor
-ENTRYPOINT ["/opt/run"]
+CMD ["/opt/run"]

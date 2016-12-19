@@ -41,7 +41,7 @@ RUN wget --quiet -O - https://packages.icinga.org/icinga.key \
           icinga2-ido-mysql \
           icingacli \
           icingaweb2 \
-          nagios-plugins \
+          monitoring-plugins \
      && apt-get clean \
      && rm -rf /var/lib/apt/lists/*
 

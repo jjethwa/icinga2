@@ -40,6 +40,7 @@ if [ ! -f "${initfile}" ]; then
 if [ "$(ls -A /etc/icingaweb2)" ]; then
   echo "=>/etc/icingaweb2 check OK"
 else
+  mkdir /etc/icingaweb2.dist/enabledModules
   cp -R /etc/icingaweb2.dist/* /etc/icingaweb2/
   chown www-data:icingaweb2 /etc/icingaweb2
   chmod 2770 /etc/icingaweb2
@@ -169,8 +170,13 @@ ICINGAADMIN_PASSWORD=`openssl passwd -1 "icinga"`
     echo "quit"
 ) |
 mysql
-if [[ -L /etc/icingaweb2/enabledModules/monitoring ]]; then echo "Symlink for /etc/icingaweb2/enabledModules/monitoring exists already...skipping"; else ln -s /etc/icingaweb2/modules/monitoring /etc/icingaweb2/enabledModules/monitoring; fi
-if [[ -L /etc/icingaweb2/enabledModules/doc ]]; then echo "Symlink for /etc/icingaweb2/enabledModules/doc exists already...skipping"; else ln -s /etc/icingaweb2/modules/doc /etc/icingaweb2/enabledModules/doc; fi
+
+[[ ! -L /etc/icingaweb2/enabledModules/monitoring ]] \
+	&& ln -sT /etc/icingaweb2/modules/monitoring /etc/icingaweb2/enabledModules/monitoring
+
+[[ ! -L /etc/icingaweb2/enabledModules/doc ]] \
+	&& ln -sT /etc/icingaweb2/modules/doc /etc/icingaweb2/enabledModules/doc
+
 sed -i 's,icingaweb2_changeme,'${ICINGAWEB2_PASSWORD}',g' /etc/icingaweb2/resources.ini
 sed -i 's,icinga2-ido-mysq_changeme,'${IDO_PASSWORD}',g' /etc/icingaweb2/resources.ini
 mkdir -p /var/log/icingaweb2
@@ -189,7 +195,9 @@ if [[ $(grep director /etc/icinga2/conf.d/api-users.conf) ]]; then echo "=> Dire
 sed -i 's,directorapi,'${DIRECTOR_API_PASSWORD}',g' /etc/icinga2/conf.d/api-users.conf
 sed -i 's,changeme,'$(hostname)',g' /etc/icingaweb2/modules/director/kickstart.ini
 sed -i 's,directorapi,'${DIRECTOR_API_PASSWORD}',g' /etc/icingaweb2/modules/director/kickstart.ini
-if [[ -L /etc/icingaweb2/enabledModules/director ]]; then echo "Symlink for /etc/icingaweb2/enabledModules/director exists already...skipping"; else ln -s /etc/icingaweb2/modules/director /etc/icingaweb2/enabledModules/director; fi
+
+[[ ! -L /etc/icingaweb2/enabledModules/director ]] \
+	&& ln -sT /etc/icingaweb2/modules/director /etc/icingaweb2/enabledModules/director
 
 /etc/init.d/mysql stop
 

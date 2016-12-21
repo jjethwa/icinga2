@@ -213,5 +213,5 @@ echo "==================================================================="
 touch ${initfile}
 fi
 
-echo "Starting Supervisor.  You can safely CTRL-C and the container will continue to run with or without the -d (daemon) option"
+echo "Starting Supervisor."
 /usr/bin/supervisord -c /etc/supervisor/conf.d/icinga2.conf >> /dev/null

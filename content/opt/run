@@ -1,5 +1,15 @@
 #!/bin/bash
 
+DEBIAN_SYS_MAINT_PASSWORD=${DEBIAN_SYS_MAINT_PASSWORD:-$(pwgen -s 15 1)}
+ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
+IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
+ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
+DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:-$(pwgen -s 15 1)}
+DIRECTOR_API_PASSWORD=${DIRECTOR_API_PASSWORD:-$(pwgen -s 15 1)}
+ICINGA2_FEATURE_GRAPHITE=${ICINGA2_FEATURE_GRAPHITE:-"false"}
+ICINGA2_FEATURE_GRAPHITE_HOST=${ICINGA2_FEATURE_GRAPHITE_HOST:-"graphite"}
+ICINGA2_FEATURE_GRAPHITE_PORT=${ICINGA2_FEATURE_GRAPHITE_PORT:-"2003"}
+
 if [ -f /opt/custom_run ]; then
     chmod u+x /opt/custom_run
     echo "=>executing /opt/custom_run"
@@ -53,17 +63,6 @@ mkdir -p /var/lib/icinga2/api/zones
 mkdir -p /var/lib/icinga2/api/log
 mkdir -p /var/lib/icinga2/api/repository
 chown -R nagios:nagios /var/lib/icinga2
-
-# Passwords...
-DEBIAN_SYS_MAINT_PASSWORD=${DEBIAN_SYS_MAINT_PASSWORD:-$(pwgen -s 15 1)}
-ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
-IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
-ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
-DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:-$(pwgen -s 15 1)}
-DIRECTOR_API_PASSWORD=${DIRECTOR_API_PASSWORD:-$(pwgen -s 15 1)}
-ICINGA2_FEATURE_GRAPHITE=${ICINGA2_FEATURE_GRAPHITE:-"false"}
-ICINGA2_FEATURE_GRAPHITE_HOST=${ICINGA2_FEATURE_GRAPHITE_HOST:-"graphite"}
-ICINGA2_FEATURE_GRAPHITE_PORT=${ICINGA2_FEATURE_GRAPHITE_PORT:-"2003"}
 
 #icinga2 options
 #icinga2-enable-feature ido-mysql >> /dev/null

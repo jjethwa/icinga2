@@ -12,10 +12,6 @@ initfile=/etc/icinga2.init
 
 chmod 1777 /tmp
 
-# https://github.com/jjethwa/icinga2/issues/52
-chmod u+s /bin/ping
-chmod u+s /bin/ping6
-
 # chown directories and files that might be coming from volumes
 chown -R mysql:mysql /var/lib/mysql
 chown -R nagios:root /etc/icinga2
@@ -28,10 +24,6 @@ chown www-data:icingaweb2 /etc/icingaweb2
 chmod 2770 /etc/icingaweb2
 find /etc/icingaweb2 -type f -name "*.ini" -exec chmod 660 {} \;
 find /etc/icingaweb2 -type d -exec chmod 2770 {} \;
-
-# chmod plugins that might be used by icinga2 (nagios user)
-chmod u+s /usr/lib/nagios/plugins/check_icmp
-chmod g+s /usr/lib/nagios/plugins/check_icmp
 
 
 if [ ! -f "${initfile}" ]; then

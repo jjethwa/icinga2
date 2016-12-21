@@ -52,7 +52,11 @@ ADD content/ /
 
 RUN chmod u+x /opt/supervisor/mysql_supervisor /opt/supervisor/icinga2_supervisor /opt/supervisor/apache2_supervisor /opt/run \
     && cp -R /etc/icingaweb2/* /etc/icingaweb2.dist \
-    && rm -rf /etc/icingaweb2
+    && rm -rf /etc/icingaweb2 \
+    && chmod u+s,g+s \
+        /bin/ping \
+        /bin/ping6 \
+        /usr/lib/nagios/plugins/check_icmp
 
 # Temporary hack to get icingaweb2 modules via git
 RUN wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2/archive/${GITREF_ICINGAWEB2}.tar.gz" \

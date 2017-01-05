@@ -1,0 +1,48 @@
+#!/bin/bash
+
+if [ "$(ls -A /etc/icinga2)" ]; then
+  echo "=>/etc/icinga2 check OK"
+else
+  cp -R /etc/icinga2.dist/* /etc/icinga2/
+  chown -R nagios:root /etc/icinga2
+fi
+
+mkdir -p /var/log/icinga2/compat/archives
+chown -R nagios:adm /var/log/icinga2
+mkdir -p /var/lib/icinga2/api/zones
+mkdir -p /var/lib/icinga2/api/log
+mkdir -p /var/lib/icinga2/api/repository
+chown -R nagios:nagios /var/lib/icinga2
+
+#icinga2 options
+#icinga2-enable-feature ido-mysql >> /dev/null
+icinga2 feature enable ido-mysql livestatus compatlog command
+
+#icinga2 API cert - regenerate new private key and certificate when running in a new container
+if [ ! -f /etc/icinga2/pki/$(hostname).key ]; then
+	icinga2 node setup --master
+fi
+
+usermod -a -G nagios www-data >> /dev/null
+chfn -f "nagios at $(hostname)" nagios
+
+# icinga
+mysql <<-END
+  CREATE DATABASE IF NOT EXISTS icinga;
+  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY '${ICINGA_PASSWORD}';
+  quit
+END
+
+mysql -f icinga < /usr/share/icinga2-ido-mysql/schema/mysql.sql >> /opt/icinga2-ido-mysql-schema.log 2>&1
+
+sed -i 's/password \= \".*\"/password \= \"'${IDO_PASSWORD}'\"/g' /etc/icinga2/features-available/ido-mysql.conf
+sed -i 's/user =\ \".*\"/user =\ \"icinga2-ido-mysq\"/g' /etc/icinga2/features-available/ido-mysql.conf
+sed -i 's/database =\ \".*\"/database =\ \"icinga2idomysql\"/g' /etc/icinga2/features-available/ido-mysql.conf
+
+mysql <<-END
+  CREATE DATABASE IF NOT EXISTS icinga2idomysql;
+  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga2idomysql.* TO 'icinga2-ido-mysq'@'localhost' IDENTIFIED BY '${IDO_PASSWORD}';
+  quit
+END
+
+mysql -f icinga2idomysql < /usr/share/dbconfig-common/data/icinga2-ido-mysql/install/mysql >> /opt/icinga2-ido-mysql-schema.log 2>&1

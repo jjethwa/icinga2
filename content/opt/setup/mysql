@@ -1,0 +1,32 @@
+#!/bin/bash
+
+update_user_password () {
+	mysql <<-END
+	    UPDATE mysql.user SET password=PASSWORD('${2}') WHERE user='${1}';
+	    FLUSH PRIVILEGES;
+	    quit
+	END
+}
+
+echo "=>Initializing databases and icinga2 configurations."
+echo "=>This may take a few minutes"
+
+if [ "$(ls -A /var/lib/mysql)" ]; then
+	/etc/init.d/mysql start
+else
+	echo "=>MySQL datadir is empty...initializing"
+	/usr/bin/mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+
+	echo "=>Starting MySQL...ignore warning about debian-sys-maint user, it will be granted permissions momentarily"
+	/etc/init.d/mysql start
+	sleep 5
+
+	mysql <<-END
+	  GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '${DEBIAN_SYS_MAINT_PASSWORD}';
+	  quit
+	END
+fi
+
+# Set debian-sys-maint password
+update_user_password debian-sys-maint ${DEBIAN_SYS_MAINT_PASSWORD}
+sed -i 's,password\ \=\ .*,password\ \=\ '${DEBIAN_SYS_MAINT_PASSWORD}',g' /etc/mysql/debian.cnf

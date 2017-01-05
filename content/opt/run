@@ -1,14 +1,14 @@
 #!/bin/bash
 
-DEBIAN_SYS_MAINT_PASSWORD=${DEBIAN_SYS_MAINT_PASSWORD:-$(pwgen -s 15 1)}
-ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
-IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
-ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
-DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:-$(pwgen -s 15 1)}
-DIRECTOR_API_PASSWORD=${DIRECTOR_API_PASSWORD:-$(pwgen -s 15 1)}
-ICINGA2_FEATURE_GRAPHITE=${ICINGA2_FEATURE_GRAPHITE:-"false"}
-ICINGA2_FEATURE_GRAPHITE_HOST=${ICINGA2_FEATURE_GRAPHITE_HOST:-"graphite"}
-ICINGA2_FEATURE_GRAPHITE_PORT=${ICINGA2_FEATURE_GRAPHITE_PORT:-"2003"}
+export DEBIAN_SYS_MAINT_PASSWORD=${DEBIAN_SYS_MAINT_PASSWORD:-$(pwgen -s 15 1)}
+export ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
+export IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
+export ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
+export DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:-$(pwgen -s 15 1)}
+export DIRECTOR_API_PASSWORD=${DIRECTOR_API_PASSWORD:-$(pwgen -s 15 1)}
+export ICINGA2_FEATURE_GRAPHITE=${ICINGA2_FEATURE_GRAPHITE:-"false"}
+export ICINGA2_FEATURE_GRAPHITE_HOST=${ICINGA2_FEATURE_GRAPHITE_HOST:-"graphite"}
+export ICINGA2_FEATURE_GRAPHITE_PORT=${ICINGA2_FEATURE_GRAPHITE_PORT:-"2003"}
 
 if [ -f /opt/custom_run ]; then
     chmod u+x /opt/custom_run
@@ -38,159 +38,12 @@ find /etc/icingaweb2 -type d -exec chmod 2770 {} \;
 
 if [ ! -f "${initfile}" ]; then
 
-
-if [ "$(ls -A /etc/icingaweb2)" ]; then
-  echo "=>/etc/icingaweb2 check OK"
-else
-  mkdir /etc/icingaweb2.dist/enabledModules
-  cp -R /etc/icingaweb2.dist/* /etc/icingaweb2/
-  chown www-data:icingaweb2 /etc/icingaweb2
-  chmod 2770 /etc/icingaweb2
-  find /etc/icingaweb2 -type f -name "*.ini" -exec chmod 660 {} \;
-  chown -R www-data:icingaweb2 /etc/icingaweb2/*
-fi
-
-if [ "$(ls -A /etc/icinga2)" ]; then
-  echo "=>/etc/icinga2 check OK"
-else
-  cp -R /etc/icinga2.dist/* /etc/icinga2/
-  chown -R nagios:root /etc/icinga2
-fi
-
-mkdir -p /var/log/icinga2/compat/archives
-chown -R nagios:adm /var/log/icinga2
-mkdir -p /var/lib/icinga2/api/zones
-mkdir -p /var/lib/icinga2/api/log
-mkdir -p /var/lib/icinga2/api/repository
-chown -R nagios:nagios /var/lib/icinga2
-
-#icinga2 options
-#icinga2-enable-feature ido-mysql >> /dev/null
-icinga2 feature enable ido-mysql livestatus compatlog command
-
-# Graphite writer
-if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
-	echo "=> Enabling Icinga2 graphite writer"
-	icinga2 feature enable graphite
-	cat >/etc/icinga2/features-available/graphite.conf <<-END
-	/**
-	 * The GraphiteWriter type writes check result metrics and
-	 * performance data to a graphite tcp socket.
-	 */
-	library "perfdata"
-	object GraphiteWriter "graphite" {
-	  host = "$ICINGA2_FEATURE_GRAPHITE_HOST"
-	  port = "$ICINGA2_FEATURE_GRAPHITE_PORT"
-	}
-	END
-
-fi
-
-#icinga2 API cert - regenerate new private key and certificate when running in a new container
-if [ ! -f /etc/icinga2/pki/$(hostname).key ]; then
-	icinga2 node setup --master
-fi
-
-usermod -a -G nagios www-data >> /dev/null
-chfn -f "nagios at $(hostname)" nagios
-
-update_user_password () {
-	mysql <<-END
-	    UPDATE mysql.user SET password=PASSWORD('${2}') WHERE user='${1}';
-	    FLUSH PRIVILEGES;
-	    quit
-	END
-}
-
-echo "=>Initializing databases and icinga2 configurations."
-echo "=>This may take a few minutes"
-
-if [ "$(ls -A /var/lib/mysql)" ]; then
-	/etc/init.d/mysql start
-else
-	echo "=>MySQL datadir is empty...initializing"
-	/usr/bin/mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
-	
-	echo "=>Starting MySQL...ignore warning about debian-sys-maint user, it will be granted permissions momentarily"
-	/etc/init.d/mysql start
-	sleep 5
-	
-	mysql <<-END
-	  GRANT ALL PRIVILEGES ON *.* TO 'debian-sys-maint'@'localhost' IDENTIFIED BY '${DEBIAN_SYS_MAINT_PASSWORD}';
-	  quit
-	END
-fi
-
-# Set debian-sys-maint password
-update_user_password debian-sys-maint ${DEBIAN_SYS_MAINT_PASSWORD}
-sed -i 's,password\ \=\ .*,password\ \=\ '${DEBIAN_SYS_MAINT_PASSWORD}',g' /etc/mysql/debian.cnf
-
-# icinga
-mysql <<-END
-  CREATE DATABASE IF NOT EXISTS icinga;
-  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY '${ICINGA_PASSWORD}';
-  quit
-END
-
-mysql -f icinga < /usr/share/icinga2-ido-mysql/schema/mysql.sql >> /opt/icinga2-ido-mysql-schema.log 2>&1
-
-sed -i 's/password \= \".*\"/password \= \"'${IDO_PASSWORD}'\"/g' /etc/icinga2/features-available/ido-mysql.conf
-sed -i 's/user =\ \".*\"/user =\ \"icinga2-ido-mysq\"/g' /etc/icinga2/features-available/ido-mysql.conf
-sed -i 's/database =\ \".*\"/database =\ \"icinga2idomysql\"/g' /etc/icinga2/features-available/ido-mysql.conf
-
-mysql <<-END
-  CREATE DATABASE IF NOT EXISTS icinga2idomysql;
-  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga2idomysql.* TO 'icinga2-ido-mysq'@'localhost' IDENTIFIED BY '${IDO_PASSWORD}';
-  quit
-END
-
-mysql -f icinga2idomysql < /usr/share/dbconfig-common/data/icinga2-ido-mysql/install/mysql >> /opt/icinga2-ido-mysql-schema.log 2>&1
-
-#icingaweb2
-usermod -a -G icingaweb2 www-data >> /dev/null
-mysql <<-END
-  CREATE DATABASE IF NOT EXISTS icingaweb2;
-  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icingaweb2.* TO 'icingaweb2'@'localhost' IDENTIFIED BY '${ICINGAWEB2_PASSWORD}';
-  quit
-END
-
-mysql -f icingaweb2 < /usr/share/icingaweb2/etc/schema/mysql.schema.sql >> /opt/icingaweb2-schema.log 2>&1
-
-ICINGAADMIN_PASSWORD=`openssl passwd -1 "icinga"`
-
-mysql <<-END
-  USE icingaweb2;
-  INSERT IGNORE INTO icingaweb_user (name, active, password_hash) VALUES ('icingaadmin', 1, '${ICINGAADMIN_PASSWORD}');
-  quit
-END
-
-[[ ! -L /etc/icingaweb2/enabledModules/monitoring ]] \
-	&& ln -sT /etc/icingaweb2/modules/monitoring /etc/icingaweb2/enabledModules/monitoring
-
-[[ ! -L /etc/icingaweb2/enabledModules/doc ]] \
-	&& ln -sT /etc/icingaweb2/modules/doc /etc/icingaweb2/enabledModules/doc
-
-sed -i 's,icingaweb2_changeme,'${ICINGAWEB2_PASSWORD}',g' /etc/icingaweb2/resources.ini
-sed -i 's,icinga2-ido-mysq_changeme,'${IDO_PASSWORD}',g' /etc/icingaweb2/resources.ini
-mkdir -p /var/log/icingaweb2
-chown www-data:adm /var/log/icingaweb2
-
-# director
-mysql <<-END
-  CREATE DATABASE IF NOT EXISTS director CHARACTER SET 'utf8';
-  GRANT ALL ON director.* TO director@localhost IDENTIFIED BY '${DIRECTOR_PASSWORD}';
-  quit
-END
-
-mysql -f director < /etc/icingaweb2/modules/director/schema/mysql.sql >> /opt/director-schema.log 2>&1
-sed -i 's,director_changeme,'${DIRECTOR_PASSWORD}',g' /etc/icingaweb2/resources.ini
-if [[ $(grep director /etc/icinga2/conf.d/api-users.conf) ]]; then echo "=> Director Icinga2 API user exists /etc/icinga2/conf.d/api-users.conf"; else cat /etc/icingaweb2/modules/director/director.api >> /etc/icinga2/conf.d/api-users.conf; fi
-sed -i 's,directorapi,'${DIRECTOR_API_PASSWORD}',g' /etc/icinga2/conf.d/api-users.conf
-sed -i 's,changeme,'$(hostname)',g' /etc/icingaweb2/modules/director/kickstart.ini
-sed -i 's,directorapi,'${DIRECTOR_API_PASSWORD}',g' /etc/icingaweb2/modules/director/kickstart.ini
-
-[[ ! -L /etc/icingaweb2/enabledModules/director ]] \
-	&& ln -sT /etc/icingaweb2/modules/director /etc/icingaweb2/enabledModules/director
+/opt/setup/apache2
+/opt/setup/graphite
+/opt/setup/mysql
+/opt/setup/icinga2
+/opt/setup/icingaweb2
+/opt/setup/icingaweb2-director
 
 /etc/init.d/mysql stop
 

@@ -50,7 +50,15 @@ RUN wget --quiet -O - https://packages.icinga.org/icinga.key \
 
 ADD content/ /
 
-RUN    mv /etc/icingaweb2/ /etc/icingaweb2.dist \
+# Temporary hack to get icingaweb2 modules via git
+RUN wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2/archive/${GITREF_ICINGAWEB2}.tar.gz" \
+    | tar xz --strip-components=2 --directory=/etc/icingaweb2/modules -f - icingaweb2-${GITREF_ICINGAWEB2}/modules/monitoring icingaweb2-${GITREF_ICINGAWEB2}/modules/doc \
+# Icinga Director
+    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/${GITREF_DIRECTOR}.tar.gz" \
+    | tar xz --strip-components=1 --directory=/etc/icingaweb2/modules/director --exclude=.gitignore -f - \
+    && icingacli module enable director \
+# Final fixes
+    && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
     && mkdir /etc/icingaweb2 \
     && mv /etc/icinga2/ /etc/icinga2.dist \
     && mkdir /etc/icinga2 \
@@ -60,14 +68,6 @@ RUN    mv /etc/icingaweb2/ /etc/icingaweb2.dist \
         /bin/ping \
         /bin/ping6 \
         /usr/lib/nagios/plugins/check_icmp
-
-# Temporary hack to get icingaweb2 modules via git
-RUN wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2/archive/${GITREF_ICINGAWEB2}.tar.gz" \
-  | tar xz --strip-components=2 --directory=/etc/icingaweb2.dist/modules -f - icingaweb2-${GITREF_ICINGAWEB2}/modules/monitoring icingaweb2-${GITREF_ICINGAWEB2}/modules/doc
-
-# Icinga Director
-RUN wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/${GITREF_DIRECTOR}.tar.gz" \
-  | tar xz --strip-components=1 --directory=/etc/icingaweb2.dist/modules/director --exclude=.gitignore -f -
 
 EXPOSE 80 443 5665
 

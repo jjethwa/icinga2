@@ -1,7 +1,5 @@
 #!/bin/bash
 
-icingacli module enable director
-
 # director
 mysql <<-END
   CREATE DATABASE IF NOT EXISTS director CHARACTER SET 'utf8';

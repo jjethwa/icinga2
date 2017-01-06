@@ -9,9 +9,11 @@ ENV DEBIAN_FRONTEND noninteractive
 ENV ICINGA2_FEATURE_GRAPHITE false
 ENV ICINGA2_FEATURE_GRAPHITE_HOST graphite
 ENV ICINGA2_FEATURE_GRAPHITE_PORT 2003
+ENV ICINGA2_FEATURE_GRAPHITE_URL http://${ICINGA2_FEATURE_GRAPHITE_HOST}
 
 ARG GITREF_ICINGAWEB2=master
 ARG GITREF_DIRECTOR=master
+ARG GITREF_MODGRAPHITE=master
 
 RUN apt-get -qq update \
      && apt-get -qqy upgrade \
@@ -57,6 +59,11 @@ RUN wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2/archive/${GI
     && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/${GITREF_DIRECTOR}.tar.gz" \
     | tar xz --strip-components=1 --directory=/etc/icingaweb2/modules/director --exclude=.gitignore -f - \
     && icingacli module enable director \
+# Icingaweb2 Graphite
+    && mkdir -p /etc/icingaweb2/modules/graphite \
+    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-graphite/archive/${GITREF_ICINGAWEB2}.tar.gz" \
+    | tar xz --strip-components=1 --directory=/etc/icingaweb2/modules/graphite -f - icingaweb2-module-graphite-${GITREF_MODGRAPHITE}/ \
+    && cp -r /etc/icingaweb2/modules/graphite/sample-config/icinga2/ /etc/icingaweb2/modules/graphite \
 # Final fixes
     && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
     && mkdir /etc/icingaweb2 \

@@ -15,7 +15,11 @@ if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}
 	object GraphiteWriter "graphite" {
 	  host = "$ICINGA2_FEATURE_GRAPHITE_HOST"
 	  port = "$ICINGA2_FEATURE_GRAPHITE_PORT"
+	  enable_send_thresholds = true
 	}
 	END
 
+else
+	# Actively disable graphite, to not hit any weird bugs
+	icinga2 feature disable graphite
 fi

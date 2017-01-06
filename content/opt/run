@@ -22,6 +22,7 @@ fi
 /opt/setup/graphite
 /opt/setup/icingaweb2
 /opt/setup/icingaweb2-director
+/opt/setup/icingaweb2-graphite
 
 cat <<-END
 

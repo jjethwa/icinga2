@@ -8,11 +8,11 @@ mysql <<-END
 END
 
 mysql -f director < /etc/icingaweb2/modules/director/schema/mysql.sql >> /opt/director-schema.log 2>&1
-sed -i 's,director_changeme,'${DIRECTOR_PASSWORD}',g' /etc/icingaweb2/resources.ini
+ini_set /etc/icingaweb2/resources.ini director password "${DIRECTOR_PASSWORD}"
 if [[ $(grep director /etc/icinga2/conf.d/api-users.conf) ]]; then echo "=> Director Icinga2 API user exists /etc/icinga2/conf.d/api-users.conf"; else cat /etc/icingaweb2/modules/director/director.api >> /etc/icinga2/conf.d/api-users.conf; fi
 sed -i 's,directorapi,'${DIRECTOR_API_PASSWORD}',g' /etc/icinga2/conf.d/api-users.conf
-sed -i 's,changeme,'$(hostname)',g' /etc/icingaweb2/modules/director/kickstart.ini
-sed -i 's,directorapi,'${DIRECTOR_API_PASSWORD}',g' /etc/icingaweb2/modules/director/kickstart.ini
+ini_set /etc/icingaweb2/modules/director/kickstart.ini config endpoint "$(hostname)"
+ini_set /etc/icingaweb2/modules/director/kickstart.ini config password "${DIRECTOR_API_PASSWORD}"
 
 [[ ! -L /etc/icingaweb2/enabledModules/director ]] \
 	&& ln -sT /etc/icingaweb2/modules/director /etc/icingaweb2/enabledModules/director

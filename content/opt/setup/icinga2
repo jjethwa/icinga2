@@ -34,10 +34,22 @@ mysql <<-END
 END
 
 mysql -f icinga < /usr/share/icinga2-ido-mysql/schema/mysql.sql >> /opt/icinga2-ido-mysql-schema.log 2>&1
+# IDO MySQL
+cat > /etc/icinga2/features-available/ido-mysql.conf <<-END
+/**
+ * The db_ido_mysql library implements IDO functionality
+ * for MySQL.
+ */
 
-sed -i 's/password \= \".*\"/password \= \"'${IDO_PASSWORD}'\"/g' /etc/icinga2/features-available/ido-mysql.conf
-sed -i 's/user =\ \".*\"/user =\ \"icinga2-ido-mysq\"/g' /etc/icinga2/features-available/ido-mysql.conf
-sed -i 's/database =\ \".*\"/database =\ \"icinga2idomysql\"/g' /etc/icinga2/features-available/ido-mysql.conf
+library "db_ido_mysql"
+
+object IdoMysqlConnection "ido-mysql" {
+  user = "icinga2-ido-mysq",
+  password = "${IDO_PASSWORD}",
+  host = "localhost",
+  database = "icinga2idomysql"
+}
+END
 
 mysql <<-END
   CREATE DATABASE IF NOT EXISTS icinga2idomysql;

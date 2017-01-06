@@ -22,6 +22,8 @@ END
 mysql -f icingaweb2 < /usr/share/icingaweb2/etc/schema/mysql.schema.sql >> /opt/icingaweb2-schema.log 2>&1
 
 ICINGAADMIN_PASSWORD=`openssl passwd -1 "icinga"`
+ini_set /etc/icingaweb2/resources.ini icingaweb_db password "${ICINGAWEB2_PASSWORD}"
+ini_set /etc/icingaweb2/resources.ini icinga_ido   password "${IDO_PASSWORD}"
 
 mysql <<-END
   USE icingaweb2;
@@ -35,7 +37,5 @@ END
 [[ ! -L /etc/icingaweb2/enabledModules/doc ]] \
 	&& ln -sT /etc/icingaweb2/modules/doc /etc/icingaweb2/enabledModules/doc
 
-sed -i 's,icingaweb2_changeme,'${ICINGAWEB2_PASSWORD}',g' /etc/icingaweb2/resources.ini
-sed -i 's,icinga2-ido-mysq_changeme,'${IDO_PASSWORD}',g' /etc/icingaweb2/resources.ini
 mkdir -p /var/log/icingaweb2
 chown www-data:adm /var/log/icingaweb2

@@ -29,4 +29,5 @@ fi
 
 # Set debian-sys-maint password
 update_user_password debian-sys-maint ${DEBIAN_SYS_MAINT_PASSWORD}
-sed -i 's,password\ \=\ .*,password\ \=\ '${DEBIAN_SYS_MAINT_PASSWORD}',g' /etc/mysql/debian.cnf
+ini_set /etc/mysql/debian.cnf client        password "${DEBIAN_SYS_MAINT_PASSWORD}"
+ini_set /etc/mysql/debian.cnf mysql_upgrade password "${DEBIAN_SYS_MAINT_PASSWORD}"

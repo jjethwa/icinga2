@@ -6,9 +6,6 @@ export IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
 export ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
 export DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:-$(pwgen -s 15 1)}
 export DIRECTOR_API_PASSWORD=${DIRECTOR_API_PASSWORD:-$(pwgen -s 15 1)}
-export ICINGA2_FEATURE_GRAPHITE=${ICINGA2_FEATURE_GRAPHITE:-"false"}
-export ICINGA2_FEATURE_GRAPHITE_HOST=${ICINGA2_FEATURE_GRAPHITE_HOST:-"graphite"}
-export ICINGA2_FEATURE_GRAPHITE_PORT=${ICINGA2_FEATURE_GRAPHITE_PORT:-"2003"}
 
 if [ -f /opt/custom_run ]; then
     chmod u+x /opt/custom_run
@@ -16,54 +13,34 @@ if [ -f /opt/custom_run ]; then
     /opt/custom_run
 fi
 
-#set -e
-
-initfile=/etc/icinga2.init
-
-chmod 1777 /tmp
-
-# chown directories and files that might be coming from volumes
-chown -R mysql:mysql /var/lib/mysql
-chown -R nagios:root /etc/icinga2
-chown -f nagios:nagios /etc/icinga2/features-available/ido-mysql.conf
-chown -R nagios:nagios /var/lib/icinga2
-if [ ! -d "/etc/icingaweb2" ]; then
-  mkdir /etc/icingaweb2
-fi
-chown www-data:icingaweb2 /etc/icingaweb2
-chmod 2770 /etc/icingaweb2
-find /etc/icingaweb2 -type f -name "*.ini" -exec chmod 660 {} \;
-find /etc/icingaweb2 -type d -exec chmod 2770 {} \;
-
-
-if [ ! -f "${initfile}" ]; then
-
 /opt/setup/apache2
-/opt/setup/graphite
 /opt/setup/mysql
 /opt/setup/icinga2
+/opt/setup/graphite
 /opt/setup/icingaweb2
 /opt/setup/icingaweb2-director
 
-/etc/init.d/mysql stop
+cat <<-END
 
-echo -e "\n\n\n"
-echo "==================================================================="
-echo "MySQL user 'root' has no password but only allows local connections"
-echo "MySQL user 'debian-sys-maint' password set to ${DEBIAN_SYS_MAINT_PASSWORD}"
-echo "MySQL user 'icinga' password set to ${ICINGA_PASSWORD}"
-echo "MySQL user 'icinga2-ido-mysq' password set to ${IDO_PASSWORD}"
-echo "MySQL user 'icingaweb2' password set to ${ICINGAWEB2_PASSWORD}"
-echo "MySQL user 'director' password set to ${DIRECTOR_PASSWORD}"
-echo "Director API password set to ${DIRECTOR_API_PASSWORD}"
+===================================================================
+MySQL user 'root' has no password but only allows local connections
+MySQL user 'debian-sys-maint' password set to ${DEBIAN_SYS_MAINT_PASSWORD}
+MySQL user 'icinga' password set to ${ICINGA_PASSWORD}
+MySQL user 'icinga2-ido-mysq' password set to ${IDO_PASSWORD}
+MySQL user 'icingaweb2' password set to ${ICINGAWEB2_PASSWORD}
+MySQL user 'director' password set to ${DIRECTOR_PASSWORD}
+Director API password set to ${DIRECTOR_API_PASSWORD}
+
+$(
 if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
 	echo "Graphite writer enabled and sending data to carbon agent at: ${ICINGA2_FEATURE_GRAPHITE_HOST}:${ICINGA2_FEATURE_GRAPHITE_PORT}"
 fi
-echo "Icinga Web 2 (/icingaweb2) default credentials: icingaadmin:icinga"
-echo "==================================================================="
+)
 
-touch ${initfile}
-fi
+Icinga Web 2 (/icingaweb2) default credentials: icingaadmin:icinga
+===================================================================
 
-echo "Starting Supervisor."
-/usr/bin/supervisord -c /etc/supervisor/conf.d/icinga2.conf >> /dev/null
+Starting Supervisor.
+END
+
+/usr/bin/supervisord -c /etc/supervisor/conf.d/icinga2.conf > /dev/null

@@ -3,13 +3,14 @@
 # Enable SSL support if certificates are mounted
 if [ -f /etc/apache2/ssl/icinga2.crt -a -f /etc/apache2/ssl/icinga2.key ]; then
 
-    # If there is no chain needed, we have to generate an empty
-    # file with a single line to interpret it correctly as "no chain"
-    if [ ! -f /etc/apache2/ssl/icinga2.chain ]; then
-        echo > /etc/apache2/ssl/icinga2.chain
-    fi
-    a2enmod ssl
-    a2ensite docker-ssl
+	# If there is no chain needed, we have to generate an empty
+	# file with a single line to interpret it correctly as "no chain"
+	if [ ! -f /etc/apache2/ssl/icinga2.chain ]; then
+		echo > /etc/apache2/ssl/icinga2.chain
+	fi
+	a2enmod ssl
+	a2ensite docker-ssl
+	chown www-data:www-data /etc/apache2/ssl/icinga2.{crt,key}
 else
-    a2dissite docker-ssl
+	a2dissite docker-ssl
 fi

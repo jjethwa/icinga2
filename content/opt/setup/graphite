@@ -3,7 +3,9 @@
 # Graphite writer
 if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
 	echo "=> Enabling Icinga2 graphite writer"
+
 	icinga2 feature enable graphite
+
 	cat >/etc/icinga2/features-available/graphite.conf <<-END
 	/**
 	 * The GraphiteWriter type writes check result metrics and

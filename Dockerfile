@@ -50,9 +50,12 @@ RUN wget --quiet -O - https://packages.icinga.org/icinga.key \
 
 ADD content/ /
 
-RUN chmod u+x /opt/supervisor/mysql_supervisor /opt/supervisor/icinga2_supervisor /opt/supervisor/apache2_supervisor /opt/run \
-    && cp -R /etc/icingaweb2/* /etc/icingaweb2.dist \
-    && rm -rf /etc/icingaweb2 \
+RUN    mv /etc/icingaweb2/ /etc/icingaweb2.dist \
+    && mkdir /etc/icingaweb2 \
+    && mv /etc/icinga2/ /etc/icinga2.dist \
+    && mkdir /etc/icinga2 \
+    && usermod -aG icingaweb2 www-data \
+    && usermod -aG nagios www-data \
     && chmod u+s,g+s \
         /bin/ping \
         /bin/ping6 \

@@ -67,6 +67,8 @@ ICINGA2_FEATURE_GRAPHITE - false (default).  Set to true or 1 to enable graphite
 ICINGA2_FEATURE_GRAPHITE_HOST - graphite (default).  Set to link name, hostname, or IP address where Carbon daemon is running
 ICINGA2_FEATURE_GRAPHITE_PORT - 2003 (default).  Carbon port
 DIRECTOR_KICKSTART - true (default).  Set to false to disable director auto kickstart at container startup
+ICINGAWEB2_ADMIN_USER - Icingaweb2 Login User
+ICINGAWEB2_ADMIN_PASS - Icingaweb2 Login Password
 
 ```
 

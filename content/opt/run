@@ -6,6 +6,9 @@ export IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
 export ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
 export DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:-$(pwgen -s 15 1)}
 export DIRECTOR_API_PASSWORD=${DIRECTOR_API_PASSWORD:-$(pwgen -s 15 1)}
+export ICINGAWEB2_ADMIN_USER=${ICINGAWEB2_ADMIN_USER:-"icingaadmin"}
+export ICINGAWEB2_ADMIN_PASS=${ICINGAWEB2_ADMIN_PASS:-"icinga"}
+export ICINGAWEB2_ADMIN_PASS_HASH=$(openssl passwd -1 "${ICINGAWEB2_ADMIN_PASS}")
 
 if [ -f /opt/custom_run ]; then
     chmod u+x /opt/custom_run
@@ -37,7 +40,7 @@ if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}
 fi
 )
 
-Icinga Web 2 (/icingaweb2) default credentials: icingaadmin:icinga
+Icinga Web 2 (/icingaweb2) default credentials: ${ICINGAWEB2_ADMIN_USER}:${ICINGAWEB2_ADMIN_PASS}
 ===================================================================
 
 Starting Supervisor.

@@ -1,7 +1,6 @@
 #!/bin/bash
 
-[[ ! -L /etc/icingaweb2/enabledModules/director ]] \
-	&& ln -sT /etc/icingaweb2/modules/director /etc/icingaweb2/enabledModules/director
+icingacli module enable director
 
 # director
 mysql <<-END

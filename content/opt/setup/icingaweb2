@@ -13,11 +13,8 @@ mkdir -p /var/log/icingaweb2
 chown -R www-data:adm /var/log/icingaweb2
 
 # enable modules
-[[ ! -L /etc/icingaweb2/enabledModules/monitoring ]] \
-	&& ln -sT /etc/icingaweb2/modules/monitoring /etc/icingaweb2/enabledModules/monitoring
-
-[[ ! -L /etc/icingaweb2/enabledModules/doc ]] \
-	&& ln -sT /etc/icingaweb2/modules/doc /etc/icingaweb2/enabledModules/doc
+icingacli module enable monitoring
+icingacli module enable doc
 
 # grant access to DBs
 mysql <<-END

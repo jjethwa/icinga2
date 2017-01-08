@@ -95,28 +95,40 @@ For enabling of SSL support, just add a volume to `/etc/apache2/ssl`, which cont
 - `icinga2.key`: The corresponding private key
 - `icinga2.chain` (optional): If a certificate chain is needed, add this file. Consult your CA-vendor for additional info.
 
-## Environment variables & Volumes
+## Environment variables Reference
 
-```
-ICINGA_PASSWORD - MySQL password for icinga
-ICINGAWEB2_PASSWORD - MySQL password for icingaweb2
-DIRECTOR_PASSWORD - MySQL password for icinga director
-IDO_PASSWORD - MySQL password for ido
-DEBIAN_SYS_MAINT_PASSWORD
-ICINGA2_FEATURE_GRAPHITE - false (default).  Set to true or 1 to enable graphite writer
-ICINGA2_FEATURE_GRAPHITE_HOST - graphite (default).  Set to link name, hostname, or IP address where Carbon daemon is running
-ICINGA2_FEATURE_GRAPHITE_PORT - 2003 (default).  Carbon port
-ICINGA2_FEATURE_GRAPHITE_URL - http://{ICINGA2_FEATURE_GRAPHITE_HOST} (default). Web-URL for Graphite
-DIRECTOR_KICKSTART - true (default).  Set to false to disable director auto kickstart at container startup
-ICINGAWEB2_ADMIN_USER - Icingaweb2 Login User After changing the username, you should also remove the old User in icingaweb2-> Configuration-> Authentication-> Users
-ICINGAWEB2_ADMIN_PASS - Icingaweb2 Login Password
+| Environmental Variable | Default Value | Description |
+| ---------------------- | ------------- | ----------- |
+| `ICINGA_PASSWORD` | *randomly generated* | MySQL password for icinga |
+| `ICINGAWEB2_PASSWORD` | *randomly generated* | MySQL password for icingaweb2 |
+| `DIRECTOR_PASSWORD` | *randomly generated* | MySQL password for icinga director |
+| `IDO_PASSWORD` | *randomly generated* | MySQL password for ido |
+| `DEBIAN_SYS_MAINT_PASSWORD` | *randomly generated* | Password for debian-syst-maint account |
+| `ICINGA2_FEATURE_GRAPHITE` | false | Set to true or 1 to enable graphite writer |
+| `ICINGA2_FEATURE_GRAPHITE_HOST` | graphite | hostname or IP address where Carbon/Graphite daemon is running |
+| `ICINGA2_FEATURE_GRAPHITE_PORT` | 2003 | Carbon port for graphite |
+| `ICINGA2_FEATURE_GRAPHITE_URL` | http://${ICINGA2_FEATURE_GRAPHITE_HOST} | Web-URL for Graphite |
+| `DIRECTOR_KICKSTART` | true |  Set to false to disable director auto kickstart at container startup |
+| `ICINGAWEB2_ADMIN_USER` | icingaadmin | Icingaweb2 Login User<br>*After changing the username, you should also remove the old User in icingaweb2-> Configuration-> Authentication-> Users* |
+| `ICINGAWEB2_ADMIN_PASS` | icinga | Icingaweb2 Login Password |
+| `ICINGA2_USER_FULLNAME` | Icinga | Sender's display-name for notification e-Mails |
 
-```
+## Volume Reference
 
-```
-/etc/apache2/ssl
-/etc/icinga2
-/etc/icingaweb2
-/var/lib/mysql
-/var/lib/icinga2
-```
+All these folders are configured and able to get mounted as volume. The bottom ones are not quite neccessary.
+
+| Volume | ro/rw | Description & Usage |
+| ------ | ----- | ------------------- |
+| /etc/apache2/ssl | **ro** |  Mount optional SSL-Certificates (see SSL Support) |
+| /etc/ssmtp/revaliases | **ro** | revaliases map (see Sending Notification Mails) |
+| /etc/ssmtp/ssmtp.conf | **ro** | ssmtp configufation (see Sending Notification Mails) |
+| /etc/icinga2 | rw | Icinga2 configuration folder |
+| /etc/icingaweb2 | rw | Icingaweb2 configuration folder |
+| /var/lib/mysql | rw | MySQL Database |
+| /var/lib/icinga2 | rw | Icinga2 Data |
+| /var/log/apache2 | rw | logfolder for apache2 (not neccessary) |
+| /var/log/icinga2 | rw | logfolder for icinga2 (not neccessary) |
+| /var/log/icingaweb2 | rw | logfolder for icingaweb2 (not neccessary) |
+| /var/log/mysql | rw | logfolder for mysql (not neccessary) |
+| /var/spool/icinga2 | rw | spool-folder for icinga2 (not neccessary) |
+| /var/cache/icinga2 | rw | cache-folder for icinga2 (not neccessary) |

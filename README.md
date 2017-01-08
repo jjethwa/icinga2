@@ -8,7 +8,7 @@ image.
 
 1. Based on debian:jessie
 1. Supervisor, Apache2, MySQL, icinga2, icingacli, icingaweb2, and icingaweb2 director module
-1. No SSH.  Use docker [exec](https://docs.docker.com/engine/reference/commandline/exec/) or [nsenter](https://github.com/jpetazzo/nsenter)
+1. No SSH. Use docker [exec](https://docs.docker.com/engine/reference/commandline/exec/) or [nsenter](https://github.com/jpetazzo/nsenter)
 1. If passwords are not supplied, they will be randomly generated and shown via stdout.
 
 ## Automated build
@@ -45,7 +45,7 @@ sudo docker run --link graphite:graphite -e ICINGA2_FEATURE_GRAPHITE=true -e ICI
 
 ## Icinga Director
 
-The [Icinga Director](https://github.com/Icinga/icingaweb2-module-director) Icinga Web 2 module is installed and enabled by default.  You can disable the automatic kickstart when the container starts by setting the DIRECTOR_KICKSTART variable to false.  To customize the kickstart settings, modify the /etc/icingaweb2/modules/director/kickstart.ini 
+The [Icinga Director](https://github.com/Icinga/icingaweb2-module-director) Icinga Web 2 module is installed and enabled by default.  You can disable the automatic kickstart when the container starts by setting the DIRECTOR_KICKSTART variable to false.  To customize the kickstart settings, modify the /etc/icingaweb2/modules/director/kickstart.ini
 
 ## SSL Support
 
@@ -68,7 +68,7 @@ ICINGA2_FEATURE_GRAPHITE_HOST - graphite (default).  Set to link name, hostname,
 ICINGA2_FEATURE_GRAPHITE_PORT - 2003 (default).  Carbon port
 ICINGA2_FEATURE_GRAPHITE_URL - http://{ICINGA2_FEATURE_GRAPHITE_HOST} (default). Web-URL for Graphite
 DIRECTOR_KICKSTART - true (default).  Set to false to disable director auto kickstart at container startup
-ICINGAWEB2_ADMIN_USER - Icingaweb2 Login User
+ICINGAWEB2_ADMIN_USER - Icingaweb2 Login User After changing the username, you should also remove the old User in icingaweb2-> Configuration-> Authentication-> Users
 ICINGAWEB2_ADMIN_PASS - Icingaweb2 Login Password
 
 ```

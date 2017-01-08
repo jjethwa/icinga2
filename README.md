@@ -47,6 +47,46 @@ sudo docker run --link graphite:graphite -e ICINGA2_FEATURE_GRAPHITE=true -e ICI
 
 The [Icinga Director](https://github.com/Icinga/icingaweb2-module-director) Icinga Web 2 module is installed and enabled by default.  You can disable the automatic kickstart when the container starts by setting the DIRECTOR_KICKSTART variable to false.  To customize the kickstart settings, modify the /etc/icingaweb2/modules/director/kickstart.ini
 
+## Sending Notification Mails
+
+The container has `ssmtp` installed, which forwards mails to a preconfigured static server.
+
+You have to create the files `ssmtp.conf` for general configuration and `revaliases` (mapping from local Unix-user to mail-address).
+
+```
+# ssmtp.conf
+root=<E-Mail address to use on>
+mailhub=smtp.<YOUR_MAILBOX>:587
+UseSTARTTLS=YES
+AuthUser=<Username for authentication (mostly the complete e-Mail-address)>
+AuthPass=<YOUR_PASSWORD>
+FromLineOverride=NO
+```
+**But be careful, ssmtp is not able to process special chars within the password correctly!**
+
+`revaliases` follows the format: `Unix-user:e-Mail-address:server`.
+Therefore the e-Mail-address has to match the `root`'s value in `ssmtp.conf`
+Also server has to match mailhub from `ssmtp.conf` **but without the port**.
+
+```
+# revaliases
+root:<VALUE_FROM_ROOT>:smtp.<YOUR_MAILBOX>
+nagios:<VALUE_FROM_ROOT>:smtp.<YOUR_MAILBOX>
+www-data:<VALUE_FROM_ROOT>:smtp.<YOUR_MAILBOX>
+```
+
+These files have to get mounted into the container. Add these flags to your `docker run`-command:
+```
+-v $(pwd)/revaliases:/etc/ssmtp/revaliases:ro
+-v $(pwd)/ssmtp.conf:/etc/ssmtp/ssmtp.conf:ro
+```
+
+If you want to change the display-name of sender-address, you have to define the variable `ICINGA2_USER_FULLNAME`.
+
+If this does not work, please ask your provider for the correct mail-settings or consider the [ssmtp.conf(5)-manpage](https://linux.die.net/man/5/ssmtp.conf) or Section ["Reverse Aliases" on ssmtp(8)](https://linux.die.net/man/8/ssmtp).
+Also you can debug your config, by executing inside your container `ssmtp -v $address` and pressing 2x Enter.
+It will send an e-Mail to `$address` and give verbose log and all error-messages.
+
 ## SSL Support
 
 For enabling of SSL support, just add a volume to `/etc/apache2/ssl`, which contains these files:

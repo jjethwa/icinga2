@@ -24,7 +24,7 @@ if [ ! -f /etc/icinga2/pki/$(hostname).key ]; then
 	icinga2 node setup --master
 fi
 
-chfn -f "nagios at $(hostname)" nagios
+chfn -f "${ICINGA2_USER_FULLNAME}" nagios
 
 # MySQL installation
 mysql <<-END

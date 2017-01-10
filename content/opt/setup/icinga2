@@ -13,6 +13,8 @@ mkdir -p /var/lib/icinga2/api/zones
 mkdir -p /var/lib/icinga2/api/log
 mkdir -p /var/lib/icinga2/api/repository
 chown -R nagios:nagios /var/lib/icinga2
+chown -R nagios:nagios /var/spool/icinga2
+chown -R nagios:nagios /var/cache/icinga2
 
 chown -R nagios:root /etc/icinga2
 

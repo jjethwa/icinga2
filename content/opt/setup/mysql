@@ -1,6 +1,7 @@
 #!/bin/bash
 
 chown -R mysql:mysql /var/lib/mysql
+chown -R mysql:mysql /var/log/mysql
 
 if [ ! "$(ls -A /var/lib/mysql)" ]; then
 	echo "=>MySQL datadir is empty...initializing"

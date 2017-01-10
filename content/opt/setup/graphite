@@ -21,5 +21,8 @@ if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}
 
 else
 	# Actively disable graphite, to not hit any weird bugs
+	# Currently icinga2 gives weird error-messages when disabling a disabled feature
+	# https://dev.icinga.com/issues/13903
+	[ -e /etc/icinga2/features-enabled/graphite.conf ] && \
 	icinga2 feature disable graphite
 fi

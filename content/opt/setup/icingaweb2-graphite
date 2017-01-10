@@ -11,5 +11,7 @@ if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}
 
 else
 	# Actively disable graphite, to not hit any weird bugs
+	# Currently icingacli gives weird error-messages when disabling a disabled feature
+	[ -e /etc/icingaweb2/enabledModules/graphite ] && \
 	icingacli module disable graphite
 fi

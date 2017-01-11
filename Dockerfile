@@ -30,6 +30,7 @@ RUN apt-get -qq update \
           php5-mysql \
           procps \
           pwgen \
+          snmp \
           ssmtp \
           sudo \
           supervisor \

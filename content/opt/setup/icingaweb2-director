@@ -9,7 +9,7 @@ if [ "${ICINGA2_FEATURE_DIRECTOR}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR}
 		CREATE DATABASE IF NOT EXISTS director CHARACTER SET 'utf8';
 		GRANT ALL ON director.* TO director@localhost IDENTIFIED BY '${DIRECTOR_PASSWORD}';
 	END
-	mysql director < /etc/icingaweb2/modules/director/schema/mysql.sql >> /var/log/icingaweb2/director-schema.log 2>&1
+	mysql director < /usr/local/share/icingaweb2/modules/director/schema/mysql.sql >> /var/log/icingaweb2/director-schema.log 2>&1
 
 	ini_set /etc/icingaweb2/resources.ini director password "${DIRECTOR_PASSWORD}"
 

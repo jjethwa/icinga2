@@ -102,6 +102,10 @@ For enabling of SSL support, just add a volume to `/etc/apache2/ssl`, which cont
 - `icinga2.key`: The corresponding private key
 - `icinga2.chain` (optional): If a certificate chain is needed, add this file. Consult your CA-vendor for additional info.
 
+# Adding own modules
+
+To use your own modules, you're able to install these into `enabledModules`-folder of your `/etc/icingaweb2` volume.
+
 ## Environment variables Reference
 
 | Environmental Variable | Default Value | Description |

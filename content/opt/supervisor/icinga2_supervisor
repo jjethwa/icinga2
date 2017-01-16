@@ -10,11 +10,12 @@ echo "`date +"%d.%m.%Y %T.%3N"` - Starting icinga2"
 
 /etc/init.d/icinga2 start
 
-# Director Kickstart
-DIRECTOR_KICKSTART=${DIRECTOR_KICKSTART:-"true"}
-if [ "${DIRECTOR_KICKSTART}" == "true" ]; then
-   sleep 30 && icingacli director kickstart run
-fi;
+# Kickstart is only possible after icinga2 start -> not in setup script
+if [ "${ICINGA2_FEATURE_DIRECTOR}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR}" == "1" ]; then
+	if [ "${ICINGA2_FEATURE_DIRECTOR_KICKSTART}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR_KICKSTART}" == "1" ]; then
+		icingacli director kickstart run
+	fi
+fi
 
 # Allow any signal which would kill a process to stop server
 trap shutdown HUP INT QUIT ABRT KILL ALRM TERM TSTP

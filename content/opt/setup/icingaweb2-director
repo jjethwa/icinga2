@@ -1,18 +1,35 @@
 #!/bin/bash
 
-# director
-mysql <<-END
-  CREATE DATABASE IF NOT EXISTS director CHARACTER SET 'utf8';
-  GRANT ALL ON director.* TO director@localhost IDENTIFIED BY '${DIRECTOR_PASSWORD}';
-END
-mysql director < /etc/icingaweb2/modules/director/schema/mysql.sql >> /var/log/icingaweb2/director-schema.log 2>&1
+if [ "${ICINGA2_FEATURE_DIRECTOR}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR}" == "1" ]; then
 
-ini_set /etc/icingaweb2/resources.ini director password "${DIRECTOR_PASSWORD}"
-if [[ $(grep director /etc/icinga2/conf.d/api-users.conf) ]]; then
-	echo "=> Director Icinga2 API user exists /etc/icinga2/conf.d/api-users.conf"
+	icingacli module enable director
+
+	# director
+	mysql <<-END
+		CREATE DATABASE IF NOT EXISTS director CHARACTER SET 'utf8';
+		GRANT ALL ON director.* TO director@localhost IDENTIFIED BY '${DIRECTOR_PASSWORD}';
+	END
+	mysql director < /etc/icingaweb2/modules/director/schema/mysql.sql >> /var/log/icingaweb2/director-schema.log 2>&1
+
+	ini_set /etc/icingaweb2/resources.ini director password "${DIRECTOR_PASSWORD}"
+
+	cat > /tmp/icinga2-api-user.conf <<-END
+	object ApiUser "${ICINGA2_FEATURE_DIRECTOR_USER}" {
+	  password = "${ICINGA2_FEATURE_DIRECTOR_PASS}"
+	  permissions = [ "*" ]
+	}
+	END
+
+	[ ! -L /etc/icinga2/conf.d/api-user.conf ] && \
+		ln -sT /tmp/icinga2-api-user.conf /etc/icinga2/conf.d/api-user.conf
+
+	ini_set /etc/icingaweb2/modules/director/kickstart.ini config endpoint "$(hostname)"
+	ini_set /etc/icingaweb2/modules/director/kickstart.ini config username "${ICINGA2_FEATURE_DIRECTOR_USER}"
+	ini_set /etc/icingaweb2/modules/director/kickstart.ini config password "${ICINGA2_FEATURE_DIRECTOR_PASS}"
+
 else
-	cat /etc/icingaweb2/modules/director/director.api >> /etc/icinga2/conf.d/api-users.conf
+	[ ! -L /etc/icinga2/conf.d/api-user.conf ] && \
+	rm /etc/icinga2/conf.d/api-user.conf
+	[ -e /etc/icingaweb2/enabledModules/director ] && \
+	icingacli module disable director
 fi
-sed -i 's,directorapi,'${DIRECTOR_API_PASSWORD}',g' /etc/icinga2/conf.d/api-users.conf
-ini_set /etc/icingaweb2/modules/director/kickstart.ini config endpoint "$(hostname)"
-ini_set /etc/icingaweb2/modules/director/kickstart.ini config password "${DIRECTOR_API_PASSWORD}"

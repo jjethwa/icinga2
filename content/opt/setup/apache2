@@ -12,8 +12,8 @@ if [ -f /etc/apache2/ssl/icinga2.crt -a -f /etc/apache2/ssl/icinga2.key ]; then
 		echo > /etc/apache2/ssl/icinga2.chain
 	fi
 	a2enmod ssl
-	a2ensite docker-ssl
+	a2ensite icingaweb2-ssl
 	chown www-data:www-data /etc/apache2/ssl/icinga2.{crt,key}
 else
-	a2dissite docker-ssl
+	a2dissite icingaweb2-ssl
 fi

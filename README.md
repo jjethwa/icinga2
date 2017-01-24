@@ -102,6 +102,8 @@ For enabling of SSL support, just add a volume to `/etc/apache2/ssl`, which cont
 - `icinga2.key`: The corresponding private key
 - `icinga2.chain` (optional): If a certificate chain is needed, add this file. Consult your CA-vendor for additional info.
 
+For https-redirection or http/https dualstack consult `APACHE2_HTTP` env-variable.
+
 # Adding own modules
 
 To use your own modules, you're able to install these into `enabledModules`-folder of your `/etc/icingaweb2` volume.
@@ -123,6 +125,7 @@ To use your own modules, you're able to install these into `enabledModules`-fold
 | `ICINGAWEB2_ADMIN_USER` | icingaadmin | Icingaweb2 Login User<br>*After changing the username, you should also remove the old User in icingaweb2-> Configuration-> Authentication-> Users* |
 | `ICINGAWEB2_ADMIN_PASS` | icinga | Icingaweb2 Login Password |
 | `ICINGA2_USER_FULLNAME` | Icinga | Sender's display-name for notification e-Mails |
+| `APACHE2_HTTP` | `REDIRECT` | **Variable is only active, if both SSL-certificate and SSL-key are in place.** `BOTH`: Allow HTTP and https connections simulateously. `REDIRECT`: Rewrite HTTP-requests to HTTPS |
 
 ## Volume Reference
 

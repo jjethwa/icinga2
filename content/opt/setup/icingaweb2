@@ -12,6 +12,9 @@ chown -R www-data:icingaweb2 /etc/icingaweb2
 mkdir -p /var/log/icingaweb2
 chown -R www-data:adm /var/log/icingaweb2
 
+mkdir -p /var/lib/php5/sessions
+chown -R www-data:www-data /var/lib/php5/sessions
+
 # enable modules
 icingacli module enable monitoring
 icingacli module enable doc

@@ -35,6 +35,15 @@ Start a new container and bind to host's port 80
 
 Icinga Web 2 can be accessed at [http://localhost/icingaweb2](http://localhost/icingaweb2) with the credentials *icingaadmin*:*icinga* (if not set differently via variables).
 
+### Saving PHP Sessions
+
+If you want to save your php-sessions over multiple boots, mount `/var/lib/php5/sessions/` into your container. Session files will get saved there.
+
+example:
+```
+docker run [...] -v $PWD/icingaweb2-sessions:/var/lib/php5/sessions/ jordan/icinga2
+```
+
 ## Graphite
 
 The graphite writer can be enabled by setting the `ICINGA2_FEATURE_GRAPHITE` variable to `true` or `1` and also supplying values for `ICINGA2_FEATURE_GRAPHITE_HOST` and `ICINGA2_FEATURE_GRAPHITE_PORT`. This container does not have graphite and the carbon daemons installed so `ICINGA2_FEATURE_GRAPHITE_HOST` should not be set to `localhost`.
@@ -140,6 +149,7 @@ All these folders are configured and able to get mounted as volume. The bottom o
 | /etc/icingaweb2 | rw | Icingaweb2 configuration folder |
 | /var/lib/mysql | rw | MySQL Database |
 | /var/lib/icinga2 | rw | Icinga2 Data |
+| /var/lib/php5/sessions/ | rw | Icingaweb2 PHP Session Files |
 | /var/log/apache2 | rw | logfolder for apache2 (not neccessary) |
 | /var/log/icinga2 | rw | logfolder for icinga2 (not neccessary) |
 | /var/log/icingaweb2 | rw | logfolder for icingaweb2 (not neccessary) |

@@ -154,5 +154,6 @@ All these folders are configured and able to get mounted as volume. The bottom o
 | /var/log/icinga2 | rw | logfolder for icinga2 (not neccessary) |
 | /var/log/icingaweb2 | rw | logfolder for icingaweb2 (not neccessary) |
 | /var/log/mysql | rw | logfolder for mysql (not neccessary) |
+| /var/log/supervisor | rw | logfolder for supervisord (not neccessary) |
 | /var/spool/icinga2 | rw | spool-folder for icinga2 (not neccessary) |
 | /var/cache/icinga2 | rw | cache-folder for icinga2 (not neccessary) |

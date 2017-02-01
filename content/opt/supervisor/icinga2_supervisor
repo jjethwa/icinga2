@@ -1,14 +1,6 @@
 #!/bin/bash
 
-function shutdown()
-{
-    echo "`date +"%d.%m.%Y %T.%3N"` - Shutting down icinga2"
-    /etc/init.d/icinga2 stop
-}
-
-echo "`date +"%d.%m.%Y %T.%3N"` - Starting icinga2"
-
-/etc/init.d/icinga2 start
+service icinga2 start
 
 # Kickstart is only possible after icinga2 start -> not in setup script
 if [ "${ICINGA2_FEATURE_DIRECTOR}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR}" == "1" ]; then
@@ -18,6 +10,6 @@ if [ "${ICINGA2_FEATURE_DIRECTOR}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR}
 fi
 
 # Allow any signal which would kill a process to stop server
-trap shutdown HUP INT QUIT ABRT KILL ALRM TERM TSTP
+trap "service icinga2 stop" HUP INT QUIT ABRT KILL ALRM TERM TSTP
 
 while pgrep -u nagios icinga2 > /dev/null; do sleep 5; done

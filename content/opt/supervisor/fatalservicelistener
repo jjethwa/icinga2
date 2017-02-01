@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# eventlistener to shutdown on first service event
+# configured on events PROCESS_STATE_FATAL, it shuts down
+# on first failing service. Useful for docker-containers
+
+# Report readiness to supervisord
+echo READY
+
+# Wait for first input (first fatal event)
+read line
+
+# and finally shutdown
+supervisorctl shutdown

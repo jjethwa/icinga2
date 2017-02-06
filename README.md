@@ -117,6 +117,10 @@ For https-redirection or http/https dualstack consult `APACHE2_HTTP` env-variabl
 
 To use your own modules, you're able to install these into `enabledModules`-folder of your `/etc/icingaweb2` volume.
 
+# RaspberryPi-Support
+
+The docker-image is also working on RaspberryPi, Odroid C2 and other ARM devices. Checkout the [arm-tags on docker hub](https://hub.docker.com/r/jordan/icinga2/tags/).
+
 ## Environment variables Reference
 
 | Environmental Variable | Default Value | Description |

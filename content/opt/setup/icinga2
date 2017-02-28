@@ -22,7 +22,7 @@ chown -R nagios:root /etc/icinga2
 icinga2 feature enable ido-mysql livestatus compatlog command
 
 #icinga2 API cert - regenerate new private key and certificate when running in a new container
-if [ ! -f /etc/icinga2/pki/$(hostname).key ]; then
+if [ ! -f "/etc/icinga2/pki/$(hostname).key" ]; then
 	icinga2 node setup --master
 fi
 

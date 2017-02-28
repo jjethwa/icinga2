@@ -4,7 +4,7 @@ mkdir -p /var/log/apache2
 chown -R www-data:adm /var/log/apache2
 
 # Enable SSL support if certificates are mounted
-if [ -f /etc/apache2/ssl/icinga2.crt -a -f /etc/apache2/ssl/icinga2.key ]; then
+if [ -f /etc/apache2/ssl/icinga2.crt ] && [ -f /etc/apache2/ssl/icinga2.key ]; then
 
 	# If there is no chain needed, we have to generate an empty
 	# file with a single line to interpret it correctly as "no chain"

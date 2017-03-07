@@ -79,7 +79,7 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/aws -f - icingaweb2-module-aws-${GITREF_MODAWS}/ \
     && wget -q --no-cookies "https://github.com/aws/aws-sdk-php/releases/download/2.8.30/aws.zip" \
     && unzip -d /usr/local/share/icingaweb2/modules/aws/library/vendor/aws aws.zip \
-    && rm aws.zip
+    && rm aws.zip \
 # Final fixes
     && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
     && mkdir /etc/icingaweb2 \

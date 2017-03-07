@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# Graphite writer
+if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
+	echo "=> Enabling Icingaweb2 graphite module"
+
+	# icingaweb-graphite
+	icingacli module enable graphite
+
+	ini_set /etc/icingaweb2/modules/graphite/config.ini graphite web_url "${ICINGA2_FEATURE_GRAPHITE_URL}"
+
+else
+	# Actively disable graphite, to not hit any weird bugs
+	# Currently icingacli gives weird error-messages when disabling a disabled feature
+	[ -e /etc/icingaweb2/enabledModules/graphite ] && \
+	icingacli module disable graphite
+fi

@@ -1,0 +1,22 @@
+#!/usr/bin/python2
+
+import ConfigParser
+import argparse
+
+parser = argparse.ArgumentParser(description='Set values in ini-files.')
+
+parser.add_argument('file',    metavar='FILE',      help='Filename of ini-file.')
+parser.add_argument('section', metavar='SECTION',   help='Section in your ini-file. Pass "" to have no section.')
+parser.add_argument('option',  metavar='OPTION',    help='Option to process.')
+parser.add_argument('value',   metavar='VALUE',     help='Value to set your option.')
+
+args = parser.parse_args()
+
+config = ConfigParser.ConfigParser()
+config.read(args.file)
+
+if not config.has_section(args.section):
+    config.add_section(args.section)
+
+config.set(args.section, args.option, args.value)
+config.write(open(args.file, 'w'))

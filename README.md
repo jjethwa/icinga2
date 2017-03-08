@@ -17,6 +17,7 @@ This build is automated by push for the git-repo. Just crawl it via:
    - icingaweb2
    - icingaweb2-director module
    - icingaweb2-graphite module
+   - icingaweb2-module-aws
    - ssmtp
    - MySQL
    - Supervisor

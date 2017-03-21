@@ -73,6 +73,7 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/graphite -f - icingaweb2-module-graphite-${GITREF_MODGRAPHITE}/ \
     && cp -r /usr/local/share/icingaweb2/modules/graphite/sample-config/icinga2/ /etc/icingaweb2/modules/graphite \
 # Final fixes
+    && sed -i 's/vars\.os.*/vars.os = "Docker"/' /etc/icinga2/conf.d/hosts.conf \
     && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
     && mkdir /etc/icingaweb2 \
     && mv /etc/icinga2/ /etc/icinga2.dist \

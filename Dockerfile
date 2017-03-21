@@ -81,6 +81,7 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     && unzip -d /usr/local/share/icingaweb2/modules/aws/library/vendor/aws aws.zip \
     && rm aws.zip \
 # Final fixes
+    && sed -i 's/vars\.os.*/vars.os = "Docker"/' /etc/icinga2/conf.d/hosts.conf \
     && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
     && mkdir /etc/icingaweb2 \
     && mv /etc/icinga2/ /etc/icinga2.dist \

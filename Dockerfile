@@ -54,6 +54,7 @@ RUN wget --quiet -O - https://packages.icinga.org/icinga.key \
           icingacli \
           icingaweb2 \
           monitoring-plugins \
+          nagios-nrpe-plugin \
      && apt-get clean \
      && rm -rf /var/lib/apt/lists/*
 

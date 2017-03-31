@@ -131,7 +131,7 @@ To use your own modules, you're able to install these into `enabledModules`-fold
 | `ICINGA2_FEATURE_GRAPHITE_HOST` | graphite | hostname or IP address where Carbon/Graphite daemon is running |
 | `ICINGA2_FEATURE_GRAPHITE_PORT` | 2003 | Carbon port for graphite |
 | `ICINGA2_FEATURE_GRAPHITE_URL` | http://${ICINGA2_FEATURE_GRAPHITE_HOST} | Web-URL for Graphite |
-| `DIRECTOR_KICKSTART` | true | Set to false to disable director auto kickstart at container startup |
+| `ICINGA2_FEATURE_DIRECTOR` | true | Set to false to disable director auto kickstart at container startup |
 | `ICINGAWEB2_ADMIN_USER` | icingaadmin | Icingaweb2 Login User<br>*After changing the username, you should also remove the old User in icingaweb2-> Configuration-> Authentication-> Users* |
 | `ICINGAWEB2_ADMIN_PASS` | icinga | Icingaweb2 Login Password |
 | `ICINGA2_USER_FULLNAME` | Icinga | Sender's display-name for notification e-Mails |

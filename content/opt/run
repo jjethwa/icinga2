@@ -48,6 +48,8 @@ Icinga Web 2 (/icingaweb2) default credentials: ${ICINGAWEB2_ADMIN_USER}:${ICING
 Starting Supervisor.
 END
 
+icinga2 daemon --validate
+
 /usr/bin/supervisord -c /etc/supervisor/supervisord.conf -n &
 trap "supervisorctl shutdown && wait" SIGTERM
 wait

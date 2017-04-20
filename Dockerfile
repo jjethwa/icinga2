@@ -6,7 +6,6 @@ FROM debian:jessie
 MAINTAINER Jordan Jethwa
 
 ENV APACHE2_HTTP=REDIRECT \
-    DEBIAN_FRONTEND=noninteractive \
     ICINGA2_FEATURE_GRAPHITE=false \
     ICINGA2_FEATURE_GRAPHITE_HOST=graphite \
     ICINGA2_FEATURE_GRAPHITE_PORT=2003 \
@@ -21,9 +20,10 @@ ARG GITREF_DIRECTOR=master
 ARG GITREF_MODGRAPHITE=master
 ARG GITREF_MODAWS=master
 
-RUN apt-get -qq update \
-     && apt-get -qqy upgrade \
-     && apt-get -qqy install --no-install-recommends \
+RUN export DEBIAN_FRONTEND=noninteractive \
+     && apt-get update \
+     && apt-get upgrade -y \
+     && apt-get install -y --no-install-recommends \
           apache2 \
           ca-certificates \
           curl \
@@ -44,11 +44,13 @@ RUN apt-get -qq update \
      && apt-get clean \
      && rm -rf /var/lib/apt/lists/*
 
-RUN wget --quiet -O - https://packages.icinga.org/icinga.key \
+RUN export DEBIAN_FRONTEND=noninteractive \
+     && wget --quiet -O - https://packages.icinga.org/icinga.key \
      | apt-key add - \
      && echo "deb http://packages.icinga.org/debian icinga-jessie main" > /etc/apt/sources.list.d/icinga2.list \
-     && apt-get -qq update \
-     && apt-get -qqy install --no-install-recommends \
+     && export DEBIAN_FRONTEND=noninteractive \
+     && apt-get update \
+     && apt-get install -y --no-install-recommends \
           icinga2 \
           icinga2-ido-mysql \
           icingacli \

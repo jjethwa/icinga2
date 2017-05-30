@@ -15,11 +15,6 @@ ENV APACHE2_HTTP=REDIRECT \
     ICINGA2_FEATURE_DIRECTOR_KICKSTART="true" \
     ICINGA2_FEATURE_DIRECTOR_USER="icinga2-director"
 
-ARG GITREF_ICINGAWEB2=master
-ARG GITREF_DIRECTOR=master
-ARG GITREF_MODGRAPHITE=master
-ARG GITREF_MODAWS=master
-
 RUN export DEBIAN_FRONTEND=noninteractive \
      && apt-get update \
      && apt-get upgrade -y \
@@ -63,6 +58,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
      && rm -rf /var/lib/apt/lists/*
 
 ADD content/ /
+
+ARG GITREF_ICINGAWEB2=master
+ARG GITREF_DIRECTOR=master
+ARG GITREF_MODGRAPHITE=master
+ARG GITREF_MODAWS=master
 
 # Temporary hack to get icingaweb2 modules via git
 RUN mkdir -p /usr/local/share/icingaweb2/modules/ \

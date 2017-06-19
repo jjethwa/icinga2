@@ -1,7 +1,7 @@
 # Dockerfile for icinga2 with icingaweb2
 # https://github.com/jjethwa/icinga2
 
-FROM debian:jessie
+FROM debian:stretch
 
 MAINTAINER Jordan Jethwa
 
@@ -27,12 +27,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
           apache2 \
           ca-certificates \
           curl \
+          gnupg \
           mailutils \
           mysql-client \
           mysql-server \
-          php5-curl \
-          php5-ldap \
-          php5-mysql \
+          php-curl \
+          php-ldap \
+          php-mysql \
           procps \
           pwgen \
           snmp \

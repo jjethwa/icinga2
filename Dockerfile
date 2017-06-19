@@ -28,6 +28,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
           ca-certificates \
           curl \
           gnupg \
+          lsb-release \
           mailutils \
           mysql-client \
           mysql-server \
@@ -48,7 +49,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 RUN export DEBIAN_FRONTEND=noninteractive \
      && wget --quiet -O - https://packages.icinga.org/icinga.key \
      | apt-key add - \
-     && echo "deb http://packages.icinga.org/debian icinga-jessie main" > /etc/apt/sources.list.d/icinga2.list \
+     && echo "deb http://packages.icinga.org/debian icinga-$(lsb_release -cs) main" > /etc/apt/sources.list.d/icinga2.list \
      && export DEBIAN_FRONTEND=noninteractive \
      && apt-get update \
      && apt-get install -y --no-install-recommends \

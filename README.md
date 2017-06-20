@@ -10,7 +10,7 @@ This build is automated by push for the git-repo. Just crawl it via:
 
 ## Image details
 
-1. Based on debian:jessie
+1. Based on debian:stretch
 1. Key-Features:
    - icinga2
    - icingacli

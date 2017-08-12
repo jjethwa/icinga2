@@ -30,8 +30,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
           gnupg \
           lsb-release \
           mailutils \
-          mysql-client \
-          mysql-server \
+          mariadb-client \
+          mariadb-server \
           php-curl \
           php-ldap \
           php-mysql \

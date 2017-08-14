@@ -30,6 +30,5 @@ if [ "${ICINGA2_FEATURE_DIRECTOR}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR}
 else
 	[ ! -L /etc/icinga2/conf.d/api-user.conf ] && \
 	rm /etc/icinga2/conf.d/api-user.conf
-	[ -e /etc/icingaweb2/enabledModules/director ] && \
 	icingacli module disable director
 fi

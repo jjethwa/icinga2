@@ -1,7 +1,7 @@
 # Dockerfile for icinga2 with icingaweb2
 # https://github.com/jjethwa/icinga2
 
-FROM debian:jessie
+FROM debian:stretch
 
 MAINTAINER Jordan Jethwa
 
@@ -22,12 +22,14 @@ RUN export DEBIAN_FRONTEND=noninteractive \
           apache2 \
           ca-certificates \
           curl \
+          gnupg \
+          lsb-release \
           mailutils \
-          mysql-client \
-          mysql-server \
-          php5-curl \
-          php5-ldap \
-          php5-mysql \
+          mariadb-client \
+          mariadb-server \
+          php-curl \
+          php-ldap \
+          php-mysql \
           procps \
           pwgen \
           snmp \
@@ -42,7 +44,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 RUN export DEBIAN_FRONTEND=noninteractive \
      && wget --quiet -O - https://packages.icinga.org/icinga.key \
      | apt-key add - \
-     && echo "deb http://packages.icinga.org/debian icinga-jessie main" > /etc/apt/sources.list.d/icinga2.list \
+     && echo "deb http://packages.icinga.org/debian icinga-$(lsb_release -cs) main" > /etc/apt/sources.list.d/icinga2.list \
      && export DEBIAN_FRONTEND=noninteractive \
      && apt-get update \
      && apt-get install -y --no-install-recommends \

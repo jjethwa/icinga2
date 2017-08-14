@@ -10,7 +10,7 @@ This build is automated by push for the git-repo. Just crawl it via:
 
 ## Image details
 
-1. Based on debian:jessie
+1. Based on debian:stretch
 1. Key-Features:
    - icinga2
    - icingacli
@@ -126,7 +126,6 @@ To use your own modules, you're able to install these into `enabledModules`-fold
 | `ICINGAWEB2_PASSWORD` | *randomly generated* | MySQL password for icingaweb2 |
 | `DIRECTOR_PASSWORD` | *randomly generated* | MySQL password for icinga director |
 | `IDO_PASSWORD` | *randomly generated* | MySQL password for ido |
-| `DEBIAN_SYS_MAINT_PASSWORD` | *randomly generated* | Password for debian-syst-maint account |
 | `ICINGA2_FEATURE_GRAPHITE` | false | Set to true or 1 to enable graphite writer |
 | `ICINGA2_FEATURE_GRAPHITE_HOST` | graphite | hostname or IP address where Carbon/Graphite daemon is running |
 | `ICINGA2_FEATURE_GRAPHITE_PORT` | 2003 | Carbon port for graphite |

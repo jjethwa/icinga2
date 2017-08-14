@@ -1,6 +1,5 @@
 #!/bin/bash
 
-export DEBIAN_SYS_MAINT_PASSWORD=${DEBIAN_SYS_MAINT_PASSWORD:-$(pwgen -s 15 1)}
 export ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
 export IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
 export ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
@@ -29,7 +28,6 @@ cat <<-END
 
 ===================================================================
 MySQL user 'root' has no password but only allows local connections
-MySQL user 'debian-sys-maint' password set to ${DEBIAN_SYS_MAINT_PASSWORD}
 MySQL user 'icinga' password set to ${ICINGA_PASSWORD}
 MySQL user 'icinga2-ido-mysq' password set to ${IDO_PASSWORD}
 MySQL user 'icingaweb2' password set to ${ICINGAWEB2_PASSWORD}

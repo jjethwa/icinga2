@@ -21,13 +21,7 @@ if [ -f /opt/custom_run ]; then
     /opt/custom_run
 fi
 
-/opt/setup/apache2
-/opt/setup/mysql
-/opt/setup/icinga2
-/opt/setup/graphite
-/opt/setup/icingaweb2
-/opt/setup/icingaweb2-director
-/opt/setup/icingaweb2-graphite
+run-parts --lsbsysinit -- /opt/setup
 
 cat <<-END
 

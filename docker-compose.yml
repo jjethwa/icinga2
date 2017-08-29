@@ -22,7 +22,7 @@ services:
       - ./icinga/etc/icingaweb2:/etc/icingaweb2
       - ./icinga/lib/icinga:/var/lib/icinga2
       - ./icinga/lib/mysql:/var/lib/mysql
-      - ./icinga/lib/php5/sessions:/var/lib/php5/sessions
+      - ./icinga/lib/php/sessions:/var/lib/php/sessions
       - ./icinga/log/apache2:/var/log/apache2
       - ./icinga/log/icinga2:/var/log/icinga2
       - ./icinga/log/icingaweb2:/var/log/icingaweb2

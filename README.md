@@ -118,6 +118,36 @@ For https-redirection or http/https dualstack consult `APACHE2_HTTP` env-variabl
 
 To use your own modules, you're able to install these into `enabledModules`-folder of your `/etc/icingaweb2` volume.
 
+# MySQL connections
+
+The container has support to run a MySQL server inside or access some external resources. By default, the MySQL server inside the container is setup, but when using the `docker-compose.yml` project, the server is located inside an extra container. Future releases will have this as the default and require an external MySQL/MariaDB container.
+
+If you use the image plain or the `docker-compose.yml` project, you don't have to worry about anything for MySQL. Only, if you want to split the container from the MySQL server, it's necessary to give some variables.
+
+## External MySQL servers
+
+If you have the image running plain or use the `docker-compose.yml` project, there is no necessity to fool around with these variables.
+
+To connect the container with the MySQL server, you have fine granular control via environment variables. For every necessary database, there is a set of variables, which describe the connection to it. In theory, the databases could get distributed over multiple hosts.
+
+All variables are a combination of the service and the property with the format `<SERVICE>_MYSQL_<PROPERTY>`, while
+
+- `<SERVICE>` can be one of `ICINGA2_IDO`, `ICINGAWEB2`, `ICINGAWEB2_DIRECTOR`
+- `<PROPERTY>` can be one of `HOST`, `PORT`, `DATA`, `USER`, `PASS`
+
+The variables default their respective `DEFAULT` service variable.
+
+- `DEFAULT_MYSQL_HOST`: The server hostname (defaults to `localhost`)
+- `DEFAULT_MYSQL_PORT`: The server port (defaults to `3306`)
+- `DEFAULT_MYSQL_DATA`: The database (defaults to *unset*, the specific services have separate DBs)
+	- `ICINGA2_IDO_MYSQL_DATA`: The database for icinga2 IDO (defaults to `icinga2idomysql`)
+	- `ICINGAWEB2_MYSQL_DATA`: The database for icingaweb2 (defaults to `icingaweb2`)
+	- `ICINGAWEB2_DIRECTOR_MYSQL_DATA`: The database for icingaweb2 director (defaults to `icingaweb2_director`)
+- `DEFAULT_MYSQL_USER`: The MySQL user to access the database (defaults to `icinga2`)
+- `DEFAULT_MYSQL_PASS`: The password for the MySQL user. (defaults to *randomly generated string*)
+
+# Reference
+
 ## Environment variables Reference
 
 | Environmental Variable | Default Value | Description |
@@ -135,6 +165,8 @@ To use your own modules, you're able to install these into `enabledModules`-fold
 | `ICINGAWEB2_ADMIN_PASS` | icinga | Icingaweb2 Login Password |
 | `ICINGA2_USER_FULLNAME` | Icinga | Sender's display-name for notification e-Mails |
 | `APACHE2_HTTP` | `REDIRECT` | **Variable is only active, if both SSL-certificate and SSL-key are in place.** `BOTH`: Allow HTTP and https connections simultaneously. `REDIRECT`: Rewrite HTTP-requests to HTTPS |
+| `MYSQL_ROOT_PASSWORD` | *unset* | If your MySQL host is not on `localhost`, but you want the icinga2 container to setup the DBs for itself, specify the root password of your MySQL server in this variable. |
+| *other MySQL variables* | *none* | All combinations of MySQL variables aren't listed in this reference. Please see above in the MySQL section for this. |
 
 ## Volume Reference
 

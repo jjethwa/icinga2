@@ -2,18 +2,55 @@
 
 . /opt/helpers
 
+CNFSUFFIX=icingaweb2director
+mysql_cnf_init_section \
+	"${CNFSUFFIX}" \
+	"${ICINGAWEB2_DIRECTOR_MYSQL_HOST}" \
+	"${ICINGAWEB2_DIRECTOR_MYSQL_PORT}" \
+	"${ICINGAWEB2_DIRECTOR_MYSQL_USER}" \
+	"${ICINGAWEB2_DIRECTOR_MYSQL_DATA}" \
+	"${ICINGAWEB2_DIRECTOR_MYSQL_PASS}"
+mysql_wait \
+	"${ICINGAWEB2_DIRECTOR_MYSQL_HOST}" \
+	"${ICINGAWEB2_DIRECTOR_MYSQL_PORT}"
+
 if evaluate_boolean "${ICINGA2_FEATURE_DIRECTOR}"; then
 
 	icingacli module enable director
 
-	# director
-	mysql <<-END
-		CREATE DATABASE IF NOT EXISTS director CHARACTER SET 'utf8';
-		GRANT ALL ON director.* TO director@localhost IDENTIFIED BY '${DIRECTOR_PASSWORD}';
-	END
-	mysql director < /usr/local/share/icingaweb2/modules/director/schema/mysql.sql >> /var/log/icingaweb2/director-schema.log 2>&1
+	# Create MySQL user on localhost or test given connection
+	if [ "${ICINGAWEB2_DIRECTOR_MYSQL_HOST}" == "localhost" ]; then
+		mysql_root <<-END
+		  CREATE DATABASE IF NOT EXISTS ${ICINGAWEB2_DIRECTOR_MYSQL_DATA}
+		    CHARACTER SET 'utf8';
+		  GRANT ALL
+		    ON ${ICINGAWEB2_DIRECTOR_MYSQL_DATA}.*
+		    TO '${ICINGAWEB2_DIRECTOR_MYSQL_USER}'@'localhost'
+		    IDENTIFIED BY '${ICINGAWEB2_DIRECTOR_MYSQL_PASS}';
+		END
+	elif [ -n "${MYSQL_ROOT_PASSWORD}" ]; then
+		mysql_root <<-END
+		  CREATE DATABASE IF NOT EXISTS ${ICINGAWEB2_DIRECTOR_MYSQL_DATA}
+		    CHARACTER SET 'utf8';
+		  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
+		    ON ${ICINGAWEB2_DIRECTOR_MYSQL_DATA}.*
+		    TO '${ICINGAWEB2_DIRECTOR_MYSQL_USER}'@'%'
+		    IDENTIFIED BY '${ICINGAWEB2_DIRECTOR_MYSQL_PASS}';
+		END
+	fi
 
-	ini_set /etc/icingaweb2/resources.ini director password "${DIRECTOR_PASSWORD}"
+	mysql_test_credentials
+
+	mysql_user \
+		< /usr/local/share/icingaweb2/modules/director/schema/mysql.sql \
+		>> /var/log/icingaweb2/director-schema.log \
+		2>&1
+
+	ini_set /etc/icingaweb2/resources.ini director host     "${ICINGAWEB2_DIRECTOR_MYSQL_HOST}"
+	ini_set /etc/icingaweb2/resources.ini director port     "${ICINGAWEB2_DIRECTOR_MYSQL_PORT}"
+	ini_set /etc/icingaweb2/resources.ini director username "${ICINGAWEB2_DIRECTOR_MYSQL_USER}"
+	ini_set /etc/icingaweb2/resources.ini director password "${ICINGAWEB2_DIRECTOR_MYSQL_PASS}"
+	ini_set /etc/icingaweb2/resources.ini director dbname   "${ICINGAWEB2_DIRECTOR_MYSQL_DATA}"
 
 	cat > /tmp/icinga2-api-user.conf <<-END
 	object ApiUser "${ICINGA2_FEATURE_DIRECTOR_USER}" {

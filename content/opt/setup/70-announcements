@@ -21,6 +21,12 @@ function announce(){
 	ALL_MESSAGES+="- ${message_console}"$'\n'
 }
 
+# From jessie to stretch, the php sessions folder changed,
+# forcing users to relogin upon container restart
+if mountpoint -q /var/lib/php5/sessions; then
+	announce "The PHP sessions folder switched to /var/lib/php/sessions (mind the missing 5 in php).\nIf you do not change, the sessions are lost after container restart."
+fi
+
 if [ "${ALL_MESSAGES}" != "" ]; then
 	cat >&2 <<-END
 	===================================================================

@@ -28,13 +28,6 @@ fi
 
 chfn -f "${ICINGA2_USER_FULLNAME}" nagios
 
-# MySQL installation
-mysql <<-END
-  CREATE DATABASE IF NOT EXISTS icinga;
-  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY '${ICINGA_PASSWORD}';
-END
-
-mysql icinga < /usr/share/icinga2-ido-mysql/schema/mysql.sql >> /var/log/icinga2/mysql-schema.log 2>&1
 
 # IDO MySQL
 cat > /etc/icinga2/features-available/ido-mysql.conf <<-END

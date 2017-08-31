@@ -122,7 +122,6 @@ To use your own modules, you're able to install these into `enabledModules`-fold
 
 | Environmental Variable | Default Value | Description |
 | ---------------------- | ------------- | ----------- |
-| `ICINGA_PASSWORD` | *randomly generated* | MySQL password for icinga |
 | `ICINGAWEB2_PASSWORD` | *randomly generated* | MySQL password for icingaweb2 |
 | `DIRECTOR_PASSWORD` | *randomly generated* | MySQL password for icinga director |
 | `IDO_PASSWORD` | *randomly generated* | MySQL password for ido |

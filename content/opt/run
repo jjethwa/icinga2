@@ -15,12 +15,6 @@ export ICINGAWEB2_ADMIN_PASS=${ICINGAWEB2_ADMIN_PASS:-"icinga"}
 export ICINGAWEB2_ADMIN_PASS_HASH=$(openssl passwd -1 "${ICINGAWEB2_ADMIN_PASS}")
 export ICINGA2_FEATURE_DIRECTOR_PASS=${ICINGA2_FEATURE_DIRECTOR_PASS:-$(pwgen -s 15 1)}
 
-if [ -f /opt/custom_run ]; then
-    chmod u+x /opt/custom_run
-    echo "=>executing /opt/custom_run"
-    /opt/custom_run
-fi
-
 run-parts --lsbsysinit -- /opt/setup
 
 cat <<-END

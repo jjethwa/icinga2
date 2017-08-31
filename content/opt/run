@@ -2,14 +2,7 @@
 
 . /opt/helpers
 
-ISSET_IDO_PASSWORD=${IDO_PASSWORD:+<set via env variable>}
-ISSET_ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:+<set via env variable>}
-ISSET_DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:+<set via env variable>}
 ISSET_ICINGAWEB2_ADMIN_PASS=${ICINGAWEB2_ADMIN_PASS:+<set via env variable>}
-
-export IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
-export ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
-export DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:-$(pwgen -s 15 1)}
 
 export ICINGAWEB2_ADMIN_USER=${ICINGAWEB2_ADMIN_USER:-"icingaadmin"}
 export ICINGAWEB2_ADMIN_PASS=${ICINGAWEB2_ADMIN_PASS:-"icinga"}
@@ -46,9 +39,6 @@ cat <<-END
 
 ===================================================================
 MySQL user 'root' has no password but only allows local connections
-MySQL user 'icinga2-ido-mysq' password set to ${ISSET_IDO_PASSWORD:-$IDO_PASSWORD}
-MySQL user 'icingaweb2' password set to ${ISSET_ICINGAWEB2_PASSWORD:-$ICINGAWEB2_PASSWORD}
-MySQL user 'director' password set to ${ISSET_DIRECTOR_PASSWORD:-$DIRECTOR_PASSWORD}
 
 $(
 if evaluate_boolean "${ICINGA2_FEATURE_GRAPHITE}"; then

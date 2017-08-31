@@ -152,9 +152,6 @@ The variables default their respective `DEFAULT` service variable.
 
 | Environmental Variable | Default Value | Description |
 | ---------------------- | ------------- | ----------- |
-| `ICINGAWEB2_PASSWORD` | *randomly generated* | MySQL password for icingaweb2 |
-| `DIRECTOR_PASSWORD` | *randomly generated* | MySQL password for icinga director |
-| `IDO_PASSWORD` | *randomly generated* | MySQL password for ido |
 | `ICINGA2_FEATURE_GRAPHITE` | false | Set to true or 1 to enable graphite writer |
 | `ICINGA2_FEATURE_GRAPHITE_HOST` | graphite | hostname or IP address where Carbon/Graphite daemon is running |
 | `ICINGA2_FEATURE_GRAPHITE_PORT` | 2003 | Carbon port for graphite |

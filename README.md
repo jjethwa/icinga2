@@ -38,11 +38,11 @@ Icinga Web 2 can be accessed at [http://localhost/icingaweb2](http://localhost/i
 
 ### Saving PHP Sessions
 
-If you want to save your php-sessions over multiple boots, mount `/var/lib/php5/sessions/` into your container. Session files will get saved there.
+If you want to save your php-sessions over multiple boots, mount `/var/lib/php/sessions/` into your container. Session files will get saved there.
 
 example:
 ```
-docker run [...] -v $PWD/icingaweb2-sessions:/var/lib/php5/sessions/ jordan/icinga2
+docker run [...] -v $PWD/icingaweb2-sessions:/var/lib/php/sessions/ jordan/icinga2
 ```
 
 ## Graphite

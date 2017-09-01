@@ -1,5 +1,15 @@
 #!/bin/bash
 
+evaluate_boolean() {
+	if [ "${1}" == "True" ] || \
+	   [ "${1}" == "true" ] || \
+	   [ "${1}" == "1" ]; then
+		echo 1
+	else
+		echo 0
+	fi
+}
+
 ISSET_IDO_PASSWORD=${IDO_PASSWORD:+<set via env variable>}
 ISSET_ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:+<set via env variable>}
 ISSET_DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:+<set via env variable>}
@@ -15,6 +25,10 @@ export ICINGAWEB2_ADMIN_PASS=${ICINGAWEB2_ADMIN_PASS:-"icinga"}
 export ICINGAWEB2_ADMIN_PASS_HASH=$(openssl passwd -1 "${ICINGAWEB2_ADMIN_PASS}")
 export ICINGA2_FEATURE_DIRECTOR_PASS=${ICINGA2_FEATURE_DIRECTOR_PASS:-$(pwgen -s 15 1)}
 
+export ICINGA2_FEATURE_GRAPHITE="$(evaluate_boolean ${ICINGA2_FEATURE_GRAPHITE})"
+export ICINGA2_FEATURE_DIRECTOR="$(evaluate_boolean ${ICINGA2_FEATURE_DIRECTOR})"
+export ICINGA2_FEATURE_DIRECTOR_KICKSTART="$(evaluate_boolean ${ICINGA2_FEATURE_DIRECTOR_KICKSTART})"
+
 run-parts --lsbsysinit -- /opt/setup
 
 cat <<-END
@@ -27,7 +41,7 @@ MySQL user 'director' password set to ${ISSET_DIRECTOR_PASSWORD:-$DIRECTOR_PASSW
 Director API password set to ${ISSET_DIRECTOR_API_PASSWORD:-$DIRECTOR_API_PASSWORD}
 
 $(
-if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
+if [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
 	echo "Graphite writer enabled and sending data to carbon agent at: ${ICINGA2_FEATURE_GRAPHITE_HOST}:${ICINGA2_FEATURE_GRAPHITE_PORT}"
 fi
 )

@@ -42,7 +42,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
      && rm -rf /var/lib/apt/lists/*
 
 RUN export DEBIAN_FRONTEND=noninteractive \
-     && wget --quiet -O - https://packages.icinga.org/icinga.key \
+     && curl -s https://packages.icinga.com/icinga.key \
      | apt-key add - \
      && echo "deb http://packages.icinga.org/debian icinga-$(lsb_release -cs) main" > /etc/apt/sources.list.d/icinga2.list \
      && export DEBIAN_FRONTEND=noninteractive \

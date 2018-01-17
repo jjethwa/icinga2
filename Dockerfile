@@ -22,6 +22,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
           apache2 \
           ca-certificates \
           curl \
+          dnsutils \
           gnupg \
           lsb-release \
           mailutils \

@@ -1,5 +1,12 @@
 #!/bin/bash
 
+ISSET_ICINGA_PASSWORD=${ICINGA_PASSWORD:+<set via env variable>}
+ISSET_IDO_PASSWORD=${IDO_PASSWORD:+<set via env variable>}
+ISSET_ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:+<set via env variable>}
+ISSET_DIRECTOR_PASSWORD=${DIRECTOR_PASSWORD:+<set via env variable>}
+ISSET_DIRECTOR_API_PASSWORD=${DIRECTOR_API_PASSWORD:+<set via env variable>}
+ISSET_ICINGAWEB2_ADMIN_PASS=${ICINGAWEB2_ADMIN_PASS:+<set via env variable>}
+
 export ICINGA_PASSWORD=${ICINGA_PASSWORD:-$(pwgen -s 15 1)}
 export IDO_PASSWORD=${IDO_PASSWORD:-$(pwgen -s 15 1)}
 export ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:-$(pwgen -s 15 1)}
@@ -28,11 +35,11 @@ cat <<-END
 
 ===================================================================
 MySQL user 'root' has no password but only allows local connections
-MySQL user 'icinga' password set to ${ICINGA_PASSWORD}
-MySQL user 'icinga2-ido-mysq' password set to ${IDO_PASSWORD}
-MySQL user 'icingaweb2' password set to ${ICINGAWEB2_PASSWORD}
-MySQL user 'director' password set to ${DIRECTOR_PASSWORD}
-Director API password set to ${DIRECTOR_API_PASSWORD}
+MySQL user 'icinga' password set to ${ISSET_ICINGA_PASSWORD:-$ICINGA_PASSWORD}
+MySQL user 'icinga2-ido-mysq' password set to ${ISSET_IDO_PASSWORD:-$IDO_PASSWORD}
+MySQL user 'icingaweb2' password set to ${ISSET_ICINGAWEB2_PASSWORD:-$ICINGAWEB2_PASSWORD}
+MySQL user 'director' password set to ${ISSET_DIRECTOR_PASSWORD:-$DIRECTOR_PASSWORD}
+Director API password set to ${ISSET_DIRECTOR_API_PASSWORD:-$DIRECTOR_API_PASSWORD}
 
 $(
 if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
@@ -40,7 +47,7 @@ if [ "${ICINGA2_FEATURE_GRAPHITE}" == "true" ] || [ "${ICINGA2_FEATURE_GRAPHITE}
 fi
 )
 
-Icinga Web 2 (/icingaweb2) default credentials: ${ICINGAWEB2_ADMIN_USER}:${ICINGAWEB2_ADMIN_PASS}
+Icinga Web 2 (/icingaweb2) default credentials: ${ICINGAWEB2_ADMIN_USER}:${ISSET_ICINGAWEB2_ADMIN_PASS:-$ICINGAWEB2_ADMIN_PASS}
 ===================================================================
 
 Starting Supervisor.

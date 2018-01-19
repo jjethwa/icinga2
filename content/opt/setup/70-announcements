@@ -1,0 +1,39 @@
+#!/bin/bash
+
+ALL_MESSAGES=""
+
+function announce(){
+	local  author="${ICINGAWEB2_ADMIN_USER}"
+	local message="${1}"
+	local    hash="$(md5sum <<< "${msg}" | awk '{print $1}')"
+	local   start=$(date '+%s' --date='today')
+	local     end=$(date '+%s' --date='year')
+
+	local message_website="$(sed 's/\\n/ /g'    <<< ${message})"
+	local message_console="$(sed 's/\\n/\n  /g' <<< ${message})"
+
+	ini_set /etc/icingaweb2/announcements.ini "$hash" "author"  "\"$author\""
+	ini_set /etc/icingaweb2/announcements.ini "$hash" "message" "\"$message_website\""
+	ini_set /etc/icingaweb2/announcements.ini "$hash" "start"   "\"$start\""
+	ini_set /etc/icingaweb2/announcements.ini "$hash" "end"     "\"$end\""
+	ini_set /etc/icingaweb2/announcements.ini "$hash" "hash"    "\"$hash\""
+
+	ALL_MESSAGES+="- ${message_console}"$'\n'
+}
+
+# From jessie to stretch, the php sessions folder changed,
+# forcing users to relogin upon container restart
+if mountpoint -q /var/lib/php5/sessions; then
+	announce "The PHP sessions folder switched to /var/lib/php/sessions (mind the missing 5 in php).\nIf you do not change, the sessions are lost after container restart."
+fi
+
+if [ "${ALL_MESSAGES}" != "" ]; then
+	cat >&2 <<-END
+	===================================================================
+
+	                      OLD SETTINGS DETECTED
+
+	Your icinga container has got some old settings, see here:
+	${ALL_MESSAGES}
+	END
+fi

@@ -3,8 +3,8 @@
 service icinga2 start
 
 # Kickstart is only possible after icinga2 start -> not in setup script
-if [ "${ICINGA2_FEATURE_DIRECTOR}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR}" == "1" ]; then
-	if [ "${ICINGA2_FEATURE_DIRECTOR_KICKSTART}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR_KICKSTART}" == "1" ]; then
+if [ "${ICINGA2_FEATURE_DIRECTOR}" == "1" ]; then
+	if  [ "${ICINGA2_FEATURE_DIRECTOR_KICKSTART}" == "1" ]; then
 		icingacli director kickstart run
 	fi
 fi

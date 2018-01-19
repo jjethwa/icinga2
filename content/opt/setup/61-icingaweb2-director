@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ "${ICINGA2_FEATURE_DIRECTOR}" == "true" ] || [ "${ICINGA2_FEATURE_DIRECTOR}" == "1" ]; then
+if [ "${ICINGA2_FEATURE_DIRECTOR}" == "1" ]; then
 
 	icingacli module enable director
 

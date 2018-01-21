@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ ! "$(ls -A /etc/icingaweb2)" ]; then
-  echo "=> Copying fresh config-files for /etc/icingaweb2"
-  cp -R /etc/icingaweb2.dist/* /etc/icingaweb2/
+	echo "=> Copying fresh config-files for /etc/icingaweb2"
+	cp -R /etc/icingaweb2.dist/* /etc/icingaweb2/
 fi
 
 # chown directories and files that might be coming from volumes

@@ -13,3 +13,18 @@ evaluate_boolean() {
 		return 1
 	fi
 }
+
+# Test a server, if the server is available
+# Does not check, if the connection credentials are correct
+mysql_ping() {
+	local host="${1}" port="${2}"
+	mysqladmin --silent ping "-h${host}" "-P${port}"
+}
+
+# Wait until a MySQL server becomes available
+# Does not check, if the connection credentials are correct
+mysql_wait() {
+	until mysql_ping "${1}" "${2}"; do
+		sleep 1
+	done
+}

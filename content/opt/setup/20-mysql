@@ -11,4 +11,4 @@ if [ ! "$(ls -A /var/lib/mysql)" ]; then
 fi
 
 /etc/init.d/mysql start
-sleep 5
+mysql_wait localhost 3306

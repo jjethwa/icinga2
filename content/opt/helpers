@@ -1,11 +1,15 @@
 #!/bin/bash
 
+# If specified value is true, return valid
+# Else return invalid
+#
+# Allows concatenation via && and ||
 evaluate_boolean() {
 	if [ "${1}" == "True" ] || \
 	   [ "${1}" == "true" ] || \
 	   [ "${1}" == "1" ]; then
-		echo 1
+		return 0
 	else
-		echo 0
+		return 1
 	fi
 }

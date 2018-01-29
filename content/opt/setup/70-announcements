@@ -7,7 +7,7 @@ ALL_MESSAGES=""
 function announce(){
 	local  author="${ICINGAWEB2_ADMIN_USER}"
 	local message="${1}"
-	local    hash="$(md5sum <<< "${msg}" | awk '{print $1}')"
+	local    hash="$(md5sum <<< "${message}" | awk '{print $1}')"
 	local   start=$(date '+%s' --date='today')
 	local     end=$(date '+%s' --date='year')
 

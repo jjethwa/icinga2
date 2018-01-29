@@ -97,6 +97,8 @@ RUN true \
     && mkdir /etc/icinga2 \
     && usermod -aG icingaweb2 www-data \
     && usermod -aG nagios www-data \
+    && rm -rf \
+        /var/lib/mysql/* \
     && chmod u+s,g+s \
         /bin/ping \
         /bin/ping6 \

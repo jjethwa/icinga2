@@ -146,6 +146,16 @@ The variables default their respective `DEFAULT` service variable.
 - `DEFAULT_MYSQL_USER`: The MySQL user to access the database (defaults to `icinga2`)
 - `DEFAULT_MYSQL_PASS`: The password for the MySQL user. (defaults to *randomly generated string*)
 
+## Moving to separate MySQL-container
+
+1. Start your current container as always.
+1. Run `docker exec <container> i2-port-mysqldb`
+1. Shutdown the container
+1. Copy the MySQL datafolder from the `icinga2` container to your new `mariadb` container.
+1. Change the environment variable `DEFAULT_MYSQL_HOST` to point to your new MySQL container.
+1. Add the environment variable `MYSQL_ROOT_PASSWORD` to the icinga2 container, with the value of your password you currently set.
+1. Start your container**s**.
+
 # Reference
 
 ## Environment variables Reference

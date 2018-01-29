@@ -4,6 +4,8 @@ services:
     image: jordan/icinga2
     restart: on-failure:5
     hostname: icinga2
+    env_file:
+      - secrets_sql.env
     environment:
       - ICINGA2_FEATURE_GRAPHITE=1
       # Important:
@@ -16,7 +18,6 @@ services:
       #- ICINGAWEB2_ADMIN_PASS=icinga
       #- ICINGA2_USER_FULLNAME=Icinga2 Docker Monitoring Instance
       - DEFAULT_MYSQL_HOST=mysql
-      - MYSQL_ROOT_PASSWORD=changeme
     volumes:
       - ./data/icinga/cache:/var/cache/icinga2
       - ./data/icinga/certs:/etc/apache2/ssl:ro
@@ -47,8 +48,8 @@ services:
       - ./data/graphite/log/carbon:/var/log/carbon
   mysql:
     image: mariadb:10.1
-    environment:
-      - MYSQL_ROOT_PASSWORD=changeme
+    env_file:
+      - secrets_sql.env
     volumes:
       - ./data/mysql/data:/var/lib/mysql
       # If you have previously used the container's internal DB use:

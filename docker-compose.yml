@@ -18,17 +18,17 @@ services:
       - DEFAULT_MYSQL_HOST=mysql
       - MYSQL_ROOT_PASSWORD=changeme
     volumes:
-      - ./icinga/cache:/var/cache/icinga2
-      - ./icinga/certs:/etc/apache2/ssl:ro
-      - ./icinga/etc/icinga2:/etc/icinga2
-      - ./icinga/etc/icingaweb2:/etc/icingaweb2
-      - ./icinga/lib/icinga:/var/lib/icinga2
-      - ./icinga/lib/php/sessions:/var/lib/php/sessions
-      - ./icinga/log/apache2:/var/log/apache2
-      - ./icinga/log/icinga2:/var/log/icinga2
-      - ./icinga/log/icingaweb2:/var/log/icingaweb2
-      - ./icinga/log/mysql:/var/log/mysql
-      - ./icinga/spool:/var/spool/icinga2
+      - ./data/icinga/cache:/var/cache/icinga2
+      - ./data/icinga/certs:/etc/apache2/ssl:ro
+      - ./data/icinga/etc/icinga2:/etc/icinga2
+      - ./data/icinga/etc/icingaweb2:/etc/icingaweb2
+      - ./data/icinga/lib/icinga:/var/lib/icinga2
+      - ./data/icinga/lib/php/sessions:/var/lib/php/sessions
+      - ./data/icinga/log/apache2:/var/log/apache2
+      - ./data/icinga/log/icinga2:/var/log/icinga2
+      - ./data/icinga/log/icingaweb2:/var/log/icingaweb2
+      - ./data/icinga/log/mysql:/var/log/mysql
+      - ./data/icinga/spool:/var/spool/icinga2
       # If you want to enable outbound e-mail, create the files
       #  - ./ssmtp/ssmtp.conf
       #  - ./ssmtp/revaliases
@@ -41,15 +41,15 @@ services:
     restart: on-failure:5
     hostname: graphite
     volumes:
-      - ./graphite/lib:/var/lib/graphite
-      - ./graphite/log/apache:/var/log/apache2
-      - ./graphite/log/graphite:/var/log/graphite
-      - ./graphite/log/carbon:/var/log/carbon
+      - ./data/graphite/lib:/var/lib/graphite
+      - ./data/graphite/log/apache:/var/log/apache2
+      - ./data/graphite/log/graphite:/var/log/graphite
+      - ./data/graphite/log/carbon:/var/log/carbon
   mysql:
     image: mariadb:10.1
     environment:
       - MYSQL_ROOT_PASSWORD=changeme
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - ./data/mysql/data:/var/lib/mysql
       # If you have previously used the container's internal DB use:
-      #- ./icinga/lib/mysql:/var/lib/mysql
+      #- ./data/icinga/lib/mysql:/var/lib/mysql

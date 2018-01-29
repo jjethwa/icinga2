@@ -1,14 +1,6 @@
 #!/bin/bash
 
-evaluate_boolean() {
-	if [ "${1}" == "True" ] || \
-	   [ "${1}" == "true" ] || \
-	   [ "${1}" == "1" ]; then
-		echo 1
-	else
-		echo 0
-	fi
-}
+. /opt/helpers
 
 ISSET_IDO_PASSWORD=${IDO_PASSWORD:+<set via env variable>}
 ISSET_ICINGAWEB2_PASSWORD=${ICINGAWEB2_PASSWORD:+<set via env variable>}

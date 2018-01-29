@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. /opt/helpers
+
 service icinga2 start
 
 # Kickstart is only possible after icinga2 start -> not in setup script

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. /opt/helpers
+
 if [ ! "$(ls -A /etc/icingaweb2)" ]; then
 	echo "=> Copying fresh config-files for /etc/icingaweb2"
 	cp -R /etc/icingaweb2.dist/* /etc/icingaweb2/

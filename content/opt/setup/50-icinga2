@@ -66,7 +66,7 @@ mysql_test_credentials
 mysql_user \
 	< /usr/share/icinga2-ido-mysql/schema/mysql.sql \
 	>> /var/log/icinga2/mysql-schema.log \
-	2>&1
+	2>&1 || true
 
 cat > /etc/icinga2/features-available/ido-mysql.conf <<-END
 /**

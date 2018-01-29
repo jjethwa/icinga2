@@ -33,7 +33,7 @@ export ICINGAWEB2_DIRECTOR_MYSQL_USER=${ICINGAWEB2_DIRECTOR_MYSQL_USER:-${DEFAUL
 export ICINGAWEB2_DIRECTOR_MYSQL_PASS=${ICINGAWEB2_DIRECTOR_MYSQL_PASS:-${DIRECTOR_PASSWORD:-${DEFAULT_MYSQL_PASS}}}
 export ICINGAWEB2_DIRECTOR_MYSQL_DATA=${ICINGAWEB2_DIRECTOR_MYSQL_DATA:-icingaweb2_director}
 
-run-parts --lsbsysinit -- /opt/setup
+run-parts --lsbsysinit --exit-on-error -- /opt/setup
 
 cat <<-END
 

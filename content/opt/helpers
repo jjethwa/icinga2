@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 # If specified value is true, return valid
 # Else return invalid
 #

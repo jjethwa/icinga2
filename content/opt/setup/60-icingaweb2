@@ -59,7 +59,7 @@ mysql_test_credentials
 mysql_user \
 	< /usr/share/icingaweb2/etc/schema/mysql.schema.sql \
 	>> /var/log/icingaweb2/icingaweb2-schema.log \
-	2>&1
+	2>&1 || true
 
 ini_set /etc/icingaweb2/resources.ini icingaweb_db host     "${ICINGAWEB2_MYSQL_HOST}"
 ini_set /etc/icingaweb2/resources.ini icingaweb_db port     "${ICINGAWEB2_MYSQL_PORT}"

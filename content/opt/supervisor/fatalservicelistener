@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. /opt/helpers
+
 # eventlistener to shutdown on first service event
 # configured on events PROCESS_STATE_FATAL, it shuts down
 # on first failing service. Useful for docker-containers

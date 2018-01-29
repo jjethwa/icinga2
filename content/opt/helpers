@@ -1,0 +1,30 @@
+#!/bin/bash
+
+# If specified value is true, return valid
+# Else return invalid
+#
+# Allows concatenation via && and ||
+evaluate_boolean() {
+	if [ "${1}" == "True" ] || \
+	   [ "${1}" == "true" ] || \
+	   [ "${1}" == "1" ]; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+# Test a server, if the server is available
+# Does not check, if the connection credentials are correct
+mysql_ping() {
+	local host="${1}" port="${2}"
+	mysqladmin --silent ping "-h${host}" "-P${port}"
+}
+
+# Wait until a MySQL server becomes available
+# Does not check, if the connection credentials are correct
+mysql_wait() {
+	until mysql_ping "${1}" "${2}"; do
+		sleep 1
+	done
+}

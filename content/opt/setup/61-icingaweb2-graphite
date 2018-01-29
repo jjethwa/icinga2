@@ -1,11 +1,16 @@
 #!/bin/bash
 
+. /opt/helpers
+
 # Graphite writer
-if [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
+if evaluate_boolean "${ICINGA2_FEATURE_GRAPHITE}"; then
 	echo "=> Enabling Icingaweb2 graphite module"
 
 	# icingaweb-graphite
 	icingacli module enable graphite
+
+	[ -e /etc/icingaweb2/modules/graphite ] \
+		|| cp -r /usr/local/share/icingaweb2/modules/graphite/templates /etc/icingaweb2/modules/graphite
 
 	ini_set /etc/icingaweb2/modules/graphite/config.ini graphite web_url "${ICINGA2_FEATURE_GRAPHITE_URL}"
 

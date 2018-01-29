@@ -1,7 +1,9 @@
 #!/bin/bash
 
+. /opt/helpers
+
 # Graphite writer
-if [ "${ICINGA2_FEATURE_GRAPHITE}" == "1" ]; then
+if evaluate_boolean "${ICINGA2_FEATURE_GRAPHITE}"; then
 	echo "=> Enabling Icinga2 graphite writer"
 
 	icinga2 feature enable graphite

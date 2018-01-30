@@ -20,7 +20,7 @@ chown -R nagios:nagios /var/cache/icinga2
 
 chown -R nagios:root /etc/icinga2
 
-# enable neccessary features
+# enable necessary features
 icinga2 feature enable ido-mysql livestatus compatlog command
 
 #icinga2 API cert - regenerate new private key and certificate when running in a new container

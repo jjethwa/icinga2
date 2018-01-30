@@ -134,17 +134,17 @@ To use your own modules, you're able to install these into `enabledModules`-fold
 | `ICINGAWEB2_ADMIN_USER` | icingaadmin | Icingaweb2 Login User<br>*After changing the username, you should also remove the old User in icingaweb2-> Configuration-> Authentication-> Users* |
 | `ICINGAWEB2_ADMIN_PASS` | icinga | Icingaweb2 Login Password |
 | `ICINGA2_USER_FULLNAME` | Icinga | Sender's display-name for notification e-Mails |
-| `APACHE2_HTTP` | `REDIRECT` | **Variable is only active, if both SSL-certificate and SSL-key are in place.** `BOTH`: Allow HTTP and https connections simulateously. `REDIRECT`: Rewrite HTTP-requests to HTTPS |
+| `APACHE2_HTTP` | `REDIRECT` | **Variable is only active, if both SSL-certificate and SSL-key are in place.** `BOTH`: Allow HTTP and https connections simultaneously. `REDIRECT`: Rewrite HTTP-requests to HTTPS |
 
 ## Volume Reference
 
-All these folders are configured and able to get mounted as volume. The bottom ones are not quite neccessary.
+All these folders are configured and able to get mounted as volume. The bottom ones are not quite necessary.
 
 | Volume | ro/rw | Description & Usage |
 | ------ | ----- | ------------------- |
 | /etc/apache2/ssl | **ro** | Mount optional SSL-Certificates (see SSL Support) |
 | /etc/ssmtp/revaliases | **ro** | revaliases map (see Sending Notification Mails) |
-| /etc/ssmtp/ssmtp.conf | **ro** | ssmtp configufation (see Sending Notification Mails) |
+| /etc/ssmtp/ssmtp.conf | **ro** | ssmtp configuration (see Sending Notification Mails) |
 | /etc/icinga2 | rw | Icinga2 configuration folder |
 | /etc/icingaweb2 | rw | Icingaweb2 configuration folder |
 | /var/lib/mysql | rw | MySQL Database |

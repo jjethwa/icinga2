@@ -2,6 +2,18 @@
 
 . /opt/helpers
 
+CNFSUFFIX=icingaweb2
+mysql_cnf_init_section \
+	"${CNFSUFFIX}" \
+	"${ICINGAWEB2_MYSQL_HOST}" \
+	"${ICINGAWEB2_MYSQL_PORT}" \
+	"${ICINGAWEB2_MYSQL_USER}" \
+	"${ICINGAWEB2_MYSQL_DATA}" \
+	"${ICINGAWEB2_MYSQL_PASS}"
+mysql_wait \
+	"${ICINGAWEB2_MYSQL_HOST}" \
+	"${ICINGAWEB2_MYSQL_PORT}"
+
 if [ ! "$(ls -A /etc/icingaweb2)" ]; then
 	echo "=> Copying fresh config-files for /etc/icingaweb2"
 	cp -R /etc/icingaweb2.dist/* /etc/icingaweb2/
@@ -21,20 +33,48 @@ chown -R www-data:www-data /var/lib/php/sessions
 icingacli module enable monitoring
 icingacli module enable doc
 
-# grant access to DBs
-mysql <<-END
-  CREATE DATABASE IF NOT EXISTS icingaweb2;
-  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icingaweb2.* TO 'icingaweb2'@'localhost' IDENTIFIED BY '${ICINGAWEB2_PASSWORD}';
-END
+# Create MySQL user on localhost or test given connection
+if [ "${ICINGA2_IDO_MYSQL_HOST}" == "localhost" ]; then
+	mysql_root <<-END
+	  CREATE DATABASE IF NOT EXISTS ${ICINGAWEB2_MYSQL_DATA}
+	    CHARACTER SET 'utf8';
+	  GRANT ALL
+	    ON ${ICINGAWEB2_MYSQL_DATA}.*
+	    TO '${ICINGAWEB2_MYSQL_USER}'@'localhost'
+	    IDENTIFIED BY '${ICINGAWEB2_MYSQL_PASS}';
+	END
+elif [ -n "${MYSQL_ROOT_PASSWORD}" ]; then
+	mysql_root <<-END
+	  CREATE DATABASE IF NOT EXISTS ${ICINGAWEB2_MYSQL_DATA}
+	    CHARACTER SET 'utf8';
+	  GRANT ALL
+	    ON ${ICINGAWEB2_MYSQL_DATA}.*
+	    TO '${ICINGAWEB2_MYSQL_USER}'@'%'
+	    IDENTIFIED BY '${ICINGAWEB2_MYSQL_PASS}';
+	END
+fi
 
-mysql icingaweb2 < /usr/share/icingaweb2/etc/schema/mysql.schema.sql >> /var/log/icingaweb2/icingaweb2-schema.log 2>&1
+mysql_test_credentials
 
-ini_set /etc/icingaweb2/resources.ini icingaweb_db password "${ICINGAWEB2_PASSWORD}"
-ini_set /etc/icingaweb2/resources.ini icinga_ido   password "${IDO_PASSWORD}"
+mysql_user \
+	< /usr/share/icingaweb2/etc/schema/mysql.schema.sql \
+	>> /var/log/icingaweb2/icingaweb2-schema.log \
+	2>&1 || true
+
+ini_set /etc/icingaweb2/resources.ini icingaweb_db host     "${ICINGAWEB2_MYSQL_HOST}"
+ini_set /etc/icingaweb2/resources.ini icingaweb_db port     "${ICINGAWEB2_MYSQL_PORT}"
+ini_set /etc/icingaweb2/resources.ini icingaweb_db username "${ICINGAWEB2_MYSQL_USER}"
+ini_set /etc/icingaweb2/resources.ini icingaweb_db password "${ICINGAWEB2_MYSQL_PASS}"
+ini_set /etc/icingaweb2/resources.ini icingaweb_db dbname   "${ICINGAWEB2_MYSQL_DATA}"
+
+ini_set /etc/icingaweb2/resources.ini icinga_ido host     "${ICINGA2_IDO_MYSQL_HOST}"
+ini_set /etc/icingaweb2/resources.ini icinga_ido port     "${ICINGA2_IDO_MYSQL_PORT}"
+ini_set /etc/icingaweb2/resources.ini icinga_ido username "${ICINGA2_IDO_MYSQL_USER}"
+ini_set /etc/icingaweb2/resources.ini icinga_ido password "${ICINGA2_IDO_MYSQL_PASS}"
+ini_set /etc/icingaweb2/resources.ini icinga_ido dbname   "${ICINGA2_IDO_MYSQL_DATA}"
 
 # Write Icingaweb2 user and password to installation
 ini_set /etc/icingaweb2/roles.ini Administrators users "${ICINGAWEB2_ADMIN_USER}"
-mysql <<-END
-  USE icingaweb2;
+mysql_user <<-END
   INSERT IGNORE INTO icingaweb_user (name, active, password_hash) VALUES ('${ICINGAWEB2_ADMIN_USER}', 1, '${ICINGAWEB2_ADMIN_PASS_HASH}');
 END

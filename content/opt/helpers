@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -euo pipefail
+
 # If specified value is true, return valid
 # Else return invalid
 #
@@ -18,6 +20,7 @@ evaluate_boolean() {
 # Does not check, if the connection credentials are correct
 mysql_ping() {
 	local host="${1}" port="${2}"
+	echo "Pinging ${host}:${port}"
 	mysqladmin --silent ping "-h${host}" "-P${port}"
 }
 
@@ -27,4 +30,41 @@ mysql_wait() {
 	until mysql_ping "${1}" "${2}"; do
 		sleep 1
 	done
+}
+
+mysql_user() {
+	mysql --defaults-group-suffix="${CNFSUFFIX}" "${@}"
+}
+
+mysql_root() {
+	mysql --defaults-group-suffix="${CNFSUFFIX}root" "${@}"
+}
+
+mysql_test_credentials() {
+	mysql --defaults-group-suffix="${CNFSUFFIX}" -e "quit"
+}
+
+mysql_cnf_init_section() {
+	set -u # set and unset it temporarily, until all scripts are fixed to this
+	local section="${1}" host="${2}" port="${3}" user="${4}" db="${5}" password="${6}"
+
+	cat >> $HOME/.my.cnf <<-END
+	[client${section}]
+	host=${host}
+	port=${port}
+	user=${user}
+	database=${db}
+	password=${password}
+	END
+	if [ "${host}" != localhost ]; then
+		cat >> $HOME/.my.cnf <<-END
+		[client${section}root]
+		host=${host}
+		port=${port}
+		user=root
+		password=${MYSQL_ROOT_PASSWORD}
+		END
+	fi
+
+	set +u # set and unset it temporarily, until all scripts are fixed to this
 }

@@ -2,6 +2,12 @@
 
 . /opt/helpers
 
+# do not start, if no service requires local MySQL
+{  [ "${ICINGA2_IDO_MYSQL_HOST}"         == "localhost" ] \
+|| [ "${ICINGAWEB2_MYSQL_HOST}"          == "localhost" ] \
+|| [ "${ICINGAWEB2_DIRECTOR_MYSQL_HOST}" == "localhost" ]
+} || { echo "Skpipping local MySQL server bootup."; sleep infinity; }
+
 service mysql start
 
 # Allow any signal which would kill a process to stop server

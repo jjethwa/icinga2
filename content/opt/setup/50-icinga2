@@ -2,6 +2,18 @@
 
 . /opt/helpers
 
+CNFSUFFIX=icinga2
+mysql_cnf_init_section \
+	"${CNFSUFFIX}" \
+	"${ICINGA2_IDO_MYSQL_HOST}" \
+	"${ICINGA2_IDO_MYSQL_PORT}" \
+	"${ICINGA2_IDO_MYSQL_USER}" \
+	"${ICINGA2_IDO_MYSQL_DATA}" \
+	"${ICINGA2_IDO_MYSQL_PASS}"
+mysql_wait \
+	"${ICINGA2_IDO_MYSQL_HOST}" \
+	"${ICINGA2_IDO_MYSQL_PORT}"
+
 if [ ! "$(ls -A /etc/icinga2)" ]; then
 	echo "=> Copying fresh config-files for /etc/icinga2"
 	cp -R /etc/icinga2.dist/* /etc/icinga2/
@@ -30,8 +42,32 @@ fi
 
 chfn -f "${ICINGA2_USER_FULLNAME}" nagios
 
+# Create MySQL user on localhost or test given connection
+if [ "${ICINGA2_IDO_MYSQL_HOST}" == "localhost" ]; then
+	mysql_root <<-END
+	  CREATE DATABASE IF NOT EXISTS ${ICINGA2_IDO_MYSQL_DATA};
+	  GRANT ALL
+	    ON ${ICINGA2_IDO_MYSQL_DATA}.*
+	    TO '${ICINGA2_IDO_MYSQL_USER}'@'localhost'
+	    IDENTIFIED BY '${ICINGA2_IDO_MYSQL_PASS}';
+	END
+elif [ -n "${MYSQL_ROOT_PASSWORD}" ]; then
+	mysql_root <<-END
+	  CREATE DATABASE IF NOT EXISTS ${ICINGA2_IDO_MYSQL_DATA};
+	  GRANT ALL
+	    ON ${ICINGA2_IDO_MYSQL_DATA}.*
+	    TO '${ICINGA2_IDO_MYSQL_USER}'@'%'
+	    IDENTIFIED BY '${ICINGA2_IDO_MYSQL_PASS}';
+	END
+fi
 
-# IDO MySQL
+mysql_test_credentials
+
+mysql_user \
+	< /usr/share/icinga2-ido-mysql/schema/mysql.sql \
+	>> /var/log/icinga2/mysql-schema.log \
+	2>&1 || true
+
 cat > /etc/icinga2/features-available/ido-mysql.conf <<-END
 /**
  * The db_ido_mysql library implements IDO functionality
@@ -41,16 +77,10 @@ cat > /etc/icinga2/features-available/ido-mysql.conf <<-END
 library "db_ido_mysql"
 
 object IdoMysqlConnection "ido-mysql" {
-  user = "icinga2-ido-mysq",
-  password = "${IDO_PASSWORD}",
-  host = "localhost",
-  database = "icinga2idomysql"
+  user     = "${ICINGA2_IDO_MYSQL_USER}"
+  password = "${ICINGA2_IDO_MYSQL_PASS}"
+  host     = "${ICINGA2_IDO_MYSQL_HOST}"
+  port     =  ${ICINGA2_IDO_MYSQL_PORT}
+  database = "${ICINGA2_IDO_MYSQL_DATA}"
 }
 END
-
-mysql <<-END
-  CREATE DATABASE IF NOT EXISTS icinga2idomysql;
-  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE ON icinga2idomysql.* TO 'icinga2-ido-mysq'@'localhost' IDENTIFIED BY '${IDO_PASSWORD}';
-END
-
-mysql icinga2idomysql < /usr/share/dbconfig-common/data/icinga2-ido-mysql/install/mysql >> /var/log/icinga2/ido-mysql-schema.log 2>&1

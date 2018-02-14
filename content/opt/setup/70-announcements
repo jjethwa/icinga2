@@ -29,6 +29,17 @@ if mountpoint -q /var/lib/php5/sessions; then
 	announce "The PHP sessions folder switched to /var/lib/php/sessions (mind the missing 5 in php).\nIf you do not change, the sessions are lost after container restart."
 fi
 
+# old variables for passwords
+[ -z "${IDO_PASSWORD+x}" ] \
+	|| announce "The IDO_PASSWORD variable had been replaced with ICINGA2_IDO_MYSQL_PASS.\nPlease read through the README."
+[ -z "${DIRECTOR_PASSWORD+x}" ] \
+	|| announce "The DIRECTOR_PASSWORD variable had been replaced with ICINGAWEB2_DIRECTOR_MYSQL_PASS.\nPlease read through the README."
+[ -z "${ICINGAWEB2_PASSWORD+x}" ] \
+	|| announce "The ICINGAWEB2_PASSWORD variable had been replaced with ICINGAWEB2_MYSQL_PASS.\nPlease read through the README."
+
+[ ! "$(ls -A /var/lib/mysql)" ] \
+	|| announce "Your MySQL Database Server is running currently inside the icinga2 container.\nIn future, the MySQL will be located in a separate container by default.\nFind more information at https://github.com/jjethwa/icinga2#moving-to-separate-mysql-container"
+
 if [ "${ALL_MESSAGES}" != "" ]; then
 	cat >&2 <<-END
 	===================================================================

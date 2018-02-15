@@ -67,7 +67,7 @@ if evaluate_boolean "${ICINGA2_FEATURE_DIRECTOR}"; then
 	ini_set /etc/icingaweb2/modules/director/kickstart.ini config password "${ICINGA2_FEATURE_DIRECTOR_PASS}"
 
 else
-	[ ! -L /etc/icinga2/conf.d/api-user.conf ] && \
-	rm /etc/icinga2/conf.d/api-user.conf
-	icingacli module disable director
+	[ ! -L /etc/icinga2/conf.d/api-user.conf ] \
+		|| rm /etc/icinga2/conf.d/api-user.conf
+	icingacli module disable director || true
 fi

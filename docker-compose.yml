@@ -20,7 +20,7 @@ services:
       - DEFAULT_MYSQL_HOST=mysql
     volumes:
       - ./data/icinga/cache:/var/cache/icinga2
-      - ./data/icinga/certs:/etc/apache2/ssl:ro
+      - ./data/icinga/certs:/etc/apache2/ssl
       - ./data/icinga/etc/icinga2:/etc/icinga2
       - ./data/icinga/etc/icingaweb2:/etc/icingaweb2
       - ./data/icinga/lib/icinga:/var/lib/icinga2

@@ -37,6 +37,10 @@ services:
       #  See: https://github.com/jjethwa/icinga2#sending-notification-mails
       #- ./ssmtp/revaliases:/etc/ssmtp/revaliases:ro
       #- ./ssmtp/ssmtp.conf:/etc/ssmtp/ssmtp.conf:ro
+    ports:
+      - "80:80"
+      - "443:443"
+      - "5665:5665"
   graphite:
     image: bebehei/graphite:latest
     restart: on-failure:5

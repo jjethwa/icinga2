@@ -16,5 +16,5 @@ if evaluate_boolean "${ICINGA2_FEATURE_GRAPHITE}"; then
 
 else
 	# Actively disable graphite, to not hit any weird bugs
-	icingacli module disable graphite
+	icingacli module disable graphite || true
 fi

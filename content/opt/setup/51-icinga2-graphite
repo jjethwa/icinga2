@@ -23,5 +23,5 @@ if evaluate_boolean "${ICINGA2_FEATURE_GRAPHITE}"; then
 
 else
 	# Actively disable graphite, to not hit any weird bugs
-	icinga2 feature disable graphite
+	icinga2 feature disable graphite || true
 fi

@@ -2,6 +2,18 @@
 
 . /opt/helpers
 
+# Generate icinga2 locales
+cat /etc/locale.gen  |sed 's/# ar_SA.UTF-8 UTF-8/ar_SA.UTF-8 UTF-8/' \
+                     |sed 's/# de_DE.UTF-8 UTF-8/de_DE.UTF-8 UTF-8/' \
+                     |sed 's/# en_US.UTF-8/en_US.UTF-8/' \
+                     |sed 's/# fi_FI.UTF-8 UTF-8/fi_FI.UTF-8 UTF-8/' \
+                     |sed 's/# it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/' \
+                     |sed 's/# pt_BR.UTF-8 UTF-8/pt_BR.UTF-8 UTF-8/' \
+                     |sed 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' > /etc/locale.gen.s
+mv /etc/locale.gen /etc/locale.gen.dist 
+mv /etc/locale.gen.s /etc/locale.gen 
+locale-gen
+
 CNFSUFFIX=icingaweb2
 mysql_cnf_init_section \
 	"${CNFSUFFIX}" \

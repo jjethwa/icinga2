@@ -15,6 +15,8 @@ ENV APACHE2_HTTP=REDIRECT \
     ICINGA2_FEATURE_DIRECTOR_KICKSTART="true" \
     ICINGA2_FEATURE_DIRECTOR_USER="icinga2-director"
 
+ENV BUILD_LOCALES="ar_SA.UTF-8 UTF-8,de_DE.UTF-8 UTF-8,en_US.UTF-8,fi_FI.UTF-8 UTF-8,it_IT.UTF-8 UTF-8,pt_BR.UTF-8 UTF-8,ru_RU.UTF-8 UTF-8"
+
 RUN export DEBIAN_FRONTEND=noninteractive \
      && apt-get update \
      && apt-get upgrade -y \
@@ -24,6 +26,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
           curl \
           dnsutils \
           gnupg \
+          locales \
           lsb-release \
           mailutils \
           mariadb-client \
@@ -103,6 +106,7 @@ RUN true \
         /bin/ping \
         /bin/ping6 \
         /usr/lib/nagios/plugins/check_icmp
+
 
 EXPOSE 80 443 5665
 

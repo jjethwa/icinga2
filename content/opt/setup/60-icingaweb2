@@ -2,6 +2,7 @@
 
 . /opt/helpers
 
+
 CNFSUFFIX=icingaweb2
 mysql_cnf_init_section \
 	"${CNFSUFFIX}" \

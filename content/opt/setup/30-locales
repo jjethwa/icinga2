@@ -1,0 +1,37 @@
+#!/bin/bash
+
+if [[ ! -f /etc/locale.gen.dist ]]
+then
+   cp /etc/locale.gen /etc/locale.gen.dist
+fi
+
+echo "BUILD_LOCALES: $BUILD_LOCALES"
+typeset -i m=$(echo $BUILD_LOCALES | awk -F ',' '{print NF}')
+typeset -i n=1
+while [[ $n -le $m ]]
+do
+   b_locale=$(echo $BUILD_LOCALES | awk -F ',' "{print \$$n}")
+   cat /etc/locale.gen |grep -q "^$b_locale"
+   if [[ $? -ne 0 ]]
+   then
+      echo "adding locale $b_locale"
+      cat /etc/locale.gen | sed "s/# $b_locale/$b_locale/" > /tmp/locale.gen
+      mv /tmp/locale.gen /etc/locale.gen
+   fi
+
+   n=$n+1
+done
+
+n=1
+while [[ $n -le $m ]]
+do
+   b_locale=$(echo $BUILD_LOCALES | awk -F ',' "{print \$$n}" |tr ' ', '.' |sed 's/\.UTF-8//' |sed 's/UTF-8/UTF8/')
+   locale -a |grep -q -i "$b_locale"
+   if [[ $? -ne 0 ]]
+   then
+      echo "$b_locale needs build"
+      locale-gen
+      break
+   fi
+   n=$n+1
+done

@@ -24,6 +24,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
           curl \
           dnsutils \
           gnupg \
+          locales \
           lsb-release \
           mailutils \
           mariadb-client \

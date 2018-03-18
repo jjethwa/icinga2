@@ -9,14 +9,7 @@ cat /etc/locale.gen  |sed 's/# ar_SA.UTF-8 UTF-8/ar_SA.UTF-8 UTF-8/' \
                      |sed 's/# fi_FI.UTF-8 UTF-8/fi_FI.UTF-8 UTF-8/' \
                      |sed 's/# it_IT.UTF-8 UTF-8/it_IT.UTF-8 UTF-8/' \
                      |sed 's/# pt_BR.UTF-8 UTF-8/pt_BR.UTF-8 UTF-8/' \
-                     |sed 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' \
-                     |sed 's/# ar_SA ISO-8859-6/ar_SA ISO-8859-6/' \
-                     |sed 's/# de_DE ISO-8859-1/de_DE ISO-8859-1/' \
-                     |sed 's/# en_US ISO-8859-1/en_US ISO-8859-1/' \
-                     |sed 's/# fi_FI ISO-8859-1/fi_FI ISO-8859-1/' \
-                     |sed 's/# it_IT ISO-8859-1/it_IT ISO-8859-1/' \
-                     |sed 's/# pt_BR ISO-8859-1/pt_BR ISO-8859-1/' \
-                     |sed 's/# ru_RU ISO-8859-5/ru_RU ISO-8859-5/' > /etc/locale.gen.s
+                     |sed 's/# ru_RU.UTF-8 UTF-8/ru_RU.UTF-8 UTF-8/' > /etc/locale.gen.s
 mv /etc/locale.gen /etc/locale.gen.dist 
 mv /etc/locale.gen.s /etc/locale.gen 
 locale-gen

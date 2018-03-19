@@ -33,6 +33,13 @@ export ICINGAWEB2_DIRECTOR_MYSQL_USER=${ICINGAWEB2_DIRECTOR_MYSQL_USER:-${DEFAUL
 export ICINGAWEB2_DIRECTOR_MYSQL_PASS=${ICINGAWEB2_DIRECTOR_MYSQL_PASS:-${DIRECTOR_PASSWORD:-${DEFAULT_MYSQL_PASS}}}
 export ICINGAWEB2_DIRECTOR_MYSQL_DATA=${ICINGAWEB2_DIRECTOR_MYSQL_DATA:-icingaweb2_director}
 
+# Generate the system wide locales in the background.
+# It may take a long time, depending on the mounted /etc/locale.gen.
+# The only part, where locale processing is known to be necessary, is
+# the Icingaweb2 translation plugin and locale-gen should be finished
+# until the first webpage is started.
+locale-gen &
+
 run-parts --lsbsysinit --exit-on-error -- /opt/setup
 
 cat <<-END

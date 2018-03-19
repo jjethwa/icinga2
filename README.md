@@ -182,6 +182,7 @@ All these folders are configured and able to get mounted as volume. The bottom o
 | Volume | ro/rw | Description & Usage |
 | ------ | ----- | ------------------- |
 | /etc/apache2/ssl | **ro** | Mount optional SSL-Certificates (see SSL Support) |
+| /etc/locale.gen | **ro** | In format of the well known locale.gen file. All locales listed in this file will get generated. |
 | /etc/ssmtp/revaliases | **ro** | revaliases map (see Sending Notification Mails) |
 | /etc/ssmtp/ssmtp.conf | **ro** | ssmtp configuration (see Sending Notification Mails) |
 | /etc/icinga2 | rw | Icinga2 configuration folder |

@@ -3,6 +3,8 @@ services:
   icinga2:
     image: jordan/icinga2
     restart: on-failure:5
+    # Set your hostname to the FQDN under which your
+    # sattelites will reach this container
     hostname: icinga2
     env_file:
       - secrets_sql.env

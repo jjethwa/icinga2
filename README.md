@@ -30,7 +30,7 @@ This build is automated by push for the git-repo. Just crawl it via:
 
 Start a new container and bind to host's port 80
 
-    docker run -p 80:80 -t jordan/icinga2:latest
+    docker run -p 80:80 -h icinga2 -t jordan/icinga2:latest
 
 ## Icinga Web 2
 
@@ -63,6 +63,15 @@ docker run -t \
 ## Icinga Director
 
 The [Icinga Director](https://github.com/Icinga/icingaweb2-module-director) Icinga Web 2 module is installed and enabled by default. You can disable the automatic kickstart when the container starts by setting the `DIRECTOR_KICKSTART` variable to false. To customize the kickstart settings, modify the `/etc/icingaweb2/modules/director/kickstart.ini`.
+
+## API Master
+
+The container gets automatically configured as an API master. But it has some caveats. Please make sure:
+
+- Set the container's hostname (`-h` or `hostname`)
+  - The hostname has to match the name, your sattelites are configured to access the master.
+- Forward the `5665` port
+- Mount **both** volumes: `/etc/icinga2`, `/var/lib/icinga2`
 
 ## Sending Notification Mails
 

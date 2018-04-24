@@ -28,7 +28,7 @@ if evaluate_boolean "${ICINGA2_FEATURE_DIRECTOR}"; then
 		    TO '${ICINGAWEB2_DIRECTOR_MYSQL_USER}'@'localhost'
 		    IDENTIFIED BY '${ICINGAWEB2_DIRECTOR_MYSQL_PASS}';
 		END
-	elif [ -n "${MYSQL_ROOT_PASSWORD}" ]; then
+	elif [ -n "${MYSQL_ROOT_PASSWORD:-}" ]; then
 		mysql_root <<-END
 		  CREATE DATABASE IF NOT EXISTS ${ICINGAWEB2_DIRECTOR_MYSQL_DATA}
 		    CHARACTER SET 'utf8';

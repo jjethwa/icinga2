@@ -57,8 +57,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       icingaweb2-module-monitoring \
       monitoring-plugins \
       nagios-nrpe-plugin \
-      nagios-snmp-plugins \
       nagios-plugins-contrib \
+      nagios-snmp-plugins \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 

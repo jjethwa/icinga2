@@ -54,6 +54,8 @@ RUN export DEBIAN_FRONTEND=noninteractive \
           icinga2-ido-mysql \
           icingacli \
           icingaweb2 \
+          icingaweb2-module-doc \
+          icingaweb2-module-monitoring \
           monitoring-plugins \
           nagios-nrpe-plugin \
           nagios-snmp-plugins \
@@ -61,15 +63,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
      && apt-get clean \
      && rm -rf /var/lib/apt/lists/*
 
-ARG GITREF_ICINGAWEB2=master
 ARG GITREF_DIRECTOR=master
 ARG GITREF_MODGRAPHITE=master
 ARG GITREF_MODAWS=master
 
-# Temporary hack to get icingaweb2 modules via git
 RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
-    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2/archive/${GITREF_ICINGAWEB2}.tar.gz" \
-    | tar xz --strip-components=2 --directory=/usr/local/share/icingaweb2/modules -f - icingaweb2-${GITREF_ICINGAWEB2}/modules/monitoring icingaweb2-${GITREF_ICINGAWEB2}/modules/doc \
 # Icinga Director
     && mkdir -p /usr/local/share/icingaweb2/modules/director/ \
     && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/${GITREF_DIRECTOR}.tar.gz" \

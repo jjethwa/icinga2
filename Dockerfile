@@ -40,6 +40,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       supervisor \
       unzip \
       wget \
+      libdbd-mysql-perl \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 

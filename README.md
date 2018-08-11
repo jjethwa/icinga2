@@ -198,7 +198,7 @@ All these folders are configured and able to get mounted as volume. The bottom o
 | /etc/icingaweb2 | rw | Icingaweb2 configuration folder |
 | /var/lib/mysql | rw | MySQL Database |
 | /var/lib/icinga2 | rw | Icinga2 Data |
-| /var/lib/php5/sessions/ | rw | Icingaweb2 PHP Session Files |
+| /var/lib/php/sessions/ | rw | Icingaweb2 PHP Session Files |
 | /var/log/apache2 | rw | logfolder for apache2 (not neccessary) |
 | /var/log/icinga2 | rw | logfolder for icinga2 (not neccessary) |
 | /var/log/icingaweb2 | rw | logfolder for icingaweb2 (not neccessary) |

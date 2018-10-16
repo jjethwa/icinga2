@@ -109,7 +109,7 @@ These files have to get mounted into the container. Add these flags to your `doc
 
 If you want to change the display-name of sender-address, you have to define the variable `ICINGA2_USER_FULLNAME`.
 
-If this does not work, please ask your provider for the correct mail-settings or consider the [ssmtp.conf(5)-manpage](https://linux.die.net/man/5/ssmtp.conf) or Section ["Reverse Aliases" on ssmtp(8)](https://linux.die.net/man/8/ssmtp).
+If this does not work, please ask your provider for the correct mail-settings or consider the [ssmtp.conf(5)-manpage](https://manpages.debian.org/stretch/ssmtp/ssmtp.conf.5.en.html) or Section ["Reverse Aliases" on ssmtp(8)](https://manpages.debian.org/stretch/ssmtp/ssmtp.8.en.html#REVERSE_ALIASES).
 Also you can debug your config, by executing inside your container `ssmtp -v $address` and pressing 2x Enter.
 It will send an e-Mail to `$address` and give verbose log and all error-messages.
 

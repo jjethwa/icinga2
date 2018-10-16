@@ -32,6 +32,16 @@ Start a new container and bind to host's port 80
 
     docker run -p 80:80 -h icinga2 -t jordan/icinga2:latest
 
+### docker-compose
+
+Download the [`docker-compose.yml`](./docker-compose.yml) file and create a file `secrets_sql.env`, which contains the `MYSQL_ROOT_PASSWORD` variable.
+
+    curl -O https://raw.githubusercontent.com/jjethwa/icinga2/master/docker-compose.yml
+    echo "MYSQL_ROOT_PASSWORD=<password>" > secrets_sql.env
+    docker-compose up
+
+This boots up an icinga(web)2 container with another MySQL container reachable on [http://localhost](http://localhost) with the default credentials *icingaadmin*:*icinga*.
+
 ## Icinga Web 2
 
 Icinga Web 2 can be accessed at [http://localhost/icingaweb2](http://localhost/icingaweb2) with the credentials *icingaadmin*:*icinga* (if not set differently via variables).

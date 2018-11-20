@@ -24,11 +24,13 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       curl \
       dnsutils \
       gnupg \
+      libdbd-mysql-perl \
       locales \
       lsb-release \
       mailutils \
       mariadb-client \
       mariadb-server \
+      openssh-client \
       php-curl \
       php-ldap \
       php-mysql \
@@ -40,8 +42,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       supervisor \
       unzip \
       wget \
-      libdbd-mysql-perl \
-      openssh-client\
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 

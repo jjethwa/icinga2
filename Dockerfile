@@ -41,6 +41,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       unzip \
       wget \
       libdbd-mysql-perl \
+      libdigest-hmac-perl \
+      libnet-snmp-perl \
+      netbase \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 

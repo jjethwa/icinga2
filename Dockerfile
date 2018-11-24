@@ -24,11 +24,15 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       curl \
       dnsutils \
       gnupg \
+      libdbd-mysql-perl \
+      libdigest-hmac-perl \
+      libnet-snmp-perl \
       locales \
       lsb-release \
       mailutils \
       mariadb-client \
       mariadb-server \
+      netbase \
       php-curl \
       php-ldap \
       php-mysql \
@@ -40,10 +44,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       supervisor \
       unzip \
       wget \
-      libdbd-mysql-perl \
-      libdigest-hmac-perl \
-      libnet-snmp-perl \
-      netbase \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 

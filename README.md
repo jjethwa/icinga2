@@ -32,6 +32,16 @@ Start a new container and bind to host's port 80
 
     docker run -p 80:80 -h icinga2 -t jordan/icinga2:latest
 
+### docker-compose
+
+Download the [`docker-compose.yml`](./docker-compose.yml) file and create a file `secrets_sql.env`, which contains the `MYSQL_ROOT_PASSWORD` variable.
+
+    curl -O https://raw.githubusercontent.com/jjethwa/icinga2/master/docker-compose.yml
+    echo "MYSQL_ROOT_PASSWORD=<password>" > secrets_sql.env
+    docker-compose up
+
+This boots up an icinga(web)2 container with another MySQL container reachable on [http://localhost](http://localhost) with the default credentials *icingaadmin*:*icinga*.
+
 ## Icinga Web 2
 
 Icinga Web 2 can be accessed at [http://localhost/icingaweb2](http://localhost/icingaweb2) with the credentials *icingaadmin*:*icinga* (if not set differently via variables).
@@ -109,7 +119,7 @@ These files have to get mounted into the container. Add these flags to your `doc
 
 If you want to change the display-name of sender-address, you have to define the variable `ICINGA2_USER_FULLNAME`.
 
-If this does not work, please ask your provider for the correct mail-settings or consider the [ssmtp.conf(5)-manpage](https://linux.die.net/man/5/ssmtp.conf) or Section ["Reverse Aliases" on ssmtp(8)](https://linux.die.net/man/8/ssmtp).
+If this does not work, please ask your provider for the correct mail-settings or consider the [ssmtp.conf(5)-manpage](https://manpages.debian.org/stretch/ssmtp/ssmtp.conf.5.en.html) or Section ["Reverse Aliases" on ssmtp(8)](https://manpages.debian.org/stretch/ssmtp/ssmtp.8.en.html#REVERSE_ALIASES).
 Also you can debug your config, by executing inside your container `ssmtp -v $address` and pressing 2x Enter.
 It will send an e-Mail to `$address` and give verbose log and all error-messages.
 
@@ -198,7 +208,7 @@ All these folders are configured and able to get mounted as volume. The bottom o
 | /etc/icingaweb2 | rw | Icingaweb2 configuration folder |
 | /var/lib/mysql | rw | MySQL Database |
 | /var/lib/icinga2 | rw | Icinga2 Data |
-| /var/lib/php5/sessions/ | rw | Icingaweb2 PHP Session Files |
+| /var/lib/php/sessions/ | rw | Icingaweb2 PHP Session Files |
 | /var/log/apache2 | rw | logfolder for apache2 (not neccessary) |
 | /var/log/icinga2 | rw | logfolder for icinga2 (not neccessary) |
 | /var/log/icingaweb2 | rw | logfolder for icingaweb2 (not neccessary) |

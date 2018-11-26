@@ -44,12 +44,13 @@ services:
       - "443:443"
       - "5665:5665"
   graphite:
-    image: bebehei/graphite:latest
+    image: graphiteapp/graphite-statsd:latest
+    container_name: graphite
     restart: on-failure:5
     hostname: graphite
     volumes:
-      - ./data/graphite/lib:/var/lib/graphite
-      - ./data/graphite/log/apache:/var/log/apache2
+      - ./data/graphite/conf:/opt/graphite/conf
+      - ./data/graphite/storage:/opt/graphite/storage
       - ./data/graphite/log/graphite:/var/log/graphite
       - ./data/graphite/log/carbon:/var/log/carbon
   mysql:

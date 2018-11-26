@@ -2,12 +2,21 @@
 
 . /opt/helpers
 
-service icinga2 start
+if [ ! -e '/var/run/icinga2' ]; then
+  mkdir /var/run/icinga2
+  mkdir /var/run/icinga2/cmd
+  chown nagios:www-data /var/run/icinga2/cmd
+  chmod 2710 /var/run/icinga2/cmd
+  chown nagios:nagios /var/run/icinga2
+  chmod 0755 /var/run/icinga2
+fi
+
+service icinga2 foreground &
 
 # Kickstart is only possible after icinga2 start -> not in setup script
 if    evaluate_boolean "${ICINGA2_FEATURE_DIRECTOR}" \
    && evaluate_boolean "${ICINGA2_FEATURE_DIRECTOR_KICKSTART}"; then
-	icingacli director kickstart run
+	sleep 5 && icingacli director kickstart run
 fi
 
 # Allow any signal which would kill a process to stop server

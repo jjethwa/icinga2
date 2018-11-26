@@ -33,6 +33,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       mariadb-client \
       mariadb-server \
       netbase \
+      openssh-client \
       php-curl \
       php-ldap \
       php-mysql \

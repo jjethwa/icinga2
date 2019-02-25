@@ -21,6 +21,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get install -y --no-install-recommends \
       apache2 \
       ca-certificates \
+      ca-cacert \
+      openssl \
+      file \
       curl \
       dnsutils \
       gnupg \

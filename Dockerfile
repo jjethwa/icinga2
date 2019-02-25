@@ -20,9 +20,11 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get upgrade -y \
  && apt-get install -y --no-install-recommends \
       apache2 \
+      ca-cacert \
       ca-certificates \
       curl \
       dnsutils \
+      file \
       gnupg \
       libdbd-mysql-perl \
       libdigest-hmac-perl \
@@ -34,6 +36,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       mariadb-server \
       netbase \
       openssh-client \
+      openssl \
       php-curl \
       php-ldap \
       php-mysql \

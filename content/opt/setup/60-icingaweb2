@@ -23,6 +23,9 @@ fi
 chmod 2770 /etc/icingaweb2
 chown -R www-data:icingaweb2 /etc/icingaweb2
 
+# https://github.com/jjethwa/icinga2/issues/175
+chmod o-r /etc/icingaweb2/resources.ini
+
 mkdir -p /var/log/icingaweb2
 chown -R www-data:adm /var/log/icingaweb2
 

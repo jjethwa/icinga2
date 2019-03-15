@@ -67,6 +67,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       nagios-nrpe-plugin \
       nagios-plugins-contrib \
       nagios-snmp-plugins \
+      libmonitoring-plugin-perl \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 

@@ -186,6 +186,8 @@ The variables default their respective `DEFAULT` service variable.
 | `ICINGA2_FEATURE_GRAPHITE_PORT` | 2003 | Carbon port for graphite |
 | `ICINGA2_FEATURE_GRAPHITE_URL` | http://${ICINGA2_FEATURE_GRAPHITE_HOST} | Web-URL for Graphite |
 | `ICINGA2_FEATURE_DIRECTOR` | true | Set to false or 0 to disable icingaweb2 director |
+| `ICINGA2_FEATURE_DIRECTOR_USER` | icinga2-director | Icinga2director Login User |
+| `ICINGA2_FEATURE_DIRECTOR_PASS` | *random generated each start* | Icinga2director Login Password<br>*Set this to prevent continues [admin] modify apiuser "icinga2-director" activities* |
 | `DIRECTOR_KICKSTART` | true | Set to false to disable icingaweb2 director's auto kickstart at container startup. *Value is only used, if icingaweb2 director is enabled.* |
 | `ICINGAWEB2_ADMIN_USER` | icingaadmin | Icingaweb2 Login User<br>*After changing the username, you should also remove the old User in icingaweb2-> Configuration-> Authentication-> Users* |
 | `ICINGAWEB2_ADMIN_PASS` | icinga | Icingaweb2 Login Password |

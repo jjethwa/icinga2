@@ -185,6 +185,8 @@ The variables default their respective `DEFAULT` service variable.
 | `ICINGA2_FEATURE_GRAPHITE_HOST` | graphite | hostname or IP address where Carbon/Graphite daemon is running |
 | `ICINGA2_FEATURE_GRAPHITE_PORT` | 2003 | Carbon port for graphite |
 | `ICINGA2_FEATURE_GRAPHITE_URL` | http://${ICINGA2_FEATURE_GRAPHITE_HOST} | Web-URL for Graphite |
+| `ICINGA2_FEATURE_GRAPHITE_SEND_THRESHOLD` | true | If you want to send `min`, `max`, `warn` and `crit` values for perf data |
+| `ICINGA2_FEATURE_GRAPHITE_SEND_METADATA` | false | If you want to send `state`, `latency` and `execution_time` values for the checks |
 | `ICINGA2_FEATURE_DIRECTOR` | true | Set to false or 0 to disable icingaweb2 director |
 | `ICINGA2_FEATURE_DIRECTOR_USER` | icinga2-director | Icinga2director Login User |
 | `ICINGA2_FEATURE_DIRECTOR_PASS` | *random generated each start* | Icinga2director Login Password<br>*Set this to prevent continues [admin] modify apiuser "icinga2-director" activities* |

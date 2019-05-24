@@ -17,7 +17,8 @@ if evaluate_boolean "${ICINGA2_FEATURE_GRAPHITE}"; then
 	object GraphiteWriter "graphite" {
 	  host = "$ICINGA2_FEATURE_GRAPHITE_HOST"
 	  port = "$ICINGA2_FEATURE_GRAPHITE_PORT"
-	  enable_send_thresholds = true
+	  enable_send_thresholds = $ICINGA2_FEATURE_GRAPHITE_SEND_THRESHOLDS
+	  enable_send_metadata = $ICINGA2_FEATURE_GRAPHITE_SEND_METADATA
 	}
 	END
 

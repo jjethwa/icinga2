@@ -1,0 +1,16 @@
+#!/bin/bash
+
+. /opt/helpers
+
+[ -n "${TZ-}" ] || exit 0
+
+echo "=> Setting timezone to ${TZ}"
+
+TZFILE="/usr/share/zoneinfo/${TZ}"
+if [ ! -f "${TZFILE}" ]; then
+	echo "Timezone ${TZ} not available, using default timezone"
+	exit 0
+fi
+
+ln -sf "${TZFILE}" /etc/localtime
+dpkg-reconfigure -f noninteractive tzdata

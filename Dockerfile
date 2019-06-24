@@ -58,7 +58,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  | apt-key add - \
  && echo "deb http://packages.icinga.org/debian icinga-$(lsb_release -cs) main" > /etc/apt/sources.list.d/icinga2.list \
  && apt-get update \
- && apt-get install -y --no-install-recommends \
+ && apt-get install -y --install-recommends \
       icinga2 \
       icinga2-ido-mysql \
       icingacli \

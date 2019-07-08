@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# this will ensure that all .crt certificates at
+# /usr/local/share/ca-certificates/ are in the CA store
+update-ca-certificates --fresh

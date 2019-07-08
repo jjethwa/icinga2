@@ -23,6 +23,7 @@ This build is automated by push for the git-repo. Just crawl it via:
    - Supervisor
    - Apache2
    - SSL Support
+   - Custom CA support
 1. No SSH. Use docker [exec](https://docs.docker.com/engine/reference/commandline/exec/) or [nsenter](https://github.com/jpetazzo/nsenter)
 1. If passwords are not supplied, they will be randomly generated and shown via stdout.
 
@@ -132,6 +133,12 @@ For enabling of SSL support, just add a volume to `/etc/apache2/ssl`, which cont
 - `icinga2.chain` (optional): If a certificate chain is needed, add this file. Consult your CA-vendor for additional info.
 
 For https-redirection or http/https dualstack consult `APACHE2_HTTP` env-variable.
+
+## Custom CA Support
+
+In the case where you need to trust a non-default CA, add the certificate(s) as `.crt` files to a volume to be mounted at `/usr/local/share/ca-certificates/`.
+
+Any certificates that are CA certificates with a `.crt` extension in that volume will automatically be added to the CA store at startup.
 
 # Adding own modules
 

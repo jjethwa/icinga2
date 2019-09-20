@@ -102,12 +102,12 @@ ADD content/ /
 RUN true \
  && sed -i 's/vars\.os.*/vars.os = "Docker"/' /etc/icinga2/conf.d/hosts.conf \
  && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
- && mkdir /etc/icingaweb2 \
+ && mkdir -p /etc/icingaweb2 \
  && mv /etc/icinga2/ /etc/icinga2.dist \
- && mkdir /etc/icinga2 \
+ && mkdir -p /etc/icinga2 \
  && usermod -aG icingaweb2 www-data \
  && usermod -aG nagios www-data \
- && mkdir /var/log/icinga2 \
+ && mkdir -p /var/log/icinga2 \
  && chmod 755 /var/log/icinga2 \
  && chown nagios:adm /var/log/icinga2 \
  && ln -sf /dev/stdout /var/log/icinga2/icinga2.log \

@@ -60,6 +60,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get update \
  && apt-get install -y --install-recommends \
       icinga2 \
+      icinga2-bin \
       icinga2-ido-mysql \
       icingacli \
       icingaweb2 \

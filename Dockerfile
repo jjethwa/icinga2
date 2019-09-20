@@ -106,6 +106,10 @@ RUN true \
  && mkdir /etc/icinga2 \
  && usermod -aG icingaweb2 www-data \
  && usermod -aG nagios www-data \
+ && mkdir /var/log/icinga2 \
+ && chmod 755 /var/log/icinga2 \
+ && chown nagios:adm /var/log/icinga2 \
+ && ln -sf /dev/stdout /var/log/icinga2/icinga2.log \
  && rm -rf \
      /var/lib/mysql/* \
  && chmod u+s,g+s \

@@ -1,9 +1,7 @@
 # Dockerfile for icinga2 with icingaweb2
 # https://github.com/jjethwa/icinga2
 
-FROM debian:stretch
-
-MAINTAINER Jordan Jethwa
+FROM debian:buster
 
 ENV APACHE2_HTTP=REDIRECT \
     ICINGA2_FEATURE_GRAPHITE=false \
@@ -22,7 +20,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get upgrade -y \
  && apt-get install -y --no-install-recommends \
       apache2 \
-      ca-cacert \
       ca-certificates \
       curl \
       dnsutils \
@@ -45,11 +42,12 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       procps \
       pwgen \
       snmp \
-      ssmtp \
+      msmtp \
       sudo \
       supervisor \
       unzip \
       wget \
+ && apt-get --purge remove exim4 exim4-base exim4-config exim4-daemon-light \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
@@ -110,13 +108,13 @@ RUN true \
  && mkdir -p /var/log/icinga2 \
  && chmod 755 /var/log/icinga2 \
  && chown nagios:adm /var/log/icinga2 \
- # && ln -sf /dev/stdout /var/log/icinga2/icinga2.log \
  && rm -rf \
      /var/lib/mysql/* \
  && chmod u+s,g+s \
      /bin/ping \
      /bin/ping6 \
-     /usr/lib/nagios/plugins/check_icmp
+     /usr/lib/nagios/plugins/check_icmp \
+ && ln -fs /usr/bin/msmtp /usr/sbin/sendmail
 
 EXPOSE 80 443 5665
 

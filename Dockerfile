@@ -114,10 +114,6 @@ ADD content/ /
 RUN true \
  && sed -i 's/vars\.os.*/vars.os = "Docker"/' /etc/icinga2/conf.d/hosts.conf \
  && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
- && mkdir -p /etc/icingaweb2/enabledModules \
- && ln -fs /usr/local/share/icingaweb2/modules/ipl /etc/icingaweb2/enabledModules/ \
- && ln -fs /usr/local/share/icingaweb2/modules/incubator /etc/icingaweb2/enabledModules/ \
- && ln -fs /usr/local/share/icingaweb2/modules/reactbundle /etc/icingaweb2/enabledModules/ \
  && mv /etc/icinga2/ /etc/icinga2.dist \
  && mkdir -p /etc/icinga2 \
  && usermod -aG icingaweb2 www-data \
@@ -130,8 +126,7 @@ RUN true \
  && chmod u+s,g+s \
      /bin/ping \
      /bin/ping6 \
-     /usr/lib/nagios/plugins/check_icmp \
- && ln -fs /usr/bin/msmtp /usr/sbin/sendmail
+     /usr/lib/nagios/plugins/check_icmp
 
 EXPOSE 80 443 5665
 

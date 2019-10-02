@@ -9,6 +9,10 @@ if [ ! -e '/var/run/icinga2' ]; then
   chmod 2710 /var/run/icinga2/cmd
   chown nagios:nagios /var/run/icinga2
   chmod 0755 /var/run/icinga2
+  ln -fs /usr/local/share/icingaweb2/modules/ipl /etc/icingaweb2/enabledModules/
+  ln -fs /usr/local/share/icingaweb2/modules/incubator /etc/icingaweb2/enabledModules/
+  ln -fs /usr/local/share/icingaweb2/modules/reactbundle /etc/icingaweb2/enabledModules/
+  ln -fs /usr/bin/msmtp /usr/sbin/sendmail
 fi
 
 service icinga2 foreground &

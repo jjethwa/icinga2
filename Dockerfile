@@ -72,26 +72,40 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
 
-ARG GITREF_DIRECTOR=master
 ARG GITREF_MODGRAPHITE=master
 ARG GITREF_MODAWS=master
+ARG GITREF_REACTBUNDLE=v0.7.0
+ARG GITREF_INCUBATOR=v0.5.0
+ARG GITREF_IPL=v0.3.0
 
 RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
 # Icinga Director
  && mkdir -p /usr/local/share/icingaweb2/modules/director/ \
- && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/${GITREF_DIRECTOR}.tar.gz" \
+ && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/v1.7.0.tar.gz" \
  | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/director --exclude=.gitignore -f - \
 # Icingaweb2 Graphite
  && mkdir -p /usr/local/share/icingaweb2/modules/graphite \
- && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-graphite/archive/${GITREF_MODGRAPHITE}.tar.gz" \
- | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/graphite -f - icingaweb2-module-graphite-${GITREF_MODGRAPHITE}/ \
+ && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-graphite/archive/v1.1.0.tar.gz" \
+ | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/graphite -f - \
 # Icingaweb2 AWS
  && mkdir -p /usr/local/share/icingaweb2/modules/aws \
- && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-aws/archive/${GITREF_MODAWS}.tar.gz" \
- | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/aws -f - icingaweb2-module-aws-${GITREF_MODAWS}/ \
+ && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-aws/archive/v1.0.0.tar.gz" \
+ | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/aws -f - \
  && wget -q --no-cookies "https://github.com/aws/aws-sdk-php/releases/download/2.8.30/aws.zip" \
  && unzip -d /usr/local/share/icingaweb2/modules/aws/library/vendor/aws aws.zip \
  && rm aws.zip \
+# Module Reactbundle
+ && mkdir -p /usr/local/share/icingaweb2/modules/reactbundle/ \
+ && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-reactbundle/archive/v0.7.0.tar.gz" \
+ | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/reactbundle -f - \
+# Module Incubator
+ && mkdir -p /usr/local/share/icingaweb2/modules/incubator/ \
+ && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-incubator/archive/v0.5.0.tar.gz" \
+ | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/incubator -f - \
+# Module Ipl
+ && mkdir -p /usr/local/share/icingaweb2/modules/ipl/ \
+ && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-ipl/archive/v0.3.0.tar.gz" \
+ | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/ipl -f - \
  && true
 
 ADD content/ /
@@ -100,7 +114,10 @@ ADD content/ /
 RUN true \
  && sed -i 's/vars\.os.*/vars.os = "Docker"/' /etc/icinga2/conf.d/hosts.conf \
  && mv /etc/icingaweb2/ /etc/icingaweb2.dist \
- && mkdir -p /etc/icingaweb2 \
+ && mkdir -p /etc/icingaweb2/enabledModules \
+ && ln -fs /usr/local/share/icingaweb2/modules/ipl /etc/icingaweb2/enabledModules/ \
+ && ln -fs /usr/local/share/icingaweb2/modules/incubator /etc/icingaweb2/enabledModules/ \
+ && ln -fs /usr/local/share/icingaweb2/modules/reactbundle /etc/icingaweb2/enabledModules/ \
  && mv /etc/icinga2/ /etc/icinga2.dist \
  && mkdir -p /etc/icinga2 \
  && usermod -aG icingaweb2 www-data \

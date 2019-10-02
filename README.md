@@ -122,14 +122,16 @@ root:<YOUR_MAILBOX>
 default:<YOUR_MAILBOX>
 ```
 
-These files have to get mounted into the container. Add these flags to your `docker run`-command:
+As a last config change, edit the `data/icinga/etc/icinga2/conf.d/users.conf` and change the e-mail address `root@localhost` to either `root` or a valid external address. This must be done as msmtp interprets all addresses with an at-sign as external and the transport will fail. If the address is changed to `root` the aliasing feature will use your root alias instead.
+
+These files have to be mounted into the container. Add these flags to your `docker run`-command:
 
 ```
 -v $(pwd)/msmtp/aliases:/etc/msmtp/aliases:ro
 -v $(pwd)/msmtp/msmtprc:/etc/msmtp/msmtprc:ro
 ```
 
-If you are using the `docker-compose` file, uncomment the settings for these files under the icinga2 node.
+If you are using the `docker-compose` file, uncomment the settings for these files under the icinga2 node and rebuild.
 
 
 ## SSL Support

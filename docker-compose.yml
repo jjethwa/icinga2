@@ -1,7 +1,10 @@
 version: '2'
 services:
   icinga2:
-    image: jordan/icinga2
+    #image: jordan/icinga2
+    build:
+      context: ./
+      dockerfile: Dockerfile
     restart: on-failure:5
     # Set your hostname to the FQDN under which your
     # sattelites will reach this container
@@ -34,13 +37,15 @@ services:
       - ./data/icinga/log/icingaweb2:/var/log/icingaweb2
       - ./data/icinga/log/mysql:/var/log/mysql
       - ./data/icinga/spool:/var/spool/icinga2
-      # If you want to enable outbound e-mail, create the files
-      #  - ./ssmtp/ssmtp.conf
-      #  - ./ssmtp/revaliases
-      #  and configure to your corresponding mail setup.
+      # Sending e-mail
       #  See: https://github.com/jjethwa/icinga2#sending-notification-mails
-      #- ./ssmtp/revaliases:/etc/ssmtp/revaliases:ro
-      #- ./ssmtp/ssmtp.conf:/etc/ssmtp/ssmtp.conf:ro
+      #  If you want to enable outbound e-mail, edit the file mstmp/msmtprc
+      #  and configure to your corresponding mail setup. The default is a
+      #  Gmail example but msmtp can be used for any MTA configuration.
+      #  Change the aliases in msmtp/aliases to your recipients.
+      #  Then uncomment the rows below
+      # - ./msmtp/msmtprc:/etc/msmtprc:ro
+      # - ./msmtp/aliases:/etc/aliases:ro
     ports:
       - "80:80"
       - "443:443"

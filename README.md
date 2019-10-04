@@ -86,43 +86,53 @@ The container gets automatically configured as an API master. But it has some ca
 
 ## Sending Notification Mails
 
-The container has `ssmtp` installed, which forwards mails to a preconfigured static server.
+The container has `msmtp` installed, which forwards mails to a preconfigured SMTP server (MTA).
 
-You have to create the files `ssmtp.conf` for general configuration and `revaliases` (mapping from local Unix-user to mail-address).
+The full documentation for [msmtp is found here](https://marlam.de/msmtp).
 
-```
-# ssmtp.conf
-root=<E-Mail address to use on>
-mailhub=smtp.<YOUR_MAILBOX>:587
-UseSTARTTLS=YES
-AuthUser=<Username for authentication (mostly the complete e-Mail-address)>
-AuthPass=<YOUR_PASSWORD>
-FromLineOverride=NO
-```
-**But be careful, ssmtp is not able to process special chars within the password correctly!**
-
-`revaliases` follows the format: `Unix-user:e-Mail-address:server`.
-Therefore the e-Mail-address has to match the `root`'s value in `ssmtp.conf`
-Also server has to match mailhub from `ssmtp.conf` **but without the port**.
+You have to edit the file `msmtp/msmtprc` for general configuration and `msmtp/aliases` (mapping from local Unix-user to mail-address). Please note that the example file can be heavily changed and secured, so read the msmtp docs listed above
 
 ```
-# revaliases
-root:<VALUE_FROM_ROOT>:smtp.<YOUR_MAILBOX>
-nagios:<VALUE_FROM_ROOT>:smtp.<YOUR_MAILBOX>
-www-data:<VALUE_FROM_ROOT>:smtp.<YOUR_MAILBOX>
+# msmtp/msmtprc
+auth           on
+tls            on
+tls_trust_file /etc/ssl/certs/ca-certificates.crt
+logfile        /var/log/msmtp.log
+aliases        /etc/aliases
+
+# Gmail
+account        gmail
+host           smtp.gmail.com
+port           587
+from           <your-email-address@gmail.com>
+user           <your-email-address@gmail.com>
+password       <your-password-or-eval-command-to-gpg-file>
+
+# Set a default account
+account default: gmail
 ```
 
-These files have to get mounted into the container. Add these flags to your `docker run`-command:
+*Note that Gmail has become very restrictive, the preparation and config must be done in Gmail's settings. If you can't get it to work, consider another SMTP service*.
+
+`msmtp/aliases` follows the format: `Unix-user: e-mail-address`.
+
 ```
--v $(pwd)/revaliases:/etc/ssmtp/revaliases:ro
--v $(pwd)/ssmtp.conf:/etc/ssmtp/ssmtp.conf:ro
+# msmtp/aliases
+root:<YOUR_MAILBOX>
+default:<YOUR_MAILBOX>
 ```
 
-If you want to change the display-name of sender-address, you have to define the variable `ICINGA2_USER_FULLNAME`.
+As a last config change, edit the `data/icinga/etc/icinga2/conf.d/users.conf` and change the e-mail address `root@localhost` to either `root` or a valid external address. This must be done as msmtp interprets all addresses with an at-sign as external and the transport will fail. If the address is changed to `root` the aliasing feature will use your root alias instead.
 
-If this does not work, please ask your provider for the correct mail-settings or consider the [ssmtp.conf(5)-manpage](https://manpages.debian.org/stretch/ssmtp/ssmtp.conf.5.en.html) or Section ["Reverse Aliases" on ssmtp(8)](https://manpages.debian.org/stretch/ssmtp/ssmtp.8.en.html#REVERSE_ALIASES).
-Also you can debug your config, by executing inside your container `ssmtp -v $address` and pressing 2x Enter.
-It will send an e-Mail to `$address` and give verbose log and all error-messages.
+These files have to be mounted into the container. Add these flags to your `docker run`-command:
+
+```
+-v $(pwd)/msmtp/aliases:/etc/msmtp/aliases:ro
+-v $(pwd)/msmtp/msmtprc:/etc/msmtp/msmtprc:ro
+```
+
+If you are using the `docker-compose` file, uncomment the settings for these files under the icinga2 node and rebuild.
+
 
 ## SSL Support
 

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+/usr/bin/icingacli director daemon run &
+
+# Allow any signal which would kill a process to stop server
+trap "pkill --f icinga::director" HUP INT QUIT ABRT ALRM TERM TSTP
+
+while pgrep -u root -f director > /dev/null; do sleep 5; done

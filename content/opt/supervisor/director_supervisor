@@ -1,6 +1,6 @@
 #!/bin/bash
 
-/usr/bin/icingacli director daemon run &
+sleep 20 && /usr/bin/icingacli director daemon run &
 
 # Allow any signal which would kill a process to stop server
 trap "pkill --f icinga::director" HUP INT QUIT ABRT ALRM TERM TSTP

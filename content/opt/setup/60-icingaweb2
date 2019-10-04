@@ -16,6 +16,7 @@ mysql_wait \
 
 if [ ! "$(ls -A /etc/icingaweb2)" ]; then
 	echo "=> Copying fresh config-files for /etc/icingaweb2"
+	mkdir -p /etc/icingaweb2
 	cp -R /etc/icingaweb2.dist/* /etc/icingaweb2/
 fi
 

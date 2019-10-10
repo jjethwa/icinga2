@@ -127,8 +127,8 @@ As a last config change, edit the `data/icinga/etc/icinga2/conf.d/users.conf` an
 These files have to be mounted into the container. Add these flags to your `docker run`-command:
 
 ```
--v $(pwd)/msmtp/aliases:/etc/msmtp/aliases:ro
--v $(pwd)/msmtp/msmtprc:/etc/msmtp/msmtprc:ro
+-v $(pwd)/msmtp/aliases:/etc/aliases:ro
+-v $(pwd)/msmtp/msmtprc:/etc/msmtprc:ro
 ```
 
 If you are using the `docker-compose` file, uncomment the settings for these files under the icinga2 node and rebuild.

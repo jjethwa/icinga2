@@ -94,6 +94,7 @@ You have to edit the file `msmtp/msmtprc` for general configuration and `msmtp/a
 
 ```
 # msmtp/msmtprc
+defaults
 auth           on
 tls            on
 tls_trust_file /etc/ssl/certs/ca-certificates.crt

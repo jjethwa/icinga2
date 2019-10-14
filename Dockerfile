@@ -39,6 +39,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
       php-curl \
       php-ldap \
       php-mysql \
+      php-mbstring \
       procps \
       pwgen \
       snmp \

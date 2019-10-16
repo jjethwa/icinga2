@@ -85,6 +85,9 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     && mkdir -p /usr/local/share/icingaweb2/modules/director/ \
     && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/v1.7.0.tar.gz" \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/director --exclude=.gitignore -f - \
+    # fix for https://github.com/Icinga/icingaweb2-module-director/issues/1993
+    && sed -i 's/change_time TIMESTAMP NOT NULL,/change_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,/' \
+    /usr/local/share/icingaweb2/modules/director/schema/mysql.sql \
     # Icingaweb2 Graphite
     && mkdir -p /usr/local/share/icingaweb2/modules/graphite \
     && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-graphite/archive/v1.1.0.tar.gz" \

@@ -35,9 +35,10 @@ Start a new container and bind to host's port 80
 
 ### docker-compose
 
-Download the [`docker-compose.yml`](./docker-compose.yml) file and create a file `secrets_sql.env`, which contains the `MYSQL_ROOT_PASSWORD` variable.
+Clone the repository and create a file `secrets_sql.env`, which contains the `MYSQL_ROOT_PASSWORD` variable.
 
-    curl -O https://raw.githubusercontent.com/jjethwa/icinga2/master/docker-compose.yml
+    git clone https://github.com/jjethwa/icinga2.git
+    cd icinga2
     echo "MYSQL_ROOT_PASSWORD=<password>" > secrets_sql.env
     docker-compose up
 

@@ -62,6 +62,7 @@ services:
       - ./data/graphite/log/carbon:/var/log/carbon
   mysql:
     image: mariadb
+    container_name: mysql
     env_file:
       - secrets_sql.env
     volumes:

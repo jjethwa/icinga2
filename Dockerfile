@@ -41,6 +41,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     php-ldap \
     php-mysql \
     php-mbstring \
+    php-gmp \
     procps \
     pwgen \
     snmp \
@@ -111,6 +112,12 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     && mkdir -p /usr/local/share/icingaweb2/modules/ipl/ \
     && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-ipl/archive/v0.3.0.tar.gz" \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/ipl -f - \
+    # Module x509
+    && mkdir -p /usr/local/share/icingaweb2/modules/x509/ \
+    && wget -q --no-cookies "https://github.com/Icinga/icingaweb2-module-x509/archive/v1.0.0.zip" \
+    && unzip -d /usr/local/share/icingaweb2/modules/x509 v1.0.0.zip \
+    && mv /usr/local/share/icingaweb2/modules/x509/icingaweb2-module-x509-1.0.0/* /usr/local/share/icingaweb2/modules/x509/ \
+    && rm -rf /usr/local/share/icingaweb2/modules/x509/icingaweb2-module-x509-1.0.0/ \
     && true
 
 ADD content/ /

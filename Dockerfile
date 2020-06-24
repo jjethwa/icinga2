@@ -31,7 +31,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     libnet-snmp-perl \
     locales \
     lsb-release \
-    mailutils \
+    bsd-mailx \
     mariadb-client \
     mariadb-server \
     netbase \

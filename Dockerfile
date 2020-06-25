@@ -50,7 +50,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     supervisor \
     unzip \
     wget \
-    && apt-get --purge remove exim4 exim4-base exim4-config exim4-daemon-light \
+    && apt-get -y --purge remove exim4 exim4-base exim4-config exim4-daemon-light \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 

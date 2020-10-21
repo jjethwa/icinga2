@@ -182,7 +182,7 @@ The variables default their respective `DEFAULT` service variable.
 	- `ICINGAWEB2_MYSQL_DATA`: The database for icingaweb2 (defaults to `icingaweb2`)
 	- `ICINGAWEB2_DIRECTOR_MYSQL_DATA`: The database for icingaweb2 director (defaults to `icingaweb2_director`)
 - `DEFAULT_MYSQL_USER`: The MySQL user to access the database (defaults to `icinga2`)
-- `DEFAULT_MYSQL_PASS`: The password for the MySQL user. (defaults to *randomly generated string*)
+- `DEFAULT_MYSQL_PASS`: The password for the MySQL user. (defaults to *randomly generated string*) - It is recommended that you set this value to ensure container restarts work as expected.
 
 ## Moving to separate MySQL-container
 

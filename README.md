@@ -44,6 +44,8 @@ Clone the repository and create a file `secrets_sql.env`, which contains the `MY
 
 This boots up an icinga(web)2 container with another MySQL container reachable on [http://localhost](http://localhost) with the default credentials *icingaadmin*:*icinga*.
 
+To ensure restarts, you should set `DEFAULT_MYSQL_PASS`
+
 ## Icinga Web 2
 
 Icinga Web 2 can be accessed at [http://localhost/icingaweb2](http://localhost/icingaweb2) with the credentials *icingaadmin*:*icinga* (if not set differently via variables).  When using a volume for /etc/icingaweb2, make sure to set ICINGAWEB2_ADMIN_USER and ICINGAWEB2_ADMIN_PASS

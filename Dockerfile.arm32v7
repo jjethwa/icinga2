@@ -92,7 +92,7 @@ ARG GITREF_IPL=v0.3.0
 RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     # Icinga Director
     && mkdir -p /usr/local/share/icingaweb2/modules/director/ \
-    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/v1.7.2.tar.gz" \
+    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/v1.8.0.tar.gz" \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/director --exclude=.gitignore -f - \
     # Icingaweb2 Graphite
     && mkdir -p /usr/local/share/icingaweb2/modules/graphite \

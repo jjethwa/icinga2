@@ -30,6 +30,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     libdigest-hmac-perl \
     libnet-snmp-perl \
     locales \
+    logrotate \
     lsb-release \
     bsd-mailx \
     mariadb-client \

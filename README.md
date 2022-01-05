@@ -183,16 +183,23 @@ All variables are a combination of the service and the property with the format 
 - `<SERVICE>` can be one of `ICINGA2_IDO`, `ICINGAWEB2`, `ICINGAWEB2_DIRECTOR`
 - `<PROPERTY>` can be one of `HOST`, `PORT`, `DATA`, `USER`, `PASS`
 
+The container creates all databases for you by default, but you can skip this auto creation for each of the three databases.
+By creating the databases yourself you won't have to provide the `MYSQL_ROOT_PASSWORD` and it improves overall security and flexibility.
+
 The variables default their respective `DEFAULT` service variable.
 
 - `DEFAULT_MYSQL_HOST`: The server hostname (defaults to `localhost`)
 - `DEFAULT_MYSQL_PORT`: The server port (defaults to `3306`)
 - `DEFAULT_MYSQL_DATA`: The database (defaults to *unset*, the specific services have separate DBs)
-	- `ICINGA2_IDO_MYSQL_DATA`: The database for icinga2 IDO (defaults to `icinga2idomysql`)
-	- `ICINGAWEB2_MYSQL_DATA`: The database for icingaweb2 (defaults to `icingaweb2`)
-	- `ICINGAWEB2_DIRECTOR_MYSQL_DATA`: The database for icingaweb2 director (defaults to `icingaweb2_director`)
+    - `ICINGA2_IDO_MYSQL_DATA`: The database for icinga2 IDO (defaults to `icinga2idomysql`)
+    - `ICINGAWEB2_MYSQL_DATA`: The database for icingaweb2 (defaults to `icingaweb2`)
+    - `ICINGAWEB2_DIRECTOR_MYSQL_DATA`: The database for icingaweb2 director (defaults to `icingaweb2_director`)
 - `DEFAULT_MYSQL_USER`: The MySQL user to access the database (defaults to `icinga2`)
 - `DEFAULT_MYSQL_PASS`: The password for the MySQL user. (defaults to *randomly generated string*) - It is recommended that you set this value to ensure container restarts work as expected.
+- `ICINGA2_IDO_MYSQL_SKIP_DB_CREATION`: This can be set to true if you already created the IDO database (defaults to `false`)
+- `ICINGAWEB2_MYSQL_SKIP_DB_CREATION`: This can be set to true if you already created the Icingaweb2 database (defaults to `false`)
+- `ICINGAWEB2_DIRECTOR_MYSQL_SKIP_DB_CREATION`: This can be set to true if you already created the Director database (defaults to `false`)
+
 
 ## Moving to separate MySQL-container
 

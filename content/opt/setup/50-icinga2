@@ -43,24 +43,31 @@ fi
 chfn -f "${ICINGA2_USER_FULLNAME}" nagios
 
 # Create MySQL user on localhost or test given connection
-if [ "${ICINGA2_IDO_MYSQL_HOST}" == "localhost" ]; then
-	mysql_root <<-END
-	  CREATE DATABASE IF NOT EXISTS ${ICINGA2_IDO_MYSQL_DATA};
-	  CREATE USER IF NOT EXISTS '${ICINGA2_IDO_MYSQL_USER}'@'localhost'
-	    IDENTIFIED BY '${ICINGA2_IDO_MYSQL_PASS}';
-	  GRANT ALL
-	    ON ${ICINGA2_IDO_MYSQL_DATA}.*
-	    TO '${ICINGA2_IDO_MYSQL_USER}'@'localhost';
-	END
-elif [ -n "${MYSQL_ROOT_PASSWORD:-}" ]; then
-	mysql_root <<-END
-	  CREATE DATABASE IF NOT EXISTS ${ICINGA2_IDO_MYSQL_DATA};
-	  CREATE USER IF NOT EXISTS '${ICINGA2_IDO_MYSQL_USER}'@'%'
-	    IDENTIFIED BY '${ICINGA2_IDO_MYSQL_PASS}';
-	  GRANT ALL
-	    ON ${ICINGA2_IDO_MYSQL_DATA}.*
-	    TO '${ICINGA2_IDO_MYSQL_USER}'@'%';
-	END
+
+if evaluate_boolean "${ICINGA2_IDO_MYSQL_SKIP_DB_CREATION}"; then
+	echo "=> Skipping creating database ${ICINGA2_IDO_MYSQL_DATA}"
+else
+	echo "=> Creating database ${ICINGA2_IDO_MYSQL_DATA}"
+
+  if [ "${ICINGA2_IDO_MYSQL_HOST}" == "localhost" ]; then
+		mysql_root <<-END
+		  CREATE DATABASE IF NOT EXISTS ${ICINGA2_IDO_MYSQL_DATA};
+		  CREATE USER IF NOT EXISTS '${ICINGA2_IDO_MYSQL_USER}'@'localhost'
+		    IDENTIFIED BY '${ICINGA2_IDO_MYSQL_PASS}';
+		  GRANT ALL
+		    ON ${ICINGA2_IDO_MYSQL_DATA}.*
+		    TO '${ICINGA2_IDO_MYSQL_USER}'@'localhost';
+		END
+  elif [ -n "${MYSQL_ROOT_PASSWORD:-}" ]; then
+		mysql_root <<-END
+		  CREATE DATABASE IF NOT EXISTS ${ICINGA2_IDO_MYSQL_DATA};
+		  CREATE USER IF NOT EXISTS '${ICINGA2_IDO_MYSQL_USER}'@'%'
+		    IDENTIFIED BY '${ICINGA2_IDO_MYSQL_PASS}';
+		  GRANT ALL
+		    ON ${ICINGA2_IDO_MYSQL_DATA}.*
+		    TO '${ICINGA2_IDO_MYSQL_USER}'@'%';
+		END
+  fi
 fi
 
 mysql_test_credentials

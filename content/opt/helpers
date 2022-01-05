@@ -62,7 +62,7 @@ mysql_cnf_init_section() {
 		host=${host}
 		port=${port}
 		user=${MYSQL_ROOT_USER}
-		password=${MYSQL_ROOT_PASSWORD}
+		password=${MYSQL_ROOT_PASSWORD:-}
 		END
 	fi
 

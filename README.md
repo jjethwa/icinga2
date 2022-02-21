@@ -82,6 +82,8 @@ docker run -t \
   jordan/icinga2:latest
 ```
 
+You will need to modify the retention policy as detailed here: https://github.com/jjethwa/icinga2/issues/275#issuecomment-1046892058
+
 ## Icinga Director
 
 The [Icinga Director](https://github.com/Icinga/icingaweb2-module-director) Icinga Web 2 module is installed and enabled by default. You can disable the automatic kickstart when the container starts by setting the `DIRECTOR_KICKSTART` variable to false. To customize the kickstart settings, modify the `/etc/icingaweb2/modules/director/kickstart.ini`.

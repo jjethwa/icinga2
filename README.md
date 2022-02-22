@@ -202,6 +202,8 @@ The variables default their respective `DEFAULT` service variable.
 - `ICINGAWEB2_MYSQL_SKIP_DB_CREATION`: This can be set to true if you already created the Icingaweb2 database (defaults to `false`)
 - `ICINGAWEB2_DIRECTOR_MYSQL_SKIP_DB_CREATION`: This can be set to true if you already created the Director database (defaults to `false`)
 
+Note: Please do not use special chars like ! in mysql user because it breaks your director database connection. The director authentication.ini cannot handle it.
+
 
 ## Moving to separate MySQL-container
 

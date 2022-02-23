@@ -141,6 +141,7 @@ RUN true \
     && mkdir -p /var/log/icinga2 \
     && chmod 755 /var/log/icinga2 \
     && chown nagios:adm /var/log/icinga2 \
+    && touch /var/log/cron.log \
     && rm -rf \
     /var/lib/mysql/* \
     && chmod u+s,g+s \

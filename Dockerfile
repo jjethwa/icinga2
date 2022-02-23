@@ -132,6 +132,9 @@ RUN true \
     && mkdir -p /var/log/icinga2 \
     && chmod 755 /var/log/icinga2 \
     && chown nagios:adm /var/log/icinga2 \
+    && chmod 0644 /etc/cron.d/icingacli_x509 \
+    && touch /var/log/cron.log \
+    && crontab /etc/cron.d/icingacli_x509 \
     && rm -rf \
     /var/lib/mysql/* \
     && chmod u+s,g+s \
@@ -139,9 +142,7 @@ RUN true \
     /bin/ping6 \
     /usr/lib/nagios/plugins/check_icmp
 
-COPY cron.d/icingacli_x509 /etc/cron.d/icingacli_x509
-RUN chmod 0644 /etc/cron.d/icingacli_x509 \
-    && crontab /etc/cron.d/icingacli_x509
+CMD cron && tail -f /var/log/cron.log
 
 EXPOSE 80 443 5665
 

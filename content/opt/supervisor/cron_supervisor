@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. /opt/helpers
+
+service cron start
+
+# Allow any signal which would kill a process to stop server
+trap "service cron stop" HUP INT QUIT ABRT ALRM TERM TSTP
+
+while pgrep -u root cron > /dev/null; do sleep 5; done

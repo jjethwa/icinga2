@@ -59,6 +59,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     supervisor \
     unzip \
     wget \
+    cron \
     && apt-get -y --purge remove exim4 exim4-base exim4-config exim4-daemon-light \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -139,6 +140,7 @@ RUN true \
     && mkdir -p /var/log/icinga2 \
     && chmod 755 /var/log/icinga2 \
     && chown nagios:adm /var/log/icinga2 \
+    && touch /var/log/cron.log \
     && rm -rf \
     /var/lib/mysql/* \
     && chmod u+s,g+s \

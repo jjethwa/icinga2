@@ -1,0 +1,16 @@
+#!/bin/bash
+
+. /opt/helpers
+
+if [ ! -f "/etc/cron.d/icinga" ]; then
+	echo "=> Copying icinga cronfile for /etc/cron.d"
+
+	cat >/etc/cron.d/icinga <<-END
+	# If you enabled x509 module you can use the cronjobs to insert/refresh your certificates.
+
+	#30 2 * * * 	/usr/bin/icingacli x509 import --file /etc/ssl/certs/ca-certificates.crt 2>&1
+	#00 4 * * * 	/usr/bin/icingacli x509 scan --job <JOBNAME> 2>&1
+	END
+
+	chmod 0644 /etc/cron.d/icinga
+fi

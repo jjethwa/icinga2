@@ -51,6 +51,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     supervisor \
     unzip \
     wget \
+    cron \
     && apt-get -y --purge remove exim4 exim4-base exim4-config exim4-daemon-light \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
@@ -137,6 +138,10 @@ RUN true \
     /bin/ping \
     /bin/ping6 \
     /usr/lib/nagios/plugins/check_icmp
+
+COPY cron.d/icingacli_x509 /etc/cron.d/icingacli_x509
+RUN chmod 0644 /etc/cron.d/icingacli_x509 \
+    && crontab /etc/cron.d/icingacli_x509
 
 EXPOSE 80 443 5665
 

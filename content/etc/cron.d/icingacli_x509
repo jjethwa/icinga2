@@ -1,0 +1,4 @@
+# If you enabled x509 module you can use the cronjobs to insert/refresh your certificates.
+
+#30 2 * * * 	/usr/bin/icingacli x509 import --file /etc/ssl/certs/ca-certificates.crt
+#00 4 * * * 	/usr/bin/icingacli x509 scan --job <JOBNAME>

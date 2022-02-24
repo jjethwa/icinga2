@@ -129,6 +129,7 @@ RUN true \
     && mkdir -p /etc/icinga2 \
     && usermod -aG icingaweb2 www-data \
     && usermod -aG nagios www-data \
+    && usermod -aG icingaweb2 nagios \
     && mkdir -p /var/log/icinga2 \
     && chmod 755 /var/log/icinga2 \
     && chown nagios:adm /var/log/icinga2 \

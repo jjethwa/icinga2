@@ -13,4 +13,4 @@ service mysql start
 # Allow any signal which would kill a process to stop server
 trap "service mysql stop" HUP INT QUIT ABRT ALRM TERM TSTP
 
-while pgrep -u mysql mysql > /dev/null; do sleep 5; done
+while pgrep -u mysql mariadb > /dev/null; do sleep 5; done

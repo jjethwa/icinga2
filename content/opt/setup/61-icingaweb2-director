@@ -77,5 +77,5 @@ else
 	[ ! -L /etc/icinga2/conf.d/api-user.conf ] \
 		|| rm /etc/icinga2/conf.d/api-user.conf
 	icingacli module disable director || true
-	rm -f /etc/supervisor/conf.d/director
+	rm -f /etc/supervisor/conf.d/director.conf
 fi

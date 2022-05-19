@@ -6,11 +6,11 @@
 {  [ "${ICINGA2_IDO_MYSQL_HOST}"         == "localhost" ] \
 || [ "${ICINGAWEB2_MYSQL_HOST}"          == "localhost" ] \
 || [ "${ICINGAWEB2_DIRECTOR_MYSQL_HOST}" == "localhost" ]
-} || { echo "Skpipping local MySQL server bootup."; sleep infinity; }
+} || { echo "Skipping local MySQL server bootup."; sleep infinity; }
 
 service mysql start
 
 # Allow any signal which would kill a process to stop server
-trap "service mysql stop" HUP INT QUIT ABRT ALRM TERM TSTP
+trap "service mariadb stop" HUP INT QUIT ABRT ALRM TERM TSTP
 
 while pgrep -u mysql mariadb > /dev/null; do sleep 5; done

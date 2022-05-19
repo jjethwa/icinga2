@@ -8,7 +8,7 @@
 || [ "${ICINGAWEB2_DIRECTOR_MYSQL_HOST}" == "localhost" ]
 } || { echo "Skipping local MySQL server bootup."; sleep infinity; }
 
-service mysql start
+service mariadb start
 
 # Allow any signal which would kill a process to stop server
 trap "service mariadb stop" HUP INT QUIT ABRT ALRM TERM TSTP

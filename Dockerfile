@@ -27,6 +27,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     dnsutils \
     file \
     gnupg \
+    jq \
     libdbd-mysql-perl \
     libdigest-hmac-perl \
     libnet-snmp-perl \
@@ -51,6 +52,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     msmtp \
     sudo \
     supervisor \
+    telnet \
     unzip \
     wget \
     cron \

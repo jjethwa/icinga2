@@ -143,7 +143,8 @@ RUN true \
     && chmod u+s,g+s \
     /bin/ping \
     /bin/ping6 \
-    /usr/lib/nagios/plugins/check_icmp
+    /usr/lib/nagios/plugins/check_icmp \
+    && /sbin/setcap cap_net_raw+p /bin/ping
 
 EXPOSE 80 443 5665
 

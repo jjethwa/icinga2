@@ -32,6 +32,9 @@ chown -R nagios:nagios /var/cache/icinga2
 
 chown -R nagios:root /etc/icinga2
 
+# Set log level
+sed -i 's,DAEMON_ARGS=.*,DAEMON_ARGS="-e /var/log/icinga2/icinga2.err -x '$ICINGA2_LOG_LEVEL'",g' /etc/init.d/icinga2
+
 # enable necessary features
 icinga2 feature enable ido-mysql livestatus compatlog command
 

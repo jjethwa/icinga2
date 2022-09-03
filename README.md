@@ -221,6 +221,7 @@ Note: Please do not use special chars like ! in mysql user/password because it b
 
 | Environmental Variable | Default Value | Description |
 | ---------------------- | ------------- | ----------- |
+| `ICINGA2_LOG_LEVEL` | information | The valid value is either debug, notice, information (default), warning, or critical |
 | `ICINGA2_FEATURE_GRAPHITE` | false | Set to true or 1 to enable graphite writer |
 | `ICINGA2_FEATURE_GRAPHITE_HOST` | graphite | hostname or IP address where Carbon/Graphite daemon is running |
 | `ICINGA2_FEATURE_GRAPHITE_PORT` | 2003 | Carbon port for graphite |

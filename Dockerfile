@@ -110,7 +110,7 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/reactbundle -f - \
     # Module Incubator
     && mkdir -p /usr/local/share/icingaweb2/modules/incubator/ \
-    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-incubator/archive/v0.16.0.tar.gz" \
+    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-incubator/archive/v0.18.0.tar.gz" \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/incubator -f - \
     # Module Ipl
     && mkdir -p /usr/local/share/icingaweb2/modules/ipl/ \

@@ -49,6 +49,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     procps \
     pwgen \
     python \
+    python3-requests \
     snmp \
     msmtp \
     sudo \

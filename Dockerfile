@@ -138,10 +138,10 @@ RUN true \
     && usermod -aG icingaweb2 nagios \
     && mkdir -p /var/log/icinga2 \
     && chmod 755 /var/log/icinga2 \
-    && chown nagios:adm /var/log/icinga2 \
+    && chown nagios:nagios /var/log/icinga2 \
     && mkdir -p /var/cache/icinga2 \
     && chmod 755 /var/cache/icinga2 \
-    && chown nagios:adm /var/cache/icinga2 \
+    && chown nagios:nagios /var/cache/icinga2 \
     && touch /var/log/cron.log \
     && rm -rf \
     /var/lib/mysql/* \

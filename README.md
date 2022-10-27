@@ -240,6 +240,7 @@ Note: Please do not use special chars like ! in mysql user/password because it b
 | `MYSQL_ROOT_PASSWORD` | *unset* | If your MySQL host is not on `localhost`, but you want the icinga2 container to setup the DBs for itself, specify the root password of your MySQL server in this variable. |
 | *other MySQL variables* | *none* | All combinations of MySQL variables aren't listed in this reference. Please see above in the MySQL section for this. |
 | `TZ` | UTC | Specify the TimeZone for the container to use|
+| `CUSTOM_POST_INSTALLATION_SCRIPT`| *unset* | Allows to specify a bash script, which is e.g. mapped through volume, which is executed at the end of the setup. Through this script it is e.g. possible to establish symlinks or copy files into default directories. |
 
 ## Volume Reference
 

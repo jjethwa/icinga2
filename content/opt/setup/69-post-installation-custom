@@ -1,9 +1,12 @@
 #!/bin/bash
 
+echo "=> Executing 69-post-installation-custom step"
+
 if [ ! -z "$CUSTOM_POST_INSTALLATION_SCRIPT" ]
 then 
-    echo "Executing "$CUSTOM_POST_INSTALLATION_SCRIPT
+    echo " Executing "$CUSTOM_POST_INSTALLATION_SCRIPT
+    chmod +X $CUSTOM_POST_INSTALLATION_SCRIPT
     bash $CUSTOM_POST_INSTALLATION_SCRIPT
 else
-    echo "Environment variable CUSTOM_POST_INSTALLATION_SCRIPT is not set, will not execute any post installation script"
+    echo " Environment variable CUSTOM_POST_INSTALLATION_SCRIPT is not set, will not execute any post installation script"
 fi

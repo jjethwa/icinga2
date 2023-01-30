@@ -76,8 +76,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     icinga2-ido-mysql \
     icingacli \
     icingaweb2 \
-#    icingaweb2-module-doc \
-    icingaweb2-module-monitoring \
     monitoring-plugins \
     nagios-nrpe-plugin \
     nagios-plugins-contrib \

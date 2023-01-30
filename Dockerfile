@@ -22,6 +22,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
     apache2 \
+    apt-transport-https \
     bc \
     ca-certificates \
     curl \
@@ -65,7 +66,9 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 RUN export DEBIAN_FRONTEND=noninteractive \
     && curl -s https://packages.icinga.com/icinga.key \
     | apt-key add - \
-    && echo "deb http://packages.icinga.com/debian icinga-$(lsb_release -cs) main" > /etc/apt/sources.list.d/icinga2.list \
+    && DIST=$(awk -F"[)(]+" '/VERSION=/ {print $2}' /etc/os-release); \
+    && echo "deb https://packages.icinga.com/debian icinga-${DIST} main" > /etc/apt/sources.list.d/${DIST}-icinga.list \
+    && echo "deb-src https://packages.icinga.com/debian icinga-${DIST} main" >> /etc/apt/sources.list.d/${DIST}-icinga.list \
     && echo "deb http://deb.debian.org/debian $(lsb_release -cs)-backports main" > /etc/apt/sources.list.d/$(lsb_release -cs)-backports.list \
     && apt-get update \
     && apt-get install -y --install-recommends \

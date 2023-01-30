@@ -68,7 +68,7 @@ fi
 mysql_test_credentials
 
 mysql_user \
-	< /usr/share/icingaweb2/etc/schema/mysql.schema.sql \
+	< /usr/share/icingaweb2/schema/mysql.schema.sql \
 	>> /var/log/icingaweb2/icingaweb2-schema.log \
 	2>&1 || true
 

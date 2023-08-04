@@ -1,3 +1,5 @@
+[![Docker Image CI](https://github.com/jjethwa/icinga2/actions/workflows/docker-image.yml/badge.svg)](https://github.com/jjethwa/icinga2/actions/workflows/docker-image.yml)
+
 # icinga2
 
 This repository contains the source for the [icinga2](https://www.icinga.org/icinga2/) [docker](https://www.docker.com) image.

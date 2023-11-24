@@ -6,7 +6,7 @@ This repository contains the source for the [icinga2](https://www.icinga.org/ici
 
 The dockerhub-repository is located at [https://hub.docker.com/r/jordan/icinga2/](https://hub.docker.com/r/jordan/icinga2/).
 
-This build is automated by push for the git-repo. Just crawl it via:
+This build is automated by push for the git-repo. Just pull it via:
 
     docker pull jordan/icinga2
 

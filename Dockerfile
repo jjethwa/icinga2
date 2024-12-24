@@ -86,7 +86,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 ARG GITREF_MODGRAPHITE=master
 ARG GITREF_MODAWS=master
 ARG GITREF_REACTBUNDLE=v0.9.0
-ARG GITREF_INCUBATOR=v0.18.0
+ARG GITREF_INCUBATOR=v0.22.0
 ARG GITREF_IPL=v0.5.0
 
 RUN mkdir -p /usr/local/share/icingaweb2/modules/ \

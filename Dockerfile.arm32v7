@@ -1,5 +1,5 @@
 # Dockerfile for icinga2 with icingaweb2
-FROM debian:bullseye AS qemu_arm32
+FROM debian:bookworm AS qemu_arm32
 
 #QEMU Download
 ENV QEMU_URL https://github.com/balena-io/qemu/releases/download/v4.0.0%2Bdev.2%2Bjenkins-balena-qemu-21/qemu-4.0.0.dev.2.jenkins-balena-qemu-21-arm.tar.gz
@@ -57,7 +57,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     php-gmp \
     procps \
     pwgen \
-    python \
+    python3 \
     python3-requests \
     snmp \
     msmtp \

@@ -9,6 +9,7 @@
 } || exit 0
 
 chown -R mysql:mysql /var/lib/mysql
+mkdir -p /var/log/mysql
 chown -R mysql:mysql /var/log/mysql
 
 if [ ! "$(ls -A /var/lib/mysql)" ]; then

@@ -12,7 +12,7 @@ This build is automated by push for the git-repo. Just pull it via:
 
 ## Image details
 
-1. Based on debian:bullseye
+1. Based on debian:bookworm
 1. Key-Features:
    - icinga2
    - icingacli

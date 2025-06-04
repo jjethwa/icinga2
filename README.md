@@ -10,6 +10,8 @@ This build is automated by push for the git-repo. Just pull it via:
 
     docker pull jordan/icinga2
 
+Latest version: 2.14.6
+
 ## Image details
 
 1. Based on debian:bookworm

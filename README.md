@@ -97,7 +97,7 @@ The [Icinga Director](https://github.com/Icinga/icingaweb2-module-director) Icin
 The container gets automatically configured as an API master. But it has some caveats. Please make sure:
 
 - Set the container's hostname (`-h` or `hostname`)
-  - The hostname has to match the name, your sattelites are configured to access the master.
+  - The hostname has to match the name, your satellites are configured to access the master.
 - Forward the `5665` port
 - Mount **both** volumes: `/etc/icinga2`, `/var/lib/icinga2`
 
@@ -261,11 +261,11 @@ All these folders are configured and able to get mounted as volume. The bottom o
 | /var/lib/mysql | rw | MySQL Database |
 | /var/lib/icinga2 | rw | Icinga2 Data |
 | /var/lib/php/sessions/ | rw | Icingaweb2 PHP Session Files |
-| /var/log/apache2 | rw | logfolder for apache2 (not neccessary) |
-| /var/log/icinga2 | rw | logfolder for icinga2 (not neccessary) |
-| /var/log/icingaweb2 | rw | logfolder for icingaweb2 (not neccessary) |
-| /var/log/mysql | rw | logfolder for mysql (not neccessary) |
-| /var/log/supervisor | rw | logfolder for supervisord (not neccessary) |
-| /var/spool/icinga2 | rw | spool-folder for icinga2 (not neccessary) |
-| /var/cache/icinga2 | rw | cache-folder for icinga2 (not neccessary) |
-| /etc/cron.d/icinga | rw | file for cron-daemon (not neccessary if not using x509) |
+| /var/log/apache2 | rw | logfolder for apache2 (not necessary) |
+| /var/log/icinga2 | rw | logfolder for icinga2 (not necessary) |
+| /var/log/icingaweb2 | rw | logfolder for icingaweb2 (not necessary) |
+| /var/log/mysql | rw | logfolder for mysql (not necessary) |
+| /var/log/supervisor | rw | logfolder for supervisord (not necessary) |
+| /var/spool/icinga2 | rw | spool-folder for icinga2 (not necessary) |
+| /var/cache/icinga2 | rw | cache-folder for icinga2 (not necessary) |
+| /etc/cron.d/icinga | rw | file for cron-daemon (not necessary if not using x509) |

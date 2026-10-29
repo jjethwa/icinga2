@@ -87,7 +87,7 @@ RUN export DEBIAN_FRONTEND=noninteractive \
 ARG GITREF_MODGRAPHITE=master
 ARG GITREF_MODAWS=master
 ARG GITREF_REACTBUNDLE=v0.9.0
-ARG GITREF_INCUBATOR=v0.22.0
+ARG GITREF_INCUBATOR=v0.23.0
 ARG GITREF_IPL=v0.5.0
 
 RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
@@ -121,9 +121,9 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     # Module x509
     && mkdir -p /usr/local/share/icingaweb2/modules/x509/ \
     && wget -q --no-cookies "https://github.com/Icinga/icingaweb2-module-x509/archive/v1.4.0.zip" \
-    && unzip -d /usr/local/share/icingaweb2/modules/x509 v1.3.2.zip \
-    && mv /usr/local/share/icingaweb2/modules/x509/icingaweb2-module-x509-1.3.2/* /usr/local/share/icingaweb2/modules/x509/ \
-    && rm -rf /usr/local/share/icingaweb2/modules/x509/icingaweb2-module-x509-1.3.2/ \
+    && unzip -d /usr/local/share/icingaweb2/modules/x509 v1.4.0.zip \
+    && mv /usr/local/share/icingaweb2/modules/x509/icingaweb2-module-x509-1.4.0/* /usr/local/share/icingaweb2/modules/x509/ \
+    && rm -rf /usr/local/share/icingaweb2/modules/x509/icingaweb2-module-x509-1.4.0/ \
     && true
 
 ADD content/ /

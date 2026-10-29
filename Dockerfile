@@ -93,11 +93,11 @@ ARG GITREF_IPL=v0.5.0
 RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     # Icinga Director
     && mkdir -p /usr/local/share/icingaweb2/modules/director/ \
-    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/v1.11.3.tar.gz" \
+    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-director/archive/v1.11.9.tar.gz" \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/director --exclude=.gitignore -f - \
     # Icingaweb2 Graphite
     && mkdir -p /usr/local/share/icingaweb2/modules/graphite \
-    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-graphite/archive/v1.2.4.tar.gz" \
+    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-graphite/archive/v1.3.1.tar.gz" \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/graphite -f - \
     # Icingaweb2 AWS
     && mkdir -p /usr/local/share/icingaweb2/modules/aws \
@@ -112,7 +112,7 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/reactbundle -f - \
     # Module Incubator
     && mkdir -p /usr/local/share/icingaweb2/modules/incubator/ \
-    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-incubator/archive/v0.22.0.tar.gz" \
+    && wget -q --no-cookies -O - "https://github.com/Icinga/icingaweb2-module-incubator/archive/v0.23.0.tar.gz" \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/incubator -f - \
     # Module Ipl
     && mkdir -p /usr/local/share/icingaweb2/modules/ipl/ \
@@ -120,7 +120,7 @@ RUN mkdir -p /usr/local/share/icingaweb2/modules/ \
     | tar xz --strip-components=1 --directory=/usr/local/share/icingaweb2/modules/ipl -f - \
     # Module x509
     && mkdir -p /usr/local/share/icingaweb2/modules/x509/ \
-    && wget -q --no-cookies "https://github.com/Icinga/icingaweb2-module-x509/archive/v1.3.2.zip" \
+    && wget -q --no-cookies "https://github.com/Icinga/icingaweb2-module-x509/archive/v1.4.0.zip" \
     && unzip -d /usr/local/share/icingaweb2/modules/x509 v1.3.2.zip \
     && mv /usr/local/share/icingaweb2/modules/x509/icingaweb2-module-x509-1.3.2/* /usr/local/share/icingaweb2/modules/x509/ \
     && rm -rf /usr/local/share/icingaweb2/modules/x509/icingaweb2-module-x509-1.3.2/ \
